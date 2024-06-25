@@ -1,4 +1,4 @@
-import { createQuill } from './editor';
+import { createQuill } from './main';
 
 const quill = createQuill("#editor");
 

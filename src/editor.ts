@@ -58,7 +58,6 @@ const toolbarOptions = {
     ],
 };
 
-// TODO: export to window and make a Dart wrapper
 export function createQuill(
     container: HTMLElement | string,
     options?: QuillOptions,

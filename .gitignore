@@ -1,6 +1,7 @@
 # Ignore built files
 /dist
 /node_modules
+/.dart_tool
 
 # Ignore compiled JavaScript and map files
 *.js

@@ -8,6 +8,13 @@
   },
   "author": "Potix",
   "license": "BSD-3-Clause",
+  "files": ["dist"],
+  "main": "./dist/quill.umd.js",
+  "exports": {
+    ".": {
+      "require": "./dist/quill.umd.js"
+    }
+  },
   "dependencies": {
     "quill": "^2.0.2",
     "highlight.js": "^11.9.0"

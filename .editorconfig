@@ -1,0 +1,19 @@
+root = true
+charset = utf8
+
+[*]
+ending_whitespace = preserve
+insert_final_newline = true
+trim_trailing_white_space = true
+
+[*.ts, *.mts]
+indent_size = 4
+
+[*.json]
+indent_size = 2
+
+[*.dart]
+indent_size = 2
+
+[*.yaml]
+indent_size = 2
