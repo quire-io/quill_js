@@ -9,5 +9,13 @@ export default defineConfig({
             formats: ['umd'],
             fileName: 'quill',
         },
+        rollupOptions: {
+            external: ['highlight.js'],
+            output: {
+                globals: {
+                    'highlight.js': 'hljs',
+                },
+            },
+        },
     },
 });
