@@ -1,1 +1,1 @@
-# quill_js
+# Quill integration for Quire
