@@ -1,0 +1,10 @@
+# Ignore built files
+/dist
+/node_modules
+
+# Ignore compiled JavaScript and map files
+*.js
+*.js.map
+
+# Ignore editor configs
+.vscode/
