@@ -13,6 +13,12 @@ external Quill createQuill(dynamic container, QuillConfiguration options);
 class Quill {
 
   external void setContents(List<dynamic> data);
+  
+  external void updateContents(List<dynamic> data, [String source = 'api']);
+
+  external void on(String name, Function handler);
+
+  external void off(String name, Function handler);
 }
 
 @anonymous
@@ -42,5 +48,50 @@ abstract class QuillHeaderOption {
   external set header(List<dynamic> v);
 
   external factory QuillHeaderOption({
-    List<dynamic> header,});
+    List<dynamic> header,});}
+
+@anonymous
+@JS()
+class DeltaAttributes {}
+
+@anonymous
+@JS()
+abstract class DeltaInsert {
+  external DeltaAttributes? get attributes;
+  external set attributes(DeltaAttributes? v);
+
+  external String get insert;
+  external set insert(String v);
+
+   external factory DeltaInsert({
+    String insert,
+    DeltaAttributes? attributes,});
+}
+
+@anonymous
+@JS()
+abstract class DeltaDelete {
+  external DeltaAttributes? get attributes;
+  external set attributes(DeltaAttributes? v);
+
+  external int get delete;
+  external set delete(int v);
+
+   external factory DeltaDelete({
+    int delete,
+    DeltaAttributes? attributes,});
+}
+
+@anonymous
+@JS()
+abstract class DeltaRetain {
+  external DeltaAttributes? get attributes;
+  external set attributes(DeltaAttributes? v);
+
+  external int get retain;
+  external set retain(int v);
+
+   external factory DeltaRetain({
+    int retain,
+    DeltaAttributes? attributes,});
 }
