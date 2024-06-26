@@ -40,49 +40,44 @@ interface QuireQuillService {
     getAutocompleteCandidates(value: string): string[];
 }
 
+var concrete: QuireQuillService;
+
+function registerService(instance: any) {
+    concrete = instance;
+}
 
 class QuireQuillServiceImpl implements QuireQuillService {
-    private concrete: QuireQuillService;
-
-    constructor() {
-        if (typeof window !== 'undefined')
-            this.concrete = window['QuillService'];
-
-        if (!this.concrete)
-            console.warn('No window.QuillService available. Use fallback instead.')
-    }
-
     getEmailUrl(value: string): string {
-        return this.concrete?.getEmailUrl(value)
+        return concrete?.getEmailUrl(value)
             ?? `mailto:${value}`;
     }
 
     getPhoneUrl(value: string): string {
-        return this.concrete?.getPhoneUrl(value)
+        return concrete?.getPhoneUrl(value)
             ?? `tel:${value}`;
     }
 
     evaluateFormula(formula: string): Node[] {
-        return this.concrete?.evaluateFormula(formula)
+        return concrete?.evaluateFormula(formula)
             ?? [new Text(formula)];
     }
 
     getReferUrl(value: string): string {
-        return this.concrete?.getReferUrl(value)
+        return concrete?.getReferUrl(value)
             ?? 'https://quire.io/u/' + value;
     }
 
     isReferActive(value: string): boolean {
-        return this.concrete?.isReferActive(value)
+        return concrete?.isReferActive(value)
             ?? true;
     }
 
     getAutocompleteCandidates(value: string): string[] {
-        return this.concrete?.getAutocompleteCandidates(value)
+        return concrete?.getAutocompleteCandidates(value)
             ?? [value];
     }
 }
 
 const service: QuireQuillService = new QuireQuillServiceImpl();
 
-export { service };
+export { service, registerService };

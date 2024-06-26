@@ -9,6 +9,9 @@ import "package:js/js.dart";
 @JS('QuillJsLib.createQuill')
 external Quill createQuill(dynamic container, QuillConfiguration options);
 
+@JS('QuillJsLib.registerService')
+external void registerService(Object service);
+
 @JS('QuillJsLib.Quill')
 class Quill {
 
