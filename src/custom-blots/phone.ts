@@ -1,4 +1,5 @@
 import Embed from 'quill/blots/embed';
+import { service } from '../service/quire';
 
 class PhoneBlot extends Embed {
     static blotName = 'phone';
@@ -6,7 +7,7 @@ class PhoneBlot extends Embed {
 
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
-        node.setAttribute('href', `tel:${value}`);
+        node.setAttribute('href', service.getPhoneUrl(value));
         node.setAttribute('data-value', value);
         node.setAttribute('target', '_blank');
         node.innerText = value;

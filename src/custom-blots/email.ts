@@ -1,4 +1,5 @@
 import Embed from 'quill/blots/embed';
+import { service } from '../service/quire';
 
 class EmailBlot extends Embed {
     static blotName = 'email';
@@ -6,7 +7,7 @@ class EmailBlot extends Embed {
 
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
-        node.setAttribute('href', `mailto:${value}`);
+        node.setAttribute('href', service.getEmailUrl(value));
         node.setAttribute('data-value', value);
         node.setAttribute('target', '_blank');
         node.innerText = value;

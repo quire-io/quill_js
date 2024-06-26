@@ -1,4 +1,5 @@
 import Embed from 'quill/blots/embed';
+import { service } from '../service/quire';
 
 class MentionBlot extends Embed {
     static blotName = 'mention';
@@ -8,7 +9,7 @@ class MentionBlot extends Embed {
         const node = super.create() as Element;
         node.textContent = value;
         node.setAttribute('class', 'mention');
-        node.setAttribute('href', 'value'); // TODO: Use a real URL for the mention
+        node.setAttribute('href', service.getReferUrl(value));
         node.setAttribute('data-value', value);
         return node;
     }
