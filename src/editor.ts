@@ -22,6 +22,7 @@ const QUIRE_FORMATS = [
     ...CORE_FORMATS,
 
     // see https://github.com/slab/quill/tree/d5efd42de7857ee25fcf16446d81a96a38ff1bca/packages/quill/src/formats
+    'align',
     'blockquote',
     'bold',
     'code',
