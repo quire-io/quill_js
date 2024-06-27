@@ -11,9 +11,7 @@ class FormulaBlot extends Embed {
         node.setAttribute('data-value', value);
 
         let children = service.evaluateFormula(value);
-        children.forEach((child) => {
-            node.appendChild(child);
-        });
+        node.replaceChildren(children);
         return node;
     }
 

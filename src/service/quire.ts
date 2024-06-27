@@ -7,7 +7,7 @@ interface QuireQuillService {
      * Evaluate formula and turn into DOM nodes.
      * @param formula a formula string
      */
-    evaluateFormula(formula: string): Node[];
+    evaluateFormula(formula: string): Node;
 
     /**
      * Get the referring URL.
@@ -57,9 +57,9 @@ class QuireQuillServiceImpl implements QuireQuillService {
             ?? `tel:${value}`;
     }
 
-    evaluateFormula(formula: string): Node[] {
+    evaluateFormula(formula: string): Node {
         return concrete?.evaluateFormula(formula)
-            ?? [new Text(formula)];
+            ?? new Text(formula);
     }
 
     getReferUrl(value: string): string {
