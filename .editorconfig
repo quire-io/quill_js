@@ -6,7 +6,7 @@ ending_whitespace = preserve
 insert_final_newline = true
 trim_trailing_white_space = true
 
-[*.ts, *.mts]
+[*.ts, *.mts, *.tsx]
 indent_size = 4
 
 [*.json]

@@ -1,9 +1,10 @@
 import hljs from 'highlight.js';
 import Quill, { QuillOptions } from 'quill';
+import quillToolbar from './toolbar';
 import * as c from './custom-blots';
 
 import 'highlight.js/styles/atom-one-dark.css';
-import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 Quill.register({
     'formats/autolink': c.AutolinkBlot,
@@ -48,26 +49,15 @@ const QUIRE_FORMATS = [
     'refer',
 ];
 
-const toolbarOptions = {
-    container: [
-        [{ 'header': [1, 2, 3, false] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code', 'code-block'],
-        ['link', 'image'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-        ['clean'],
-    ],
-};
-
 export function createQuill(
     container: HTMLElement | string,
     options?: QuillOptions,
 ): Quill {
     return new Quill(container, {
         ...options,
-        theme: 'snow',
+        theme: 'bubble',
         modules: {
-            toolbar: toolbarOptions,
+            toolbar: quillToolbar,
             syntax: { hljs },
         },
         formats: QUIRE_FORMATS,
