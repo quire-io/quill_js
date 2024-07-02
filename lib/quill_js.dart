@@ -12,16 +12,110 @@ external Quill createQuill(dynamic container, QuillConfiguration options);
 @JS('QuillJsLib.registerService')
 external void registerService(Object service);
 
+typedef QuillTextChangeEventHandler = void Function(
+  QuillJsDelta delta,
+  QuillJsDelta oldContents,
+  String source,
+);
+
+typedef QuillSelectionChangeEventHandler = void Function(
+  Selection? range,
+  Selection? oldRange,
+  String source,
+);
+
 @JS('QuillJsLib.Quill')
 class Quill {
+  static const eventTextChange = 'text-change';
+  static const eventSelectionChange = 'selection-change';
 
-  external void setContents(List<dynamic> data);
-  
-  external void updateContents(List<dynamic> data, [String source = 'api']);
+  external QuillJsDelta deleteText(int index, int length, [String source = 'api']);
+
+  external QuillJsDelta getContents([int index = 0, int length]);
+
+  external int getLength();
+
+  external String getText(int index, [int length]);
+
+  external String getSemanticHTML([int index = 0, int length]);
+
+  external QuillJsDelta insertEmbed(int index, String type, dynamic value, [String source = 'api']);
+
+  /// Pass a [jsify] Map, or `Object()` as empty format
+  external QuillJsDelta insertText(int index, String text, [Object formats, String source = 'api']);
+
+  external QuillJsDelta setContents(List<dynamic> data);
+
+  external QuillJsDelta setText(String text, [String source = 'api']);
+
+  external QuillJsDelta updateContents(List<dynamic> data, [String source = 'api']);
+
+  external QuillJsDelta format(String name, dynamic value, [String source = 'api']);
+
+  /// Pass a [jsify] Map, or `Object()` as empty format
+  external QuillJsDelta formatLine(int index, int length, [Object formats, String source = 'api']);
+
+  /// Pass a [jsify] Map, or `Object()` as empty format
+  external QuillJsDelta formatText(int index, int length, [Object formats, String source = 'api']);
+
+  /// Use [getProperty] to get the property
+  external Object getFormat([int index, int length = 0]);
+
+  external QuillJsDelta removeFormat(int index, int length, [String source = 'api']);
+
+  external Bounds getBounds(int index, [int length = 0]);
+
+  external Selection? getSelection([bool focus = false]);
+
+  external void setSelection(Selection? range, [String source = 'api']);
+
+  external void scrollSelectionIntoView();
+
+  external void blur();
+
+  external void disable();
+
+  external void enable([bool enabled = true]);
+
+  external void focus();
+
+  external bool hasFocus();
+
+  external void update([String source = 'api']);
 
   external void on(String name, Function handler);
 
+  external void once(String name, Function handler);
+
   external void off(String name, Function handler);
+}
+
+@anonymous
+@JS()
+abstract class Bounds {
+  external int get left;
+  external int get top;
+  external int get height;
+  external int get width;
+
+  external factory Bounds({
+    int left,
+    int top,
+    int height,
+    int width,
+  });
+}
+
+@anonymous
+@JS()
+abstract class Selection {
+  external int get index;
+  external int get length;
+
+  external factory Selection({
+    int index,
+    int length,
+  });
 }
 
 @anonymous
@@ -52,3 +146,11 @@ abstract class QuillHeaderOption {
 
   external factory QuillHeaderOption({
     List<dynamic> header,});}
+
+@anonymous
+@JS()
+abstract class QuillJsDelta {
+  external List<dynamic> get ops;
+
+  external factory QuillJsDelta({List<dynamic> ops});
+}
