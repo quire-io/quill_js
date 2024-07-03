@@ -1,10 +1,9 @@
 import hljs from 'highlight.js';
 import Quill, { QuillOptions } from 'quill';
-import quillToolbar from './toolbar';
 import * as c from './custom-blots';
 
 import 'highlight.js/styles/atom-one-dark.css';
-import 'quill/dist/quill.bubble.css';
+import 'quill/dist/quill.snow.css';
 
 Quill.register({
     'formats/autolink': c.AutolinkBlot,
@@ -55,9 +54,9 @@ export function createQuill(
 ): Quill {
     return new Quill(container, {
         ...options,
-        theme: 'bubble',
+        theme: 'snow',
         modules: {
-            toolbar: quillToolbar,
+            toolbar: false,
             syntax: { hljs },
         },
         formats: QUIRE_FORMATS,
