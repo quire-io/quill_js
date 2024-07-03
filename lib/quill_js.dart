@@ -4,6 +4,8 @@
 @JS()
 library quill_js;
 
+import 'dart:html';
+
 import "package:js/js.dart";
 
 @JS('QuillJsLib.createQuill')
@@ -24,8 +26,9 @@ typedef QuillSelectionChangeEventHandler = void Function(
   String source,
 );
 
-@JS('QuillJsLib.Quill')
-class Quill {
+@anonymous
+@JS()
+abstract class Quill {
   static const eventTextChange = 'text-change';
   static const eventSelectionChange = 'selection-change';
 
@@ -67,7 +70,7 @@ class Quill {
 
   external Selection? getSelection([bool focus = false]);
 
-  external void setSelection(Selection? range, [String source = 'api']);
+  external void setSelection(int index, [int length = 0, String source = 'api']);
 
   external void scrollSelectionIntoView();
 
@@ -88,6 +91,10 @@ class Quill {
   external void once(String name, Function handler);
 
   external void off(String name, Function handler);
+
+  external Element get container;
+
+  external Element addContainer(Node domNode, [Node? refNode]);
 }
 
 @anonymous
@@ -150,7 +157,23 @@ abstract class QuillHeaderOption {
 @anonymous
 @JS()
 abstract class QuillJsDelta {
-  external List<dynamic> get ops;
+  external List<QuillJsDeltaOp> get ops;
 
-  external factory QuillJsDelta({List<dynamic> ops});
+  external factory QuillJsDelta({List<QuillJsDeltaOp> ops});
+}
+
+@anonymous
+@JS()
+abstract class QuillJsDeltaOp {
+  external Object? get insert;
+  external Object? get delete;
+  external Object? get retain;
+  external Object? get attributes;
+
+  external factory QuillJsDeltaOp({
+    Object? insert,
+    Object? delete,
+    Object? retain,
+    Object? attributes,
+  });
 }
