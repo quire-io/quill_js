@@ -57,6 +57,7 @@ export function createQuill(
         theme: 'snow',
         modules: {
             toolbar: false,
+            uploader: false,
             syntax: { hljs },
         },
         formats: QUIRE_FORMATS,
