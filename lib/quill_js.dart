@@ -94,6 +94,8 @@ abstract class Quill {
 
   external Element get container;
 
+  external Element get root;
+
   external Element addContainer(Node domNode, [Node? refNode]);
 }
 
