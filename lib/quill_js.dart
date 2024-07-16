@@ -96,6 +96,8 @@ abstract class Quill {
 
   external Element get root;
 
+  external Scroll get scroll;
+
   external Element addContainer(Node domNode, [Node? refNode]);
 }
 
@@ -178,4 +180,33 @@ abstract class QuillJsDeltaOp {
     Object? retain,
     Object? attributes,
   });
+}
+
+@anonymous
+@JS()
+abstract class Scroll {
+  external Object? query(String query);
+  external Blot? find(node, [bool bubble = false]);
+  /// Returns `[Blot?, int]`
+  external List<dynamic> descendant(bool Function(Blot?) matcher, int index);
+  external List<Object> descendants(bool Function(Blot?) matcher, int index, int length);
+}
+
+@anonymous
+@JS()
+abstract class Blot {
+  external BlotConstructor get statics;
+  external Blot? get parent;
+  external Blot? get prev;
+  external Blot? get next;
+  external Node get domNode;
+  external int length();
+  external int offset([Blot? root]);
+}
+
+@anonymous
+@JS()
+abstract class BlotConstructor {
+  external String get blotName;
+  external String get tagName;
 }
