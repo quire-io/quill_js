@@ -103,10 +103,14 @@ abstract class Quill {
 
 @anonymous
 @JS()
-abstract class Bounds {
+abstract class Bounds implements Rectangle<int> {
+  @override
   external int get left;
+  @override
   external int get top;
+  @override
   external int get height;
+  @override
   external int get width;
 
   external factory Bounds({
