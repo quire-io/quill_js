@@ -11,6 +11,7 @@ Quill.register({
     'formats/divider': c.DividerBlot,
     'formats/email': c.EmailBlot,
     'formats/style': c.StyleBlot,
+    'formats/link': c.LinkBlot,
     'formats/mention': c.MentionBlot,
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
