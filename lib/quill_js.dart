@@ -92,6 +92,16 @@ abstract class Quill {
 
   external void off(String name, Function handler);
 
+  external int getIndex(Blot blot);
+
+  /// Returns [LeafBlot?, int]
+  external List<dynamic> getLeaf(int index);
+
+  /// Returns [Block?, int]
+  external List<dynamic> getBlock(int index);
+
+  external List<Object> getLines([int index, int length]);
+
   external Element get container;
 
   external Element get root;
@@ -190,7 +200,7 @@ abstract class QuillJsDeltaOp {
 @JS()
 abstract class Scroll {
   external Object? query(String query);
-  external Blot? find(node, [bool bubble = false]);
+  external Blot? find(Node node, [bool bubble = false]);
   /// Returns `[Blot?, int]`
   external List<dynamic> descendant(bool Function(Blot?) matcher, int index);
   external List<Object> descendants(bool Function(Blot?) matcher, int index, int length);
