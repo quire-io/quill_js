@@ -23,6 +23,18 @@ quill.setContents([
     {"insert": {"phone": "+1 (000) 000-0000"} },
     {"insert": "\n\n"},
 
+    {"attributes":{
+        "link":"http://aa.aa",
+    }, "insert":"link without title"},
+    {"insert": "\n"},
+    {"attributes":{
+        "link": {
+            "url":"http://aa.aa",
+            "title": "link title"
+        },
+    }, "insert":"link with title"},
+    {"insert": "\n\n"},
+
     {"insert":"nested blockquote"},
     {"attributes":{
         "blockquote":true,
