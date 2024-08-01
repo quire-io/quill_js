@@ -21,5 +21,20 @@ quill.setContents([
     {"insert": {"email": "info@quire.io"}},
     {"insert": " and phone number: "},
     {"insert": {"phone": "+1 (000) 000-0000"} },
-    {"insert": "\n"},
+    {"insert": "\n\n"},
+
+    {"insert":"nested blockquote"},
+    {"attributes":{
+        "blockquote":true,
+    },"insert":"\n"},
+    {"insert":"nested blockquote"},
+    {"attributes":{
+        "nested-blockquote": 1,
+    },"insert":"\n"},
+    {"insert":"nested blockquote"},
+    {"attributes":{
+        "nested-blockquote": 2,
+    },"insert":"\n"},
+
+    {"insert": "After blockquote" },
 ]);

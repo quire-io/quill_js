@@ -7,6 +7,7 @@ import LinkBlot from './link';
 import MentionBlot from './mention';
 import PhoneBlot from './phone';
 import ReferBlot from './refer';
+import NestedBlockquoteBlot from './nested-blockquote';
 
 export {
     AutolinkBlot,
@@ -18,4 +19,5 @@ export {
     MentionBlot,
     PhoneBlot,
     ReferBlot,
+    NestedBlockquoteBlot,
 };

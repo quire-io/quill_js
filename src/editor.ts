@@ -3,7 +3,7 @@ import Quill, { QuillOptions } from 'quill';
 import * as c from './custom-blots';
 
 import 'highlight.js/styles/atom-one-dark.css';
-import 'quill/dist/quill.snow.css';
+import '../quill-quire.css';
 
 Quill.register({
     'formats/autolink': c.AutolinkBlot,
@@ -15,6 +15,7 @@ Quill.register({
     'formats/mention': c.MentionBlot,
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
+    'formats/nested-blockquote': c.NestedBlockquoteBlot,
 }, true);
 
 const CORE_FORMATS = ['block', 'break', 'cursor', 'inline', 'scroll', 'text'];
@@ -47,6 +48,7 @@ const QUIRE_FORMATS = [
     'mention',
     'phone',
     'refer',
+    'nested-blockquote',
 ];
 
 export function createQuill(
