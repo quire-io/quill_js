@@ -8,10 +8,6 @@ export default class Link extends LinkBlot {
             url = typeof value === 'string' ? value: value.url,
             node = super.create(url);
 
-        console.log(value);
-        console.log();
-        
-
         if (title)
             node.setAttribute('title', title);
         return node;
