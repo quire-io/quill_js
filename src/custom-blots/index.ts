@@ -1,7 +1,9 @@
 import AutolinkBlot from './autolink';
+import ColorBlot from './color';
 import DividerBlot from './divider';
 import EmailBlot from './email';
 import FormulaBlot from './formula';
+import SizeBlot from './size';
 import StyleBlot from './style';
 import LinkBlot from './link';
 import MentionBlot from './mention';
@@ -11,9 +13,11 @@ import NestedBlockquoteBlot from './nested-blockquote';
 
 export {
     AutolinkBlot,
+    ColorBlot,
     DividerBlot,
     EmailBlot,
     FormulaBlot,
+    SizeBlot,
     StyleBlot,
     LinkBlot,
     MentionBlot,

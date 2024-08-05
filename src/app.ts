@@ -49,4 +49,8 @@ quill.setContents([
     },"insert":"\n"},
 
     {"insert": "After blockquote" },
+    {"insert": "\n"},
+    {"insert": "color", attributes: {"color": "01"}},
+    {"insert": " size", attributes: {"size": "02"}},
+    {"insert": "\n"},
 ]);

@@ -16,6 +16,8 @@ Quill.register({
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
+    'formats/color': c.ColorBlot,
+    'formats/size': c.SizeBlot,
 }, true);
 
 const CORE_FORMATS = ['block', 'break', 'cursor', 'inline', 'scroll', 'text'];
@@ -49,6 +51,8 @@ const QUIRE_FORMATS = [
     'phone',
     'refer',
     'nested-blockquote',
+    'color',
+    'size',
 ];
 
 export function createQuill(
