@@ -8,13 +8,19 @@ class ColorBlot extends Inline {
 
     static create(value: string) {
         const node = super.create(value);
-        node.className = `${label}${value}`;
+        node.className = `lb ${label}${value}`;
         return node;
     }
 
     static formats(node: HTMLElement) {
-        const className = node.className;
-        return className.startsWith(label) ? className.substring(label.length) : '';
+        let foundValue = '';
+        for (const className of node.classList) {
+            if (className.startsWith(label)) {   
+                foundValue = className.substring(label.length);  
+                break;
+            }
+        }
+        return foundValue;
     }
 }
 
