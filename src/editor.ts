@@ -65,6 +65,7 @@ export function createQuill(
         modules: {
             toolbar: false,
             uploader: false,
+            table: true,
             syntax: { hljs },
         },
         formats: QUIRE_FORMATS,
