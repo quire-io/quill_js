@@ -109,6 +109,8 @@ abstract class Quill {
   external Scroll get scroll;
 
   external Element addContainer(Node domNode, [Node? refNode]);
+
+  external dynamic getModule(String name);
 }
 
 @anonymous
