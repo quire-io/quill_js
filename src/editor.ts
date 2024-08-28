@@ -12,6 +12,7 @@ Quill.register({
     'formats/email': c.EmailBlot,
     'formats/style': c.StyleBlot,
     'formats/link': c.LinkBlot,
+    'formats/loading-image': c.LoadingImage,
     'formats/mention': c.MentionBlot,
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
@@ -53,6 +54,7 @@ const QUIRE_FORMATS = [
     'nested-blockquote',
     'color',
     'size',
+    'loading-image', // Uploading image placeholder
 ];
 
 export function createQuill(

@@ -6,6 +6,7 @@ import FormulaBlot from './formula';
 import SizeBlot from './size';
 import StyleBlot from './style';
 import LinkBlot from './link';
+import LoadingImage from './loading-image';
 import MentionBlot from './mention';
 import PhoneBlot from './phone';
 import ReferBlot from './refer';
@@ -20,6 +21,7 @@ export {
     SizeBlot,
     StyleBlot,
     LinkBlot,
+    LoadingImage,
     MentionBlot,
     PhoneBlot,
     ReferBlot,
