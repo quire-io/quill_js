@@ -16,6 +16,12 @@ interface QuireQuillService {
     renderRefer(value: string): Node;
 
     /**
+     * Render autolink HTML into DOM nodes.
+     * @param value the refer string
+     */
+    renderAutolink(value: string): Node;
+
+    /**
      * Get the mention URL.
      * @param value the mention string
      */
@@ -67,6 +73,12 @@ class QuireQuillServiceImpl implements QuireQuillService {
         return concrete?.renderRefer(value)
             ?? new Text(value);
     }
+
+    renderAutolink(value: string): Node {
+        return concrete?.renderAutolink(value)
+            ?? new Text(value);
+    }
+    
 
     getMentionUrl(value: string): string {
         return concrete?.getMentionUrl(value)

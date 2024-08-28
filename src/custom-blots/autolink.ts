@@ -1,15 +1,17 @@
 import Embed from 'quill/blots/embed';
+import { service } from '../service/quire';
 
 class AutolinkBlot extends Embed {
     static blotName = 'autolink';
-    static tagName = 'A';
+    static className = 'ql-autolink';
+    static tagName = 'SPAN';
 
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
-        node.setAttribute('href', value);
         node.setAttribute('data-value', value);
-        node.setAttribute('target', '_blank');
-        node.innerText = value;
+        
+        let children = service.renderAutolink(value);
+        node.replaceChildren(children);
         return node;
     }
 
