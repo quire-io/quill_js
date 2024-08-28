@@ -3,17 +3,15 @@ import { service } from '../service/quire';
 
 class ReferBlot extends Embed {
     static blotName = 'refer';
-    static tagName = 'A';
+    static className = 'ql-refer';
+    static tagName = 'SPAN';
 
     static create(value: string) {
         const node = super.create() as Element;
         node.setAttribute('data-value', value);
 
-        let active = service.isReferActive(value);
-        node.setAttribute('disabled', active ? '' : 'disabled');
-        node.setAttribute('class', 'ref');
-        node.setAttribute('href', service.getReferUrl(value));
-        node.textContent = value;
+        let children = service.renderRefer(value);
+        node.replaceChildren(children);
         return node;
     }
 

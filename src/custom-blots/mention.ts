@@ -9,7 +9,7 @@ class MentionBlot extends Embed {
         const node = super.create() as Element;
         node.textContent = value;
         node.setAttribute('class', 'mention');
-        node.setAttribute('href', service.getReferUrl(value));
+        node.setAttribute('href', service.getMentionUrl(value));
         node.setAttribute('data-value', value);
         return node;
     }

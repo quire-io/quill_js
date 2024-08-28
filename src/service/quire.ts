@@ -10,10 +10,17 @@ interface QuireQuillService {
     evaluateFormula(formula: string): Node;
 
     /**
-     * Get the referring URL.
+     * Render refer HTML into DOM nodes.
      * @param value the refer string
      */
-    getReferUrl(value: string): string;
+    renderRefer(value: string): Node;
+
+    /**
+     * Get the mention URL.
+     * @param value the mention string
+     */
+    getMentionUrl(value: string): string;
+
 
     /**
      * Get the email link href.
@@ -26,12 +33,6 @@ interface QuireQuillService {
      * @param value phone
      */
     getPhoneUrl(value: string): string;
-
-    /**
-     * Test if the refer is still active.
-     * @param value refer string
-     */
-    isReferActive(value: string): boolean;
 
     /**
      * Query a list of possible autocomplete candidates.
@@ -62,14 +63,14 @@ class QuireQuillServiceImpl implements QuireQuillService {
             ?? new Text(formula);
     }
 
-    getReferUrl(value: string): string {
-        return concrete?.getReferUrl(value)
-            ?? 'https://quire.io/u/' + value;
+    renderRefer(value: string): Node {
+        return concrete?.renderRefer(value)
+            ?? new Text(value);
     }
 
-    isReferActive(value: string): boolean {
-        return concrete?.isReferActive(value)
-            ?? true;
+    getMentionUrl(value: string): string {
+        return concrete?.getMentionUrl(value)
+            ?? 'https://quire.io/u/' + value;
     }
 
     getAutocompleteCandidates(value: string): string[] {
