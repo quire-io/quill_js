@@ -6,17 +6,17 @@ class ReferBlot extends Embed {
     static className = 'ql-refer';
     static tagName = 'SPAN';
 
-    static create(value: string) {
+    static create(value) {
         const node = super.create() as Element;
-        node.setAttribute('data-value', value);
+        node.setAttribute('data-value', value.value);
 
         let children = service.renderRefer(value);
         node.replaceChildren(children);
         return node;
     }
 
-    static value(domNode: Element) {
-        return domNode.getAttribute('data-value');
+    static value(node: Element) {
+        return service.getReferValue(node);
     }
 }
 

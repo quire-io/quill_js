@@ -6,17 +6,17 @@ class AutolinkBlot extends Embed {
     static className = 'ql-autolink';
     static tagName = 'SPAN';
 
-    static create(value: string) {
+    static create(value) {
         const node = super.create() as HTMLAnchorElement;
-        node.setAttribute('data-value', value);
+        node.setAttribute('data-value', value.value);
         
         let children = service.renderAutolink(value);
         node.replaceChildren(children);
         return node;
     }
 
-    static value(domNode: Element) {
-        return domNode.getAttribute('data-value');
+    static value(node) {
+        return service.getAutolinkValue(node);
     }
 }
 

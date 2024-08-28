@@ -12,11 +12,21 @@ quill.setContents([
     {"insert": "\n"},
     {"insert": "bold","attributes":{"style": "color: red; font-size: x-large;", "bold": true}},
     {"insert": {"divider": "hr"}},
-    {"insert": {"mention": "@rudy"}},
+
+    {"insert": {"mention": {"value": "@rudy", "name": "@rudy", "href": '/u/rudy'}}},
+
     {"insert": " please look at this issue " },
-    {"insert": {"autolink": "https://github.com/quire-io/"} },
+
+    {"insert": {"autolink": {"value": "https://github.com/quire-io/", 
+            "href": "https://github.com/quire-io/"}} },
+    {"insert": "\n"},
+    {"insert": {"autolink": {"value": "https://github.com/quire-io/", 
+            "href": "https://github.com/quire-io/", "name": "link name"}} },
+
     {"insert": " and "},
-    {"insert": {"refer": "#897"} },
+
+    {"insert": {"refer": {"value": "#897", "href": "/w/xx/897", "name": "#897 xx"}} },
+
     {"insert": "\nHere is my email: "},
     {"insert": {"email": "info@quire.io"}},
     {"insert": " and phone number: "},

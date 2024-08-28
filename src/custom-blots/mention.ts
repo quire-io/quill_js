@@ -5,17 +5,29 @@ class MentionBlot extends Embed {
     static blotName = 'mention';
     static tagName = 'A';
 
-    static create(value: string) {
-        const node = super.create() as Element;
-        node.textContent = value;
+    static create(value) {
+        const node = super.create() as Element,
+            url = value.href;
+        node.setAttribute('data-value', value.value);
+
         node.setAttribute('class', 'mention');
-        node.setAttribute('href', service.getMentionUrl(value));
-        node.setAttribute('data-value', value);
+        node.textContent = value.name;
+
+        if (url)
+            node.setAttribute('href', url);
+        
         return node;
     }
 
-    static value(domNode: Element) {
-        return domNode.getAttribute('data-value');
+    static value(node) {
+        const url = node.getAttribute('href'),
+            data = {
+                name: node.textContent,
+                value: node.getAttribute('data-value'),
+            };
+        if (url)
+            data['href'] = url;
+        return data;
     }
 }
 

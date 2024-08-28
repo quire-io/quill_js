@@ -13,19 +13,25 @@ interface QuireQuillService {
      * Render refer HTML into DOM nodes.
      * @param value the refer string
      */
-    renderRefer(value: string): Node;
+    renderRefer(value): Node;
+
+    /**
+     * Retuerns refer data
+     * @param node 
+     */
+    getReferValue(node: Element)
 
     /**
      * Render autolink HTML into DOM nodes.
      * @param value the refer string
      */
-    renderAutolink(value: string): Node;
+    renderAutolink(value: Map<string, string>): Node;
 
     /**
-     * Get the mention URL.
-     * @param value the mention string
+     * Retuerns autolink data
+     * @param node 
      */
-    getMentionUrl(value: string): string;
+    getAutolinkValue(node: Element)
 
 
     /**
@@ -69,22 +75,67 @@ class QuireQuillServiceImpl implements QuireQuillService {
             ?? new Text(formula);
     }
 
-    renderRefer(value: string): Node {
-        return concrete?.renderRefer(value)
-            ?? new Text(value);
+    renderRefer(value): Node {
+        var node = concrete?.renderRefer(value);
+        if (node) return node;
+
+        node = new Text(value.value);
+
+        var url = value.href;
+        if (url) {
+            var anchor = document.createElement('a');
+            anchor.textContent = value.name ?? value.value;
+            anchor.setAttribute('href', value.value);
+            node = anchor;
+        }
+
+        return node;
     }
 
-    renderAutolink(value: string): Node {
-        return concrete?.renderAutolink(value)
-            ?? new Text(value);
+    getReferValue(node: Element) {
+        var value = concrete?.getReferValue(node);
+        if (value) return value;
+
+        value = {
+            name: node.textContent,
+            value: node.getAttribute('data-value')};
+        var url = value.href;
+        if (url)
+            value.href = url;
+
+        return value;
+    }
+
+    renderAutolink(value): Node {
+        var node = concrete?.renderAutolink(value);
+        if (node) return node;
+
+        node = new Text(value.value);
+        var url = value.href;
+        if (url) {
+            var anchor = document.createElement('a');
+            anchor.textContent = value.name ?? value.value;
+            anchor.setAttribute('href', value.value);
+            node = anchor;
+        }
+
+        return node;
+    }
+
+    getAutolinkValue(node: Element) {
+        var value = concrete?.getAutolinkValue(node);
+        if (value) return value;
+
+        value = {
+            name: node.textContent,
+            value: node.getAttribute('data-value')};
+        var url = value.href;
+        if (url)
+            value.href = url;
+
+        return value;
     }
     
-
-    getMentionUrl(value: string): string {
-        return concrete?.getMentionUrl(value)
-            ?? 'https://quire.io/u/' + value;
-    }
-
     getAutocompleteCandidates(value: string): string[] {
         return concrete?.getAutocompleteCandidates(value)
             ?? [value];
