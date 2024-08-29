@@ -22,11 +22,10 @@ interface QuireQuillService {
     renderAutolink(value: string): Node;
 
     /**
-     * Get the mention URL.
+     * Render mention HTML into DOM nodes.
      * @param value the mention string
      */
-    getMentionUrl(value: string): string;
-
+    renderMention(value: string): Node;
 
     /**
      * Get the email link href.
@@ -78,11 +77,10 @@ class QuireQuillServiceImpl implements QuireQuillService {
         return concrete?.renderAutolink(value)
             ?? new Text(value);
     }
-    
 
-    getMentionUrl(value: string): string {
-        return concrete?.getMentionUrl(value)
-            ?? 'https://quire.io/u/' + value.substring(1);
+    renderMention(value: string): Node {
+        return concrete?.renderMention(value)
+            ?? new Text(value);
     }
 
     getAutocompleteCandidates(value: string): string[] {
