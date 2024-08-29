@@ -17,7 +17,7 @@ interface QuireQuillService {
 
     /**
      * Render autolink HTML into DOM nodes.
-     * @param value the refer string
+     * @param value the url string
      */
     renderAutolink(value: string): Node;
 
@@ -82,7 +82,7 @@ class QuireQuillServiceImpl implements QuireQuillService {
 
     getMentionUrl(value: string): string {
         return concrete?.getMentionUrl(value)
-            ?? 'https://quire.io/u/' + value;
+            ?? 'https://quire.io/u/' + value.substring(1);
     }
 
     getAutocompleteCandidates(value: string): string[] {
