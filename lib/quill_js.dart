@@ -8,6 +8,10 @@ import 'dart:html';
 
 import "package:js/js.dart";
 
+import './quill_module.dart';
+
+export './quill_module.dart';
+
 @JS('QuillJsLib.createQuill')
 external Quill createQuill(dynamic container, QuillConfiguration options);
 
@@ -103,6 +107,8 @@ abstract class Quill {
   external List<Object> getLines([int index, int length]);
 
   external Element get container;
+
+  external KeyboardModule get keyboard;
 
   external Element get root;
 
