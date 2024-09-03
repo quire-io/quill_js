@@ -5,8 +5,14 @@ class LoadingImage extends EmbedBlot {
     static tagName = 'DIV';
     static className = 'ql-loading-image';
 
-    static value(domNode) {
-        return true;
+    static create(value: string) {
+        const node = super.create(value) as Element;
+        node.setAttribute('data-url', value);
+        return node;
+    }
+
+    static value(domNode: Element): string {
+        return domNode.getAttribute('data-url') ?? '';
     }
 }
 
