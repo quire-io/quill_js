@@ -6,9 +6,11 @@
 library quill_js;
 
 import 'dart:html';
+
 import 'package:js/js.dart';
 
-import './quill_js.dart';
+import 'main.dart';
+import 'parchment.dart';
 
 /// Handlers will be called with `this` bound to the [KeyboardModule] 
 /// and be passed the current [Selection].
