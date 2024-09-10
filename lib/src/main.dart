@@ -101,7 +101,7 @@ abstract class Quill {
   external List<dynamic> getLeaf(int index);
 
   /// Returns [Block?, int]
-  external List<dynamic> getBlock(int index);
+  external List<dynamic> getLine(int index);
 
   external List<Object> getLines([int index, int length]);
 
