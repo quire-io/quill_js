@@ -1,6 +1,7 @@
 import hljs from 'highlight.js';
 import Quill, { QuillOptions } from 'quill';
 import * as c from './custom-blots';
+import QuireTheme from './custom-blots/quite-theme';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
@@ -19,6 +20,8 @@ Quill.register({
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
     'formats/color': c.ColorBlot,
     'formats/size': c.SizeBlot,
+
+    'themes/quire': QuireTheme,
 }, true);
 
 const CORE_FORMATS = ['block', 'break', 'cursor', 'inline', 'scroll', 'text'];
@@ -63,7 +66,6 @@ export function createQuill(
 ): Quill {
     return new Quill(container, {
         ...options,
-        theme: 'snow',
         modules: {
             toolbar: false,
             uploader: false,

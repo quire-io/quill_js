@@ -1,6 +1,8 @@
 import { createQuill } from './main';
 
-const quill = createQuill("#editor");
+const quill = createQuill("#editor", {
+    theme: 'quire',
+});
 
 quill.on('text-change', () => {
     document.getElementById('debug')!.textContent =
