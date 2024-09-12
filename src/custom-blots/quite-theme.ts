@@ -6,6 +6,7 @@ class QuireTheme extends BaseTheme {
     constructor(quill: Quill, options: ThemeOptions) {
         super(quill, options);
         this.quill.container.classList.add('ql-quire');
+        this.quill.root.classList.add('t-desc-block');
     }
 }
 
