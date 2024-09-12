@@ -7,6 +7,9 @@ import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
 
 Quill.register({
+    'attributors/style/color': c.ColorClass,
+    'attributors/style/size': c.SizeClass,
+
     'formats/autolink': c.AutolinkBlot,
     'formats/formula': c.FormulaBlot,
     'formats/divider': c.DividerBlot,
@@ -18,8 +21,8 @@ Quill.register({
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
-    'formats/color': c.ColorBlot,
-    'formats/size': c.SizeBlot,
+    'formats/color': c.ColorClass,
+    'formats/size': c.SizeClass,
 
     'themes/quire': QuireTheme,
 }, true);

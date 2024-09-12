@@ -1,21 +1,8 @@
-import Inline from 'quill/blots/inline';
+import { ClassAttributor, Scope } from 'parchment';
 
-const label = 'textsz-';
+const SizeClass = new ClassAttributor('size', 'textsz', {
+  scope: Scope.INLINE,
+  whitelist: ['s', 'l', 'xl'],
+});
 
-class SizeBlot extends Inline {
-    static blotName = 'size';
-    static tagName = 'SPAN';
-
-    static create(value: string) {
-        const node = super.create(value);
-        node.className = `${label}${value}`;
-        return node;
-    }
-
-    static formats(node: HTMLElement) {
-        const className = node.className;
-        return className.startsWith(label) ? className.substring(label.length) : '';
-    }
-}
-
-export default SizeBlot;
+export default SizeClass;

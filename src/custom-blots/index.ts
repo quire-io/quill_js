@@ -1,9 +1,9 @@
 import AutolinkBlot from './autolink';
-import ColorBlot from './color';
+import ColorClass from './color';
 import DividerBlot from './divider';
 import EmailBlot from './email';
 import FormulaBlot from './formula';
-import SizeBlot from './size';
+import SizeClass from './size';
 import StyleBlot from './style';
 import LinkBlot from './link';
 import LoadingImage from './loading-image';
@@ -14,11 +14,11 @@ import NestedBlockquoteBlot from './nested-blockquote';
 
 export {
     AutolinkBlot,
-    ColorBlot,
+    ColorClass,
     DividerBlot,
     EmailBlot,
     FormulaBlot,
-    SizeBlot,
+    SizeClass,
     StyleBlot,
     LinkBlot,
     LoadingImage,
