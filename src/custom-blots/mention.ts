@@ -3,12 +3,12 @@ import { service } from '../service/quire';
 
 class MentionBlot extends Embed {
     static blotName = 'mention';
+    static className = 'mention';
     static tagName = 'SPAN';
 
     static create(value: string) {
         const node = super.create() as Element;
         node.setAttribute('data-value', value);
-        node.setAttribute('class', 'mention');
 
         let children = service.renderMention(value);
         node.replaceChildren(children);
