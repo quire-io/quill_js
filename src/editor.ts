@@ -38,6 +38,7 @@ const QUIRE_FORMATS = [
     'bold',
     'code',
     'code-block',
+    'code-token',
     'header',
     'image',
     'indent',
