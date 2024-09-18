@@ -1,7 +1,7 @@
-import Embed from 'quill/blots/embed';
+import { EmbedBlot } from 'parchment';
 import { service } from '../service/quire';
 
-class MentionBlot extends Embed {
+class MentionBlot extends EmbedBlot {
     static blotName = 'mention';
     static className = 'mention';
     static tagName = 'SPAN';

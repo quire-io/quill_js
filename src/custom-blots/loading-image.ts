@@ -1,4 +1,4 @@
-import EmbedBlot from 'quill/blots/embed';
+import { EmbedBlot } from 'parchment';
 
 class LoadingImage extends EmbedBlot {
     static blotName = 'loading-image';

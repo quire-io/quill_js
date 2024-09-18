@@ -1,7 +1,8 @@
-import Embed from 'quill/blots/embed';
+import { EmbedBlot } from 'parchment';
+
 import { service } from '../service/quire';
 
-class FormulaBlot extends Embed {
+class FormulaBlot extends EmbedBlot {
     static blotName = 'formula';
     static className = 'ql-formula';
     static tagName = 'SPAN';
