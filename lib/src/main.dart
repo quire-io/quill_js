@@ -83,6 +83,8 @@ abstract class Quill {
 
   external void enable([bool enabled = true]);
 
+  external bool isEnabled();
+
   external void focus();
 
   external bool hasFocus();
