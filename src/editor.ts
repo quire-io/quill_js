@@ -67,6 +67,7 @@ const QUIRE_FORMATS = [
 export function createQuill(
     container: HTMLElement | string,
     options?: QuillOptions,
+    formats?: string[]
 ): Quill {
     return new Quill(container, {
         ...options,
@@ -76,6 +77,6 @@ export function createQuill(
             table: true,
             syntax: { hljs },
         },
-        formats: QUIRE_FORMATS,
+        formats: formats ?? QUIRE_FORMATS,
     });
 }

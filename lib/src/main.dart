@@ -12,7 +12,8 @@ import 'parchment.dart';
 import 'module.dart';
 
 @JS('QuillJsLib.createQuill')
-external Quill createQuill(dynamic container, QuillConfiguration options);
+external Quill createQuill(dynamic container, QuillConfiguration options,
+  List<String>? formats);
 
 @JS('QuillJsLib.registerService')
 external void registerService(Object service);
