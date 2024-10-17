@@ -54,7 +54,24 @@ quill.setContents([
     {"insert": "\n"},
     {"insert": "color", "attributes": {"color": "01"}},
     {"insert": " size", "attributes": {"size": "xl"}},
-    {"insert": "\n\n"},
+    
+    {"insert": "\n"},
+    
+    {"insert":"bullet 01"},
+    {"attributes":{
+        "list": "bullet",
+    },"insert":"\n"},
+    {"insert":"bullet 02"},
+    {"attributes":{
+        "list": "blank",
+    },"insert":"\n"},
+    {"insert":"bullet 03"},
+    {"attributes":{
+        "list": "bullet",
+    },"insert":"\n"},
+    
+    {"insert": "\n"},
+
     {"insert": "// Hello world\n", "attributes": {"code-block": "javascript"} },
     {"insert": "function abc(var1, var2) {\n", "attributes": {"code-block": "javascript"} },
     {"insert": "  return 2;\n", "attributes": {"code-block": "javascript"} },
