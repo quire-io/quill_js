@@ -35,6 +35,25 @@ quill.setContents([
             "title": "link title"
         },
     }, "insert":"link with title"},
+
+    {"insert": "\nemptyblockquote\n"},
+
+    {"attributes":{
+        "blockquote":true,
+    },"insert":"\n"},
+
+    {"insert": "\nblockquote line break\n"},
+
+    {"insert":"first"},
+    {"attributes":{
+        "blockquote":true,
+    },"insert":"\n\n"},
+    {"insert":"second"},
+    {"attributes":{
+        "blockquote":true,
+    },"insert":"\n"},
+
+
     {"insert": "\n\n"},
 
     {"insert":"nested blockquote"},
@@ -50,8 +69,10 @@ quill.setContents([
         "nested-blockquote": 2,
     },"insert":"\n"},
 
+    {"insert": "\n"},
     {"insert": "After blockquote" },
     {"insert": "\n"},
+
     {"insert": "color", "attributes": {"color": "01"}},
     {"insert": " size", "attributes": {"size": "xl"}},
     
@@ -70,7 +91,65 @@ quill.setContents([
         "list": "bullet",
     },"insert":"\n"},
     
+    {"insert": "\nnext\n"},
+
+    {"insert":"ordered 01"},
+    {"attributes":{
+        "list": "ordered",
+    },"insert":"\n"},
+
     {"insert": "\n"},
+
+    {"insert":"ordered 02"},
+    {"attributes":{
+        "list": "ordered",
+    },"insert":"\n"},
+    {"insert":"ordered 02-1"},
+    {"attributes":{
+        "list": "ordered",
+        "indent": 1
+    },"insert":"\n"},
+    {"insert":"ordered 02-2"},
+    {"attributes":{
+        "list": "blank",
+        "indent": 1
+    },"insert":"\n"},
+    {"insert":"ordered 02-3"},
+    {"attributes":{
+        "list": "ordered",
+        "indent": 1
+    },"insert":"\n"},
+    {"insert":"ordered 03"},
+    {"attributes":{
+        "list": "ordered",
+    },"insert":"\n"},
+
+    {"insert": "\n"},
+
+    {"insert":"bullet 01"},
+    {"attributes":{
+        "list": "bullet",
+    },"insert":"\n"},
+    {"insert":"bullet 01-1"},
+    {"attributes":{
+        "list": "bullet",
+        "indent": 1
+    },"insert":"\n"},
+    {"insert":"bullet 01-2"},
+    {"attributes":{
+        "list": "blank",
+        "indent": 1
+    },"insert":"\n\n"},
+    {"insert":"bullet 01-3"},
+    {"attributes":{
+        "list": "bullet",
+        "indent": 1
+    },"insert":"\n"},
+    {"insert":"bullet 02"},
+    {"attributes":{
+        "list": "bullet",
+    },"insert":"\n"},
+
 
     {"insert": "// Hello world\n", "attributes": {"code-block": "javascript"} },
     {"insert": "function abc(var1, var2) {\n", "attributes": {"code-block": "javascript"} },
