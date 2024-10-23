@@ -1,6 +1,6 @@
-import { BlockEmbed } from 'quill/blots/block';
+import { EmbedBlot } from 'parchment';
 
-class DividerBlot extends BlockEmbed {
+class DividerBlot extends EmbedBlot {
     static blotName = 'divider';
     static tagName = 'HR';
 
