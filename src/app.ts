@@ -9,11 +9,27 @@ quill.on('text-change', () => {
         JSON.stringify(quill.getContents());
 });
 
+quill.on('editor-change', (eventType, delta, state, origin) => {
+});
+
 quill.setContents([
+    {"insert": "Header1"},
+    {"insert": "\n", "attributes": {"header": 1}},
+    {"insert": "p1\n"},
+
+    {"insert": "Header2"},
+    {"insert": "\n", "attributes": {"header": 2}},
+    {"insert": "p1\n"},
     {"insert": {"formula":"SUM(subtasks.duration, duration)"}},
     {"insert": "\n"},
     {"insert": "bold","attributes":{"style": "color: red; font-size: x-large;", "bold": true}},
-    {"insert": {"divider": "hr"}},
+    {"insert": {"divider": true}},
+    {"insert": {"divider": true}},
+    {"insert": {"divider": true}},
+    {"insert": "line1"},
+    {"insert": {"divider": true}},
+    {"insert": "line2\n"},
+    {"insert": {"divider": true}},
     {"insert": {"mention": "@rudy"}},
     {"insert": " please look at this issue " },
     {"insert": {"autolink": "https://github.com/quire-io/"} },

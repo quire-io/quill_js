@@ -1,12 +1,19 @@
-import { EmbedBlot } from 'parchment';
+/// Test cases: 
+///     Press left then delete
+///     Press up then delete
 
-class DividerBlot extends EmbedBlot {
+// It will make divider overlap with text
+// import BlockBlot from 'quill/blots/block';
+// class DividerBlot extends BlockBlot {
+
+/// delete not works well between text and hr
+// import { EmbedBlot } from 'parchment';
+import { BlockEmbed } from 'quill/blots/block';
+
+class DividerBlot extends BlockEmbed {
     static blotName = 'divider';
+    static className = 'ql-divider';
     static tagName = 'HR';
-
-    static value(domNode: Element) {
-        return 'hr';
-    }
 }
 
 export default DividerBlot;
