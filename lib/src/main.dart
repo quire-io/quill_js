@@ -209,6 +209,7 @@ abstract class QuillJsDeltaOp {
 }
 
 @anonymous
+@JS()
 abstract class QuillHistory {
   external void clear();
   external void cutoff();
