@@ -116,6 +116,8 @@ abstract class Quill {
 
   external Scroll get scroll;
 
+  external QuillHistory get history;
+
   external Element addContainer(Node domNode, [Node? refNode]);
 
   external dynamic getModule(String name);
@@ -204,4 +206,12 @@ abstract class QuillJsDeltaOp {
     Object? retain,
     Object? attributes,
   });
+}
+
+@anonymous
+abstract class QuillHistory {
+  external void clear();
+  external void cutoff();
+  external void redo();
+  external void undo();
 }
