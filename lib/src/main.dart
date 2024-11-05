@@ -125,21 +125,17 @@ abstract class Quill {
 
 @anonymous
 @JS()
-abstract class Bounds implements Rectangle<int> {
-  @override
-  external int get left;
-  @override
-  external int get top;
-  @override
-  external int get height;
-  @override
-  external int get width;
+abstract class Bounds {
+  external num get left;
+  external num get top;
+  external num get height;
+  external num get width;
 
   external factory Bounds({
-    int left,
-    int top,
-    int height,
-    int width,
+    num left,
+    num top,
+    num height,
+    num width,
   });
 }
 
