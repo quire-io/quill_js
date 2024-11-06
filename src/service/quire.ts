@@ -38,12 +38,6 @@ interface QuireQuillService {
      * @param value phone
      */
     getPhoneUrl(value: string): string;
-
-    /**
-     * Query a list of possible autocomplete candidates.
-     * @param value a query string
-     */
-    getAutocompleteCandidates(value: string): string[];
 }
 
 var concrete: QuireQuillService;
@@ -81,11 +75,6 @@ class QuireQuillServiceImpl implements QuireQuillService {
     renderMention(value: string): Node {
         return concrete?.renderMention(value)
             ?? new Text(value);
-    }
-
-    getAutocompleteCandidates(value: string): string[] {
-        return concrete?.getAutocompleteCandidates(value)
-            ?? [value];
     }
 }
 
