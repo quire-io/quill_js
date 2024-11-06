@@ -37,7 +37,7 @@ abstract class KeyboardModule {
 @anonymous
 @JS()
 abstract class BindingObject {
-  external List<String> get key;
+  external List<dynamic> get key;
   external bool? get shortKey;
   external bool? get shiftKey;
   external bool? get altKey;
@@ -55,7 +55,7 @@ abstract class BindingObject {
   /// [shortKey] is a platform specific modifier equivalent to 
   /// [metaKey] on a Mac and [ctrlKey] on Linux and Windows.
   external factory BindingObject({
-    List<String> key,
+    List<dynamic> key,
     bool? shortKey = false,
     bool? shiftKey = false,
     bool? altKey = false,
