@@ -1,8 +1,6 @@
 import LinkBlot from 'quill/formats/link';
 
 export default class Link extends LinkBlot {
-    static className = 'ql-link'; // Add class so we can distinguish this blot later
-
     static create(value) {
         const title = value.title,
             url = typeof value === 'string' ? value: value.url,
@@ -10,6 +8,8 @@ export default class Link extends LinkBlot {
 
         if (title)
             node.setAttribute('title', title);
+
+        node.className = 'ql-link'; // Add class so we can distinguish this blot later
         return node;
     }
 

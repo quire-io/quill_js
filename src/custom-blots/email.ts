@@ -3,6 +3,7 @@ import { service } from '../service/quire';
 
 class EmailBlot extends EmbedBlot {
     static blotName = 'email';
+    static className = 'ql-email';
     static tagName = 'A';
 
     static create(value: string) {

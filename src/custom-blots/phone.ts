@@ -3,6 +3,7 @@ import { service } from '../service/quire';
 
 class PhoneBlot extends EmbedBlot {
     static blotName = 'phone';
+    static className = 'ql-phone';
     static tagName = 'A';
 
     static create(value: string) {
