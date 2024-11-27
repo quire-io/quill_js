@@ -9,6 +9,7 @@ class ReferBlot extends EmbedBlot {
     static create(value: string) {
         const node = super.create() as Element;
         node.setAttribute('data-value', value);
+        node.setAttribute('contenteditable', 'false');
 
         let children = service.renderRefer(value);
         node.replaceChildren(children);

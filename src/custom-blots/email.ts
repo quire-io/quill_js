@@ -10,6 +10,7 @@ class EmailBlot extends EmbedBlot {
         const node = super.create() as HTMLAnchorElement;
         node.setAttribute('href', service.getEmailUrl(value));
         node.setAttribute('data-value', value);
+        node.setAttribute('contenteditable', 'false');
         node.setAttribute('target', '_blank');
         node.innerText = value;
         return node;
