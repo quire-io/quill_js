@@ -4,6 +4,12 @@
  */
 interface QuireQuillService {
     /**
+     * Returns whether is quire workspace url
+     * @param url a url string
+     */
+    isQuireUrl(url: string): boolean;
+    
+    /**
      * Evaluate formula and turn into DOM nodes.
      * @param formula a formula string
      */
@@ -47,6 +53,11 @@ function registerService(instance: any) {
 }
 
 class QuireQuillServiceImpl implements QuireQuillService {
+    
+    isQuireUrl(url: string): boolean {
+        return url.startsWith('https://quire.io/w/');
+    }
+
     getEmailUrl(value: string): string {
         return concrete?.getEmailUrl(value)
             ?? `mailto:${value}`;
