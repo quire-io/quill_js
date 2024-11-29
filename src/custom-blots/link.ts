@@ -5,8 +5,11 @@ import { service } from '../service/quire';
 export default class Link extends LinkBlot {
     static create(value) {
         const title = value.title,
-            url = service.toQuireUrl(typeof value === 'string' ? value: value.url),
+            data = typeof value === 'string' ? value: value.url,
+            url = service.toQuireUrl(data),
             node = super.create(url);
+
+        node.dataset['value'] = data;
 
         if (title)
             node.setAttribute('title', title);
@@ -23,7 +26,7 @@ export default class Link extends LinkBlot {
     }
 
     static formats(node) {
-        const url = node.getAttribute('href'),
+        const url = node.dataset['value'],
             title = node.getAttribute('title');
         return title ? {url: url, title: title}: url;
     }
