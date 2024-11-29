@@ -62,11 +62,13 @@ function registerService(instance: any) {
 class QuireQuillServiceImpl implements QuireQuillService {
     
     toQuireUrl(url: string): string {
-        return url;
+        return concrete?.toQuireUrl(url)
+            ?? url;
     }
 
     isQuireUrl(url: string): boolean {
-        return url.startsWith('https://quire.io/w/');
+        return concrete?.isQuireUrl(url)
+            ?? url.startsWith('https://quire.io/w/');
     }
 
     getEmailUrl(value: string): string {
