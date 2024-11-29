@@ -3,6 +3,13 @@
  * A service that request info from Quire.
  */
 interface QuireQuillService {
+
+    /**
+     * Returns quire url for special cases, e.g #task-id
+     * @param url a url string
+     */
+    toQuireUrl(url: string): string
+
     /**
      * Returns whether is quire workspace url
      * @param url a url string
@@ -54,6 +61,10 @@ function registerService(instance: any) {
 
 class QuireQuillServiceImpl implements QuireQuillService {
     
+    toQuireUrl(url: string): string {
+        return url;
+    }
+
     isQuireUrl(url: string): boolean {
         return url.startsWith('https://quire.io/w/');
     }

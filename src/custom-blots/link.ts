@@ -5,7 +5,7 @@ import { service } from '../service/quire';
 export default class Link extends LinkBlot {
     static create(value) {
         const title = value.title,
-            url = typeof value === 'string' ? value: value.url,
+            url = service.toQuireUrl(typeof value === 'string' ? value: value.url),
             node = super.create(url);
 
         if (title)
