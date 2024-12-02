@@ -64,6 +64,18 @@ const QUIRE_FORMATS = [
     'loading-image', // Uploading image placeholder
 ];
 
+const bindings = {
+    'nested-blockquote empty enter': {
+        key: 'Enter',
+        collapsed: true,
+        format: ['nested-blockquote'],
+        empty: true,
+        handler() {
+            this.quill.format('nested-blockquote', false, Quill.sources.USER);
+        },
+    },
+};
+
 export function createQuill(
     container: HTMLElement | string,
     options?: QuillOptions,
@@ -76,6 +88,7 @@ export function createQuill(
             uploader: false,
             table: true,
             syntax: { hljs },
+            keyboard: { bindings },
         },
         formats: formats ?? QUIRE_FORMATS,
     });
