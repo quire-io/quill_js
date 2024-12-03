@@ -1,4 +1,5 @@
 import AutolinkBlot from './autolink';
+import EmbedLinkBlot from './embed-link';
 import ColorClass from './color';
 import DividerBlot from './divider';
 import EmailBlot from './email';
@@ -14,6 +15,7 @@ import NestedBlockquoteBlot from './nested-blockquote';
 
 export {
     AutolinkBlot,
+    EmbedLinkBlot,
     ColorClass,
     DividerBlot,
     EmailBlot,

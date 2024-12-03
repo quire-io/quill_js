@@ -11,6 +11,7 @@ Quill.register({
     'attributors/style/size': c.SizeClass,
 
     'formats/autolink': c.AutolinkBlot,
+    'formats/embed': c.EmbedLinkBlot,
     'formats/formula': c.FormulaBlot,
     'formats/divider': c.DividerBlot,
     'formats/email': c.EmailBlot,
@@ -51,6 +52,7 @@ const QUIRE_FORMATS = [
 
     // Quire-flavor Markdown
     'autolink',
+    'embed',
     'email',
     'formula',
     'divider',
