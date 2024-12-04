@@ -16,7 +16,7 @@
     }
   },
   "dependencies": {
-    "quill": "^2.0.2",
+    "quill": "^2.0.3",
     "highlight.js": "^11.9.0"
   },
   "devDependencies": {
