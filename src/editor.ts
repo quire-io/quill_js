@@ -129,6 +129,32 @@ const bindings = {
             return false;
         },
     },
+    'code-block autofill': {
+        key: 'Enter',
+        collapsed: true,
+        format: {
+            'code-block': false,
+            blockquote: false,
+            table: false,
+        },
+        empty: false,
+        prefix: /^`{3}$/,
+        suffix: /^$/,
+        handler(range: Range, context: Context) {
+            const quill: Quill = this.quill;
+            if (quill.scroll.query('code-block') == null)
+                return true;
+
+            quill.history.cutoff();
+            const { length } = context.prefix;
+            const pos = range.index - length;
+            quill.formatLine(pos, 1, 'code-block', true, Quill.sources.USER);
+            quill.deleteText(pos, length, Quill.sources.USER);
+            quill.setSelection(pos, Quill.sources.USER);
+            quill.history.cutoff();
+            return false;
+        },
+    },
 };
 
 export function createQuill(
