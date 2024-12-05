@@ -104,4 +104,35 @@ export const bindings = {
             return false;
         },
     },
+    'linebreak': {
+        key: 'Enter',
+        collapsed: true,
+        handler(range: Range, context: Context) {
+            if (!Object.keys(context.format).length) {
+            // if (!context.format['p-block']) {
+                this.quill.format('p-block', true, Quill.sources.USER);
+                const pos = range.index;
+                this.quill.insertText(pos, '\n', Quill.sources.USER);
+                
+                this.quill.setSelection(pos + 1);
+                this.quill.format('p-block', false, Quill.sources.USER);
+                return false;
+            }
+            return true;
+        }
+    },
+    'linebreak with shift': {
+        key: 'Enter',
+        collapsed: true,
+        shiftKey: true,  
+        handler(range: Range, context: Context) {
+            if (context.format['p-block']) {
+                this.quill.format('p-block', false, Quill.sources.USER);
+                this.quill.insertText(range.index, '\n', Quill.sources.USER);
+                this.quill.setSelection(range.index + 1);
+                return false;
+            }
+            return true;
+        }
+    }
 };
