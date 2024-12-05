@@ -1,11 +1,11 @@
 import hljs from 'highlight.js';
-import Quill, { QuillOptions, Range } from 'quill';
+import Quill, { type QuillOptions } from 'quill';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
+import { bindings } from './keyboard-bindings';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
-import { Context } from 'quill/modules/keyboard';
 
 Quill.register({
     'attributors/style/color': c.ColorClass,
@@ -66,96 +66,6 @@ const QUIRE_FORMATS = [
     'size',
     'loading-image', // Uploading image placeholder
 ];
-
-const bindings = {
-    'nested-blockquote empty enter': {
-        key: 'Enter',
-        collapsed: true,
-        format: ['nested-blockquote'],
-        empty: true,
-        handler() {
-            this.quill.format('nested-blockquote', false, Quill.sources.USER);
-        },
-    },
-    'blockquote autofill': {
-        key: ' ',
-        shiftKey: null,
-        collapsed: true,
-        format: {
-            'code-block': false,
-            blockquote: false,
-            table: false,
-        },
-        empty: false,
-        prefix: /^>$/,
-        suffix: /^$/,
-        handler(range: Range, context: Context) {
-            const quill: Quill = this.quill;
-            if (quill.scroll.query('blockquote') == null)
-                return true;
-
-            quill.history.cutoff();
-            const { length } = context.prefix;
-            const pos = range.index - length;
-            quill.formatLine(pos, 1, 'blockquote', true, Quill.sources.USER);
-            quill.deleteText(pos, length, Quill.sources.USER);
-            quill.history.cutoff();
-            return false;
-        },
-    },
-    'divider autofill': {
-        key: 'Enter',
-        collapsed: true,
-        format: {
-            'code-block': false,
-            blockquote: false,
-            table: false,
-        },
-        empty: false,
-        prefix: /^-{3,}$/,
-        suffix: /^$/,
-        handler(range: Range, context: Context) {
-            const quill: Quill = this.quill;
-            if (quill.scroll.query('divider') == null)
-                return true;
-
-            quill.history.cutoff();
-            const { length } = context.prefix;
-            const pos = range.index - length;
-            quill.deleteText(pos, length, Quill.sources.USER);
-            quill.insertEmbed(pos, 'divider', true, Quill.sources.USER);
-            quill.setSelection(pos + 1, Quill.sources.USER);
-            quill.history.cutoff();
-            return false;
-        },
-    },
-    'code-block autofill': {
-        key: 'Enter',
-        collapsed: true,
-        format: {
-            'code-block': false,
-            blockquote: false,
-            table: false,
-        },
-        empty: false,
-        prefix: /^`{3}$/,
-        suffix: /^$/,
-        handler(range: Range, context: Context) {
-            const quill: Quill = this.quill;
-            if (quill.scroll.query('code-block') == null)
-                return true;
-
-            quill.history.cutoff();
-            const { length } = context.prefix;
-            const pos = range.index - length;
-            quill.formatLine(pos, 1, 'code-block', true, Quill.sources.USER);
-            quill.deleteText(pos, length, Quill.sources.USER);
-            quill.setSelection(pos, Quill.sources.USER);
-            quill.history.cutoff();
-            return false;
-        },
-    },
-};
 
 export function createQuill(
     container: HTMLElement | string,
