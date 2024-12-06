@@ -2,6 +2,7 @@ import BlockBlot from 'quill/blots/block';
 
 class NestedBlockquote extends BlockBlot {
     static blotName = 'nested-blockquote';
+    static className = 'ql-nested-blockquote';
     static tagName = 'blockquote';
 
     static create(value: string) {
