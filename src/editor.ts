@@ -4,6 +4,7 @@ import BlockBlot from 'quill/blots/block';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
 import { bindings } from './keyboard-bindings';
+import { ClipboardExt } from './clipboard-matchers';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
@@ -32,6 +33,8 @@ Quill.register({
     'formats/size': c.SizeClass,
 
     'themes/quire': QuireTheme,
+
+    'modules/clipboard': ClipboardExt,
 }, true);
 
 const CORE_FORMATS = ['block', 'break', 'cursor', 'inline', 'scroll', 'text'];
