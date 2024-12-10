@@ -22,7 +22,6 @@ export default class Link extends LinkBlot {
         }
 
         node.className = 'ql-link'; // Add class so we can distinguish this blot later
-        node.contentEditable = 'false'; // Disable editing of the link
         return node;
     }
 
