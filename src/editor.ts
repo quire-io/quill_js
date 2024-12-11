@@ -3,7 +3,7 @@ import Quill, { type QuillOptions } from 'quill';
 import BlockBlot from 'quill/blots/block';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
-import { bindings } from './keyboard-bindings';
+import { bindings, KeyboardExt } from './keyboard-bindings';
 import { ClipboardExt } from './clipboard-matchers';
 
 import 'highlight.js/styles/atom-one-dark.css';
@@ -35,6 +35,7 @@ Quill.register({
     'themes/quire': QuireTheme,
 
     'modules/clipboard': ClipboardExt,
+    'modules/keyboard': KeyboardExt,
 }, true);
 
 const CORE_FORMATS = ['block', 'break', 'cursor', 'inline', 'scroll', 'text'];

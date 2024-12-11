@@ -1,6 +1,43 @@
+import { Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
-import { type Context } from 'quill/modules/keyboard';
+import Keyboard, { type Context } from 'quill/modules/keyboard';
+
+export class KeyboardExt extends Keyboard {
+    constructor(quill: Quill, options: any) {
+        super(quill, options);
+    }
+
+    handleEnter(range: Range, context: Context) {
+        const lineFormats = Object.keys(context.format).reduce(
+            (formats: Record<string, unknown>, format) => {
+                if (
+                    this.quill.scroll.query(format, Scope.BLOCK) &&
+                    !Array.isArray(context.format[format])
+                ) {
+                    formats[format] = context.format[format];
+                }
+                return formats;
+            },
+            {},
+        );
+        const delta = new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .insert('\n', lineFormats);
+        this.quill.updateContents(delta, Quill.sources.USER);
+        this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+        this.quill.focus();
+
+        // Potix: rollback https://github.com/slab/quill/pull/3428
+        Object.keys(context.format).forEach(name => {
+            if (lineFormats[name] != null) return;
+            if (Array.isArray(context.format[name])) return;
+            if (name === 'code' || name === 'link') return;
+            this.quill.format(name, context.format[name], Quill.sources.USER);
+        });
+    }
+}
 
 export const bindings = {
     // Potix: #20741
