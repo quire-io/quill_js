@@ -1,4 +1,4 @@
-import { Scope } from 'parchment';
+import { type BlockBlot, Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
@@ -182,6 +182,10 @@ export const bindings = {
             const quill: Quill = this.quill;
             const pos = range.index;
             const blot = context.line.statics.blotName;
+            const [line] = quill.getLine(pos);
+            let cur = line?.prev as BlockBlot | undefined;
+            if (cur?.formats()[blot]) return true;
+
             quill.history.cutoff();
             quill.formatLine(pos, 1, blot, false, Quill.sources.USER);
             quill.history.cutoff();
