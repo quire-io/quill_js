@@ -104,9 +104,7 @@ export const bindings = {
             blockquote: false,
             table: false,
         },
-        empty: false,
         prefix: /^>$/,
-        suffix: /^$/,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
             if (quill.scroll.query('blockquote') == null)
@@ -129,9 +127,7 @@ export const bindings = {
             blockquote: false,
             table: false,
         },
-        empty: false,
         prefix: /^-{3,}$/,
-        suffix: /^$/,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
             if (quill.scroll.query('divider') == null)
