@@ -171,5 +171,88 @@ quill.setContents([
     {"insert": "function abc(var1, var2) {\n", "attributes": {"code-block": "javascript"} },
     {"insert": "  return 2;\n", "attributes": {"code-block": "javascript"} },
     {"insert": "}\n", "attributes": {"code-block": "javascript"} },
+
+    {"insert": "\n"},
+    {
+        "insert": "1.1"
+    },
+    {
+        "attributes": {
+            "table": "1"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "1.2"
+    },
+    {
+        "attributes": {
+            "table": "1"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "1.3"
+    },
+    {
+        "attributes": {
+            "table": "1"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "2.1"
+    },
+    {
+        "attributes": {
+            "table": "2"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "2.2"
+    },
+    {
+        "attributes": {
+            "table": "2"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "2.3"
+    },
+    {
+        "attributes": {
+            "table": "2"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "3.1"
+    },
+    {
+        "attributes": {
+            "table": "3"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "3.2"
+    },
+    {
+        "attributes": {
+            "table": "3"
+        },
+        "insert": "\n"
+    },
+    {
+        "insert": "3.3"
+    },
+    {
+        "attributes": {
+            "table": "3"
+        },
+        "insert": "\n"
+    },
     {"insert": "\n"},
 ]);

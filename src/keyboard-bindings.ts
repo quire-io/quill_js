@@ -218,5 +218,35 @@ export const bindings = {
             }
             return true;
         }
-    }
+    },
+    // Potix: override the UX
+    'table enter': {
+        key: 'Enter',
+        shiftKey: null,
+        format: ['table'],
+        handler(range: Range) {
+            const module = this.quill.getModule('table');
+            if (module) {
+                const [table, row, cell] = module.getTable(range);
+                const nextRow = row.next;
+                const cellOffset = cell.cellOffset();
+                let index = table.offset();
+                if (nextRow != null) {
+                    const nextCell = nextRow.children.at(cellOffset);
+                    if (nextCell != null) {
+                        this.quill.setSelection(
+                            index + nextRow.offset() + nextCell.offset() + nextCell.length() - 1,
+                            0,
+                            Quill.sources.USER,
+                        );
+                    }
+                } else {
+                    index += table.length();
+                    const delta = new Delta().retain(index).insert('\n');
+                    this.quill.updateContents(delta, Quill.sources.USER);
+                    this.quill.setSelection(index, Quill.sources.USER);
+                }
+            }
+        },
+    },
 };
