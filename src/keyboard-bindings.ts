@@ -249,4 +249,15 @@ export const bindings = {
             }
         },
     },
+    'code backspace': {
+        key: 'Backspace',
+        format: ['code'],
+        collapsed: true,
+        prefix: /^$/, // Don't use empty: true since the line doesn't have to be empty
+        suffix: /^$/,
+        handler(range: Range, context: Context) {
+            this.quill.format('code', false, Quill.sources.USER);
+            return false;
+        },
+    },
 };
