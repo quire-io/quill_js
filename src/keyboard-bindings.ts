@@ -260,4 +260,15 @@ export const bindings = {
             return false;
         },
     },
+    // Potix: override UX
+    'code exit': {
+        key: 'Enter',
+        collapsed: true,
+        format: ['code-block'],
+        prefix: /^$/,
+        suffix: /^\s*$/,
+        handler() {
+            return true;
+        },
+    },
 };
