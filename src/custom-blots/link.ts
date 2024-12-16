@@ -20,12 +20,17 @@ export default class Link extends LinkBlot {
 
         if (title)
             node.setAttribute('title', title);
+        else
+            node.removeAttribute('title');
 
         if (service.isQuireUrl(url)) {
             ///Anchor tag example
             ///<a href="http://aa.aa" rel="noopener noreferrer" target="_blank" class="ql-link">link without title</a>
             node.removeAttribute('rel');
             node.removeAttribute('target');
+        } else {
+            node.setAttribute('rel', 'noopener noreferrer');
+            node.setAttribute('target', '_blank');
         }
     }
 
@@ -36,12 +41,12 @@ export default class Link extends LinkBlot {
     }
 
     format(name, value) {
-        if (name === 'link' && value) {
+        if (name === Link.blotName && value) {
             const data = typeof value === 'string' ? value: value.url,
                 url = service.toQuireUrl(data);
           Link._updateNode(this.domNode, data, url, value.title);
         } else {
           super.format(name, value);
         }
-      }
+    }
 }

@@ -7,9 +7,7 @@ class NestedBlockquote extends BlockBlot {
 
     static create(value: string) {
         const node = super.create();
-        node.setAttribute('data-nested-blockquote', value);
-        //node.classList.add('nested-blockquote');
-        node.style.setProperty('--nested-blockquote', value);
+        NestedBlockquote._updateNode(node, value);
         return node;
     }
 
@@ -17,9 +15,23 @@ class NestedBlockquote extends BlockBlot {
         return Number(node.getAttribute('data-nested-blockquote'));
     }
 
+    static _updateNode(node: HTMLElement, value: string) {
+        node.setAttribute('data-nested-blockquote', value);
+        //node.classList.add('nested-blockquote');
+        node.style.setProperty('--nested-blockquote', value);
+    }
+
     // static value(domNode: Element) {
     //     return domNode.getAttribute('data-value');
     // }
+
+    format(name, value) {
+        if (name === NestedBlockquote.blotName && value) {
+            NestedBlockquote._updateNode(this.domNode, value);
+        } else {
+          super.format(name, value);
+        }
+    }
 }
 
 export default NestedBlockquote;

@@ -8,16 +8,31 @@ class PhoneBlot extends EmbedBlot {
 
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
-        node.setAttribute('href', service.getPhoneUrl(value));
-        node.setAttribute('data-value', value);
+        
         node.setAttribute('contenteditable', 'false');
         node.setAttribute('target', '_blank');
-        node.innerText = value;
+
+        PhoneBlot._updateNode(node, value);
+        
         return node;
     }
 
     static value(domNode: Element) {
         return domNode.getAttribute('data-value');
+    }
+
+    static _updateNode(node: HTMLElement, value: string) {
+        node.setAttribute('href', service.getPhoneUrl(value));
+        node.setAttribute('data-value', value);
+        node.innerText = value;
+    }
+
+    format(name, value) {
+        if (name === PhoneBlot.blotName && value) {
+            PhoneBlot._updateNode(this.domNode as HTMLElement, value);
+        } else {
+          super.format(name, value);
+        }
     }
 } 
  

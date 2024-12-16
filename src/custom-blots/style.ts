@@ -13,6 +13,14 @@ class StyleBlot extends Inline {
     static formats(node: HTMLElement) {
         return node.getAttribute('style');
     }
+
+    format(name, value) {
+        if (name === StyleBlot.blotName && value) {
+          (this.domNode as Element).setAttribute('style', value);
+        } else {
+          super.format(name, value);
+        }
+    }
 }
 
 export default StyleBlot;

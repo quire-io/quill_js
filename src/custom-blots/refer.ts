@@ -19,6 +19,14 @@ class ReferBlot extends EmbedBlot {
     static value(domNode: Element) {
         return domNode.getAttribute('data-value');
     }
+
+    format(name, value) {
+        if (name === ReferBlot.blotName && value) {
+          (this.domNode as Element).setAttribute('data-value', value);
+        } else {
+          super.format(name, value);
+        }
+    }
 }
 
 export default ReferBlot;
