@@ -4,12 +4,19 @@ import { service } from '../service/quire';
 
 export default class Link extends LinkBlot {
     static create(value) {
-        const title = value.title,
-            data = typeof value === 'string' ? value: value.url,
+        const data = typeof value === 'string' ? value: value.url,
             url = service.toQuireUrl(data),
             node = super.create(url);
 
-        node.dataset['value'] = data;
+        Link._updateNode(node, data, url, value.title);
+
+        node.className = 'ql-link'; // Add class so we can distinguish this blot later
+        return node;
+    }
+
+    static _updateNode(node: HTMLElement, value: string, url: string, title: string) {
+        node.dataset['value'] = value;
+        node.setAttribute('href', url);
 
         if (title)
             node.setAttribute('title', title);
@@ -20,9 +27,6 @@ export default class Link extends LinkBlot {
             node.removeAttribute('rel');
             node.removeAttribute('target');
         }
-
-        node.className = 'ql-link'; // Add class so we can distinguish this blot later
-        return node;
     }
 
     static formats(node) {
@@ -30,4 +34,14 @@ export default class Link extends LinkBlot {
             title = node.getAttribute('title');
         return title ? {url: url, title: title}: url;
     }
+
+    format(name, value) {
+        if (name === 'link' && value) {
+            const data = typeof value === 'string' ? value: value.url,
+                url = service.toQuireUrl(data);
+          Link._updateNode(this.domNode, data, url, value.title);
+        } else {
+          super.format(name, value);
+        }
+      }
 }
