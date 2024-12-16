@@ -26,7 +26,7 @@ export default class Link extends LinkBlot {
     }
 
     static formats(node) {
-        const url = node.dataset['value'],
+        const url = node.dataset['value'] ?? node.getAttribute('href'),
             title = node.getAttribute('title');
         return title ? {url: url, title: title}: url;
     }
