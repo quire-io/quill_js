@@ -15,6 +15,12 @@ interface QuireQuillService {
      * @param url a url string
      */
     isQuireUrl(url: string): boolean;
+
+    /**
+     * Returns whether allow append paragraph when press Enter
+     * @param format attributes of format
+     */
+    canAddParagraph(format: Record<string, unknown>): boolean;
     
     /**
      * Evaluate formula and turn into DOM nodes.
@@ -69,6 +75,14 @@ class QuireQuillServiceImpl implements QuireQuillService {
     isQuireUrl(url: string): boolean {
         return concrete?.isQuireUrl(url)
             ?? url.startsWith('https://quire.io/w/');
+    }
+
+    canAddParagraph(format: Record<string, unknown>): boolean {
+        return concrete?.canAddParagraph(format)
+            ?? (format['header'] == null && format['list'] == null 
+                && format['code'] == null  && format['code-block'] == null 
+                && format['blockquote'] == null
+                && format['nested-blockquote'] == null);
     }
 
     getEmailUrl(value: string): string {

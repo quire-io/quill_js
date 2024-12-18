@@ -2,6 +2,7 @@ import { type BlockBlot, Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
+import { service } from './service/quire';
 
 export class KeyboardExt extends Keyboard {
     constructor(quill: Quill, options: any) {
@@ -192,8 +193,7 @@ export const bindings = {
         key: 'Enter',
         collapsed: true,
         handler(range: Range, context: Context) {
-            if (!Object.keys(context.format).length) {
-            // if (!context.format['p-block']) {
+            if (service.canAddParagraph(context.format)) {
                 this.quill.format('p-block', true, Quill.sources.USER);
                 const pos = range.index;
                 this.quill.insertText(pos, '\n', Quill.sources.USER);
