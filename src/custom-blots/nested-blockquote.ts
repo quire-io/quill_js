@@ -26,7 +26,7 @@ class NestedBlockquote extends BlockBlot {
     // }
 
     format(name, value) {
-        if (name === NestedBlockquote.blotName && value) {
+        if (name === this.statics.blotName && value) {
             NestedBlockquote._updateNode(this.domNode, value);
         } else {
           super.format(name, value);

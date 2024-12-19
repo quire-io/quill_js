@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "quill": "^2.0.3",
-    "highlight.js": "^11.9.0"
+    "highlight.js": "^11.9.0",
+    "style-to-object": "^1.0.8"
   },
   "devDependencies": {
     "typescript": "^5.5.2",

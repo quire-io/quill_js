@@ -14,9 +14,9 @@ export default class Link extends LinkBlot {
         return node;
     }
 
-    static _updateNode(node: HTMLElement, value: string, url: string, title: string) {
-        node.dataset['value'] = value;
+    static _updateNode(node: Element, value: string, url: string, title: string) {
         node.setAttribute('href', url);
+        node.setAttribute('data-value', value);
 
         if (title)
             node.setAttribute('title', title);
@@ -41,7 +41,7 @@ export default class Link extends LinkBlot {
     }
 
     format(name, value) {
-        if (name === Link.blotName && value) {
+        if (name === this.statics.blotName && value) {
             const data = typeof value === 'string' ? value: value.url,
                 url = service.toQuireUrl(data);
           Link._updateNode(this.domNode, data, url, value.title);

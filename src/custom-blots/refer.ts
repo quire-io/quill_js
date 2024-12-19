@@ -21,11 +21,11 @@ class ReferBlot extends EmbedBlot {
     }
 
     format(name, value) {
-        if (name === ReferBlot.blotName && value) {
-          (this.domNode as Element).setAttribute('data-value', value);
-        } else {
-          super.format(name, value);
-        }
+      if (name === this.statics.blotName && value) {
+        (this.domNode as Element).setAttribute('data-value', value);
+      } else {
+        super.format(name, value);
+      }
     }
 }
 

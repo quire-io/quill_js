@@ -28,7 +28,7 @@ class PhoneBlot extends EmbedBlot {
     }
 
     format(name, value) {
-        if (name === PhoneBlot.blotName && value) {
+        if (name === this.statics.blotName && value) {
             PhoneBlot._updateNode(this.domNode as HTMLElement, value);
         } else {
           super.format(name, value);
