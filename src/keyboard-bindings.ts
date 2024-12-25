@@ -199,7 +199,7 @@ export const bindings = {
                 this.quill.insertText(pos, '\n', Quill.sources.USER);
                 
                 this.quill.setSelection(pos + 1);
-                this.quill.format('p-block', false, Quill.sources.USER);
+                //this.quill.format('p-block', false, Quill.sources.USER);
                 return false;
             }
             return true;
