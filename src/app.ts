@@ -19,7 +19,9 @@ quill.setContents([
 
     {"insert": "Header2"},
     {"insert": "\n", "attributes": {"header": 2}},
-    {"insert": "p1\n"},
+    {"insert": "p2 "},
+    {"insert": "code", "attributes": {"code": true}},
+    {"insert": " end\n"},
     {"insert": {"formula":"SUM(subtasks.duration, duration)"}},
     {"insert": "\n"},
     {"insert": "bold","attributes":{"style": "color: red; font-size: x-large;", "bold": true}},

@@ -12,7 +12,7 @@ import MentionBlot from './mention';
 import PhoneBlot from './phone';
 import ReferBlot from './refer';
 import NestedBlockquoteBlot from './nested-blockquote';
-import PBlot from './p-block';
+import SoftBreak from './linebreak';
 
 export {
     AutolinkBlot,
@@ -29,5 +29,5 @@ export {
     PhoneBlot,
     ReferBlot,
     NestedBlockquoteBlot,
-    PBlot,
+    SoftBreak,
 };

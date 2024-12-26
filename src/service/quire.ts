@@ -17,11 +17,11 @@ interface QuireQuillService {
     isQuireUrl(url: string): boolean;
 
     /**
-     * Returns whether allow append paragraph when press Enter
+     * Returns whether allow replce current line with paragraph when press Enter
      * @param format attributes of format
      */
-    canAddParagraph(format: Record<string, unknown>): boolean;
-    
+    canReplaceParagraph(format: Record<string, unknown>): boolean;
+
     /**
      * Evaluate formula and turn into DOM nodes.
      * @param formula a formula string
@@ -77,10 +77,10 @@ class QuireQuillServiceImpl implements QuireQuillService {
             ?? url.startsWith('https://quire.io/w/');
     }
 
-    canAddParagraph(format: Record<string, unknown>): boolean {
-        return concrete?.canAddParagraph(format)
+    canReplaceParagraph(format: Record<string, unknown>): boolean {
+        return concrete?.canReplaceParagraph(format)
             ?? (format['header'] == null && format['list'] == null 
-                && format['code'] == null  && format['code-block'] == null 
+                && format['code-block'] == null 
                 && format['blockquote'] == null
                 && format['nested-blockquote'] == null);
     }

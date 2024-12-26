@@ -9,8 +9,8 @@ import { matchers, ClipboardExt } from './clipboard-matchers';
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
 
-BlockBlot.tagName = 'div';
-Quill.register(BlockBlot);
+// BlockBlot.tagName = 'div';
+// Quill.register(BlockBlot);
 
 Quill.register({
     'attributors/style/color': c.ColorClass,
@@ -28,7 +28,7 @@ Quill.register({
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
-    'formats/p-block': c.PBlot,
+    'formats/s-block': c.SoftBreak,
     'formats/color': c.ColorClass,
     'formats/size': c.SizeClass,
 
@@ -71,7 +71,7 @@ const QUIRE_FORMATS = [
     'phone',
     'refer',
     'nested-blockquote',
-    'p-block',
+    's-block',
     'color',
     'size',
     'loading-image', // Uploading image placeholder

@@ -3,6 +3,7 @@ import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
 import { service } from './service/quire';
+import { SoftBreak } from './custom-blots';
 
 export class KeyboardExt extends Keyboard {
     constructor(quill: Quill, options: any) {
@@ -191,15 +192,32 @@ export const bindings = {
     },
     'linebreak': {
         key: 'Enter',
-        collapsed: true,
         handler(range: Range, context: Context) {
-            if (service.canAddParagraph(context.format)) {
-                this.quill.format('p-block', true, Quill.sources.USER);
-                const pos = range.index;
-                this.quill.insertText(pos, '\n', Quill.sources.USER);
+            /**
+            Case 1                  Results
+                p                   p
+                d  < enter here     p
+                p                   p < cursor here
+                                    p
+
+            Case 2                  Results
+                p                   p
+                d < enter here      p
+                d                   p < cursor here
+                                    d
+
+            Case 3                  Results
+                p                   p
+                d  < enter here     p
+                d                   p < cursor here
+                                    d
                 
+             */
+            const pos = range.index;
+            if (context.format['s-block']) {
+                this.quill.format('s-block', false, Quill.sources.USER);
+                this.quill.insertText(pos, '\n', Quill.sources.USER);
                 this.quill.setSelection(pos + 1);
-                //this.quill.format('p-block', false, Quill.sources.USER);
                 return false;
             }
             return true;
@@ -207,18 +225,95 @@ export const bindings = {
     },
     'linebreak with shift': {
         key: 'Enter',
-        collapsed: true,
         shiftKey: true,  
         handler(range: Range, context: Context) {
-            if (context.format['p-block']) {
-                this.quill.format('p-block', false, Quill.sources.USER);
-                this.quill.insertText(range.index, '\n', Quill.sources.USER);
-                this.quill.setSelection(range.index + 1);
+            /**
+            Case 1                      Results
+                p                       p
+                p < shift + enter here  d
+                p                       p < cursor here
+                                        p
+
+            Case 2                      Results
+                p < shift + enter here  d
+                d                       p < cursor here
+                p                       d
+                                        p
+
+            Case 3                      Results
+                p                       p
+                d  < shift + enter here d
+                p                       d < cursor here
+                                        p
+
+             Case 4                     Results
+                p                       p
+                d  < shift + enter here d
+                d                       d < cursor here
+                                        d
+                
+             */
+            const pos = range.index;
+            if (context.format['s-block']) {//Case 3, 4
+
+            } else if (service.canReplaceParagraph(context.format)) {
+                // const [line, offset] = this.quill.getLine(pos + 1);
+                // const beforeSoftBreak = line instanceof SoftBreak;
+
+                this.quill.format('s-block', true, Quill.sources.USER);
+                this.quill.insertText(pos, '\n', Quill.sources.USER);
+                this.quill.setSelection(pos + 1, Quill.sources.SILENT);
+                
+
+                //if (!beforeSoftBreak)
+                this.quill.format('s-block', false, Quill.sources.USER);
+
                 return false;
             }
             return true;
         }
     },
+    'merge soft break': {
+        key: 'Backspace',
+        handler(range: Range, context: Context) {
+            /**
+            Case 1                  Results
+                p                   d < cursor here
+                d  < Backspace here p
+                p                   p
+                p
+
+            Case 2                  Results
+                p                   p
+                d                   p < cursor here
+                p < Backspace here  p
+                p
+
+            Case 3                  Results
+                p                   p
+                d  < enter here     p
+                d                   p < cursor here
+                                    d
+                
+             */
+            const pos = range.index;
+            const [line, offset] = this.quill.getLine(pos - 1);
+            const afterSoftBreak = line instanceof SoftBreak;
+
+            if (context.format['s-block']) {
+                if (!afterSoftBreak) {
+                    this.quill.formatText(pos - 1, 1, 
+                        's-block', true, Quill.sources.USER);
+                }
+            } else {
+                if (afterSoftBreak)
+                    this.quill.formatText(pos - 1, 1, 
+                        's-block', false, Quill.sources.USER);
+            }
+            return true;
+        }
+    },
+    
     // Potix: override the UX
     'table enter': {
         key: 'Enter',
