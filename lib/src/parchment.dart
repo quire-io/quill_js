@@ -11,11 +11,11 @@ import 'package:js/js.dart';
 
 @JS()
 abstract class Scroll {
-  external Object? query(String query);
+  external RegistryDefination? query(String query, [int? scope = ParchmentScope.any]);
   external Blot? find(Node node, [bool bubble = false]);
   /// Returns `[Blot?, int]`
   external List<dynamic> descendant(bool Function(Blot?) matcher, int index);
-  external List<Object> descendants(bool Function(Blot?) matcher, int index, int length);
+  external List<Blot> descendants(bool Function(Blot?) matcher, int index, int length);
 }
 
 @JS()
@@ -32,7 +32,13 @@ abstract class Blot {
 }
 
 @JS()
-abstract class BlotConstructor {
+abstract class RegistryDefination {
+  /// see [ParchmentScope]
+  external int get scope;
+}
+
+@JS()
+abstract class BlotConstructor extends RegistryDefination {
   external String get blotName;
   external String get tagName;
   external String? get className;
@@ -46,4 +52,21 @@ abstract class Formattable extends Blot {
 @JS()
 abstract class Leaf extends Blot {
   external dynamic value();
+}
+
+abstract class ParchmentScope {
+  static const int type = (1 << 2) - 1; // 0011 Lower two bits
+  static const int level = ((1 << 2) - 1) << 2; // 1100 Higher two bits
+
+  static const int attribute = (1 << 0) | level; // 1101
+  static const int blot = (1 << 1) | level; // 1110
+  static const int inline = (1 << 2) | type; // 0111
+  static const int block = (1 << 3) | type; // 1011
+
+  static const int blockBlot = block & blot; // 1010
+  static const int inlineBlot = inline & blot; // 0110
+  static const int blockAttribute = block & attribute; // 1001
+  static const int inlineAttribute = inline & attribute; // 0101
+
+  static const int any = type | level;
 }
