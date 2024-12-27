@@ -207,6 +207,10 @@ export const bindings = {
                                     d
                 
              */
+
+            if (context.line.domNode.dataset['disable'] == 'Enter') {
+                return false;
+            }
             const pos = range.index;
             if (context.format['s-block']) {
                 // const [line, offset] = this.quill.getLine(
