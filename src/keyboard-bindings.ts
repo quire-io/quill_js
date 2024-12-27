@@ -203,21 +203,23 @@ export const bindings = {
             Case 2                  Results
                 p                   p
                 d < enter here      p
-                d                   p < cursor here
-                                    d
-
-            Case 3                  Results
-                p                   p
-                d  < enter here     p
-                d                   p < cursor here
+                d                   d < cursor here
                                     d
                 
              */
             const pos = range.index;
             if (context.format['s-block']) {
+                // const [line, offset] = this.quill.getLine(
+                //     pos + context.suffix.length + 1);
+                // const beforeSoftBreak = line instanceof SoftBreak;
+
                 this.quill.format('s-block', false, Quill.sources.USER);
                 this.quill.insertText(pos, '\n', Quill.sources.USER);
                 this.quill.setSelection(pos + 1);
+
+                // if (beforeSoftBreak)
+                this.quill.format('s-block', true, Quill.sources.USER);
+                    
                 return false;
             }
             return true;
