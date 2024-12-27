@@ -87,7 +87,40 @@ export const bindings = {
             this.quill.setSelection(range.index - length, Quill.sources.SILENT);
             return false;
         },
-     },
+    },
+    // Potix: #20690
+    'checklist autofill': {
+        key: ' ',
+        shiftKey: null,
+        collapsed: true,
+        format: {
+            'code-block': false,
+            blockquote: false,
+            table: false,
+            header: false,
+        },
+        prefix: /^\s*?(\d+\.|-|\*) \[[xX ]?\]$/,
+        handler(range: Range, context: Context) {
+            if (this.quill.scroll.query('list') == null) return true;
+            const { length } = context.prefix;
+            const [line, offset] = this.quill.getLine(range.index);
+            if (offset > length) return true;
+            const value = context.prefix.trim().toLowerCase().endsWith('[x]') 
+                ? 'checked' 
+                : 'unchecked';
+            this.quill.insertText(range.index, ' ', Quill.sources.USER);
+            this.quill.history.cutoff();
+            const delta = new Delta()
+                .retain(range.index - offset)
+                .delete(length + 1)
+                .retain(line.length() - 2 - offset)
+                .retain(1, { list: value });
+            this.quill.updateContents(delta, Quill.sources.USER);
+            this.quill.history.cutoff();
+            this.quill.setSelection(range.index - length, Quill.sources.SILENT);
+            return false;
+        },
+    },
     'nested-blockquote empty enter': {
         key: 'Enter',
         collapsed: true,
