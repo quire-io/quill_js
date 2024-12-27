@@ -182,7 +182,7 @@ export const bindings = {
             const blot = context.line.statics.blotName;
             const [line] = quill.getLine(pos);
             let cur = line?.prev as BlockBlot | undefined;
-            if (cur?.formats()[blot]) return true;
+            if (cur?.formats && cur?.formats()[blot]) return true;
 
             quill.history.cutoff();
             quill.formatLine(pos, 1, blot, false, Quill.sources.USER);
