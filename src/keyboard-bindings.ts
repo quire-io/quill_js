@@ -245,17 +245,18 @@ export const bindings = {
                 return false;
             }
             const pos = range.index;
-            if (context.format['s-block']) {
+            const blotName = SoftBreak.blotName;
+            if (context.format[blotName]) {
                 // const [line, offset] = this.quill.getLine(
                 //     pos + context.suffix.length + 1);
                 // const beforeSoftBreak = line instanceof SoftBreak;
 
-                this.quill.format('s-block', false, Quill.sources.USER);
+                this.quill.format(blotName, false, Quill.sources.USER);
                 this.quill.insertText(pos, '\n', Quill.sources.USER);
                 this.quill.setSelection(pos + 1);
 
                 // if (beforeSoftBreak)
-                this.quill.format('s-block', true, Quill.sources.USER);
+                this.quill.format(blotName, true, Quill.sources.USER);
                     
                 return false;
             }
@@ -293,19 +294,21 @@ export const bindings = {
                 
              */
             const pos = range.index;
-            if (context.format['s-block']) {//Case 3, 4
+            const blotName = SoftBreak.blotName;
+            if (context.format[blotName]) {//Case 3, 4
 
             } else if (service.canReplaceParagraph(context.format)) {
-                // const [line, offset] = this.quill.getLine(pos + 1);
+                // const [line, offset] = this.quill.getLine(
+                //     pos + context.suffix.length + 1);
                 // const beforeSoftBreak = line instanceof SoftBreak;
 
-                this.quill.format('s-block', true, Quill.sources.USER);
+                this.quill.format(blotName, true, Quill.sources.USER);
                 this.quill.insertText(pos, '\n', Quill.sources.USER);
                 this.quill.setSelection(pos + 1, Quill.sources.SILENT);
                 
 
                 //if (!beforeSoftBreak)
-                this.quill.format('s-block', false, Quill.sources.USER);
+                this.quill.format(blotName, false, Quill.sources.USER);
 
                 return false;
             }
@@ -336,18 +339,19 @@ export const bindings = {
                 
              */
             const pos = range.index;
+            const blotName = SoftBreak.blotName;
             const [line, offset] = this.quill.getLine(pos - 1);
             const afterSoftBreak = line instanceof SoftBreak;
 
-            if (context.format['s-block']) {
+            if (context.format[blotName]) {
                 if (!afterSoftBreak) {
                     this.quill.formatText(pos - 1, 1, 
-                        's-block', true, Quill.sources.USER);
+                        blotName, true, Quill.sources.USER);
                 }
             } else {
                 if (afterSoftBreak)
                     this.quill.formatText(pos - 1, 1, 
-                        's-block', false, Quill.sources.USER);
+                        blotName, false, Quill.sources.USER);
             }
             return true;
         }

@@ -28,7 +28,7 @@ Quill.register({
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
-    'formats/s-block': c.SoftBreak,
+    'formats/line': c.SoftBreak,
     'formats/color': c.ColorClass,
     'formats/size': c.SizeClass,
 
@@ -61,20 +61,20 @@ const QUIRE_FORMATS = [
     'underline',
 
     // Quire-flavor Markdown
-    'autolink',
-    'embed',
-    'email',
-    'formula',
-    'divider',
-    'style',
-    'mention',
-    'phone',
-    'refer',
-    'nested-blockquote',
-    's-block',
     'color',
     'size',
-    'loading-image', // Uploading image placeholder
+    c.AutolinkBlot.blotName,
+    c.EmbedLinkBlot.blotName,
+    c.FormulaBlot.blotName,
+    c.DividerBlot.blotName,
+    c.EmailBlot.blotName,
+    c.StyleBlot.blotName,
+    c.MentionBlot.blotName,
+    c.PhoneBlot.blotName,
+    c.ReferBlot.blotName,
+    c.NestedBlockquoteBlot.blotName,
+    c.SoftBreak.blotName,
+    c.LoadingImage.blotName, // Uploading image placeholder
 ];
 
 export function createQuill(

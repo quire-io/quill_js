@@ -1,7 +1,7 @@
 import BlockBlot from 'quill/blots/block';
 
 class SoftBreak extends BlockBlot {
-    static blotName = 's-block';
+    static blotName = 'line';
     static tagName = 'div';
 }
 
