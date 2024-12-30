@@ -24,6 +24,14 @@ export class ClipboardExt extends Clipboard {
         }
         debug.log('onPaste', pastedDelta, { text, html });
 
+        for (var op of pastedDelta.ops) {
+            var attrs = op.attributes;
+            if (attrs == null) continue;
+            if (attrs['align'] != null && attrs['table'] == null) {
+                attrs['align'] = null;//#20930: [Quill] Only support align in table
+            }
+        }
+
         var delta = new Delta().retain(range.index);
         if (replaceSelection)
             delta.delete(range.length)
