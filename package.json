@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "postinstall": "./tool/postinstall"
   },
   "author": "Potix",
   "license": "BSD-3-Clause",
@@ -18,7 +19,8 @@
   "dependencies": {
     "quill": "^2.0.3",
     "highlight.js": "^11.9.0",
-    "style-to-object": "^1.0.8"
+    "style-to-object": "^1.0.8",
+    "degit": "^2.8.2"
   },
   "devDependencies": {
     "typescript": "^5.5.2",
