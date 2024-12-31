@@ -23,8 +23,9 @@ export class KeyboardExt extends Keyboard {
             },
             {},
         );
+        const index = range.index;
         const delta = new Delta()
-            .retain(range.index)
+            .retain(index)
             .delete(range.length)
             .insert('\n', lineFormats);
         this.quill.updateContents(delta, Quill.sources.USER);
@@ -36,8 +37,18 @@ export class KeyboardExt extends Keyboard {
             if (lineFormats[name] != null) return;
             if (Array.isArray(context.format[name])) return;
             if (name === 'code' || name === 'link') return;
+            
+            //#20778
             this.quill.format(name, context.format[name], Quill.sources.USER);
         });
+
+        //#21011: Press enter in empty code-block/'code-block', 
+        if (range.length == 0 && context.prefix.length == 0 
+                && context.suffix.length == 0
+                && context.format['code-block'] != null) {
+
+            this.quill.format('code-block', false, Quill.sources.USER);
+        }
     }
 }
 
@@ -366,8 +377,33 @@ export const bindings = {
             const module = this.quill.getModule('table');
             if (module) {
                 const [table, row, cell] = module.getTable(range);
-                if (row.next == null)
+
+                if (row.next == null) {
+                    const children = row.children;
+                    let emptyRow = true,
+                        current = children.head;
+                    while (current != null) {
+                        const text = (current.domNode as Element).textContent ?? ''; 
+                        if (text.length != 0) {
+                            emptyRow = false;
+                            break;
+                        }
+
+                        current = current.next;
+                    }
+                    
+                    if (emptyRow) {
+                        //#21011: Leave table after press Enter in empty row
+                        const lastCell = children.tail,
+                            indexAfterTable = table.offset() + table.length();
+                        this.quill.insertText(indexAfterTable, '\n', Quill.sources.USER);
+                        this.quill.setSelection(
+                            indexAfterTable, 0, Quill.sources.SILENT);
+                        return;
+                    }
+
                     module.insertRowBelow();
+                }
 
                 const nextRow = row.next;
                 if (nextRow != null) {
