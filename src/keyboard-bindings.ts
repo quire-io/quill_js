@@ -1,4 +1,4 @@
-import { type BlockBlot, Scope } from 'parchment';
+import { BlockBlot, type Blot, Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
@@ -440,6 +440,55 @@ export const bindings = {
         suffix: /^\s*$/,
         handler() {
             return true;
+        },
+    },
+    'table selectAll': {
+        key: ['A', 'a'],
+        shortKey: true,
+        format: ['table'],
+        handler(range: Range, context: Context) {
+            const quill = this.quill as Quill;
+            const {line} = context;
+            const [tdIndex, tdLength] = [quill.getIndex(line), line.length() - 1];
+            // Already selected the whole range, let it continue selecting all document
+            if (range.index == tdIndex && range.length == tdLength) 
+                return true;
+
+            quill.setSelection(tdIndex, tdLength, Quill.sources.USER);
+            return false;
+        },
+    },
+    'code selectAll': {
+        key: ['A', 'a'],
+        shortKey: true,
+        format: ['code-block'],
+        handler(range: Range, context: Context) {
+            const quill = this.quill as Quill;
+            const {line} = context;
+
+            const isCodeBlockFormat = (blot: Blot) => 
+                blot instanceof BlockBlot && blot.formats()['code-block'];
+
+            // Traverse upwards to find the start of the code block
+            let start: Blot = line;
+            while (start.prev && isCodeBlockFormat(start.prev)) {
+                start = start.prev;
+            }
+            const cbIndex = quill.getIndex(start);
+
+            // Traverse to the end of the code block
+            let end: Blot = line;
+            while (end.next && isCodeBlockFormat(end.next)) {
+                end = end.next;
+            }
+            const cbLength = quill.getIndex(end) - cbIndex + end.length() - 1;
+
+            // Already selected the whole range, let it continue selecting all document
+            if (range.index == cbIndex && range.length == cbLength) 
+                return true;
+
+            quill.setSelection(cbIndex, cbLength, Quill.sources.USER);
+            return false;
         },
     },
 };
