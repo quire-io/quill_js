@@ -1,6 +1,7 @@
 import { BlockBlot, type Blot, Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
+import { TableRow } from 'quill/formats/table';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
 import { service } from './service/quire';
 import { SoftBreak } from './custom-blots';
@@ -29,7 +30,7 @@ export class KeyboardExt extends Keyboard {
             .delete(range.length)
             .insert('\n', lineFormats);
         this.quill.updateContents(delta, Quill.sources.USER);
-        this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+        this.quill.setSelection(index + 1, Quill.sources.SILENT);
         this.quill.focus();
 
         // Potix: rollback https://github.com/slab/quill/pull/3428
@@ -48,8 +49,29 @@ export class KeyboardExt extends Keyboard {
                 && context.format['code-block'] != null) {
 
             this.quill.format('code-block', false, Quill.sources.USER);
+            const delta = new Delta()
+            .retain(index)
+            .delete(1);//#21011: remove blank line in code block
+            this.quill.updateContents(delta, Quill.sources.USER);
+            this.quill.setSelection(index, Quill.sources.SILENT);
         }
     }
+}
+
+function _isEmptyTableRow(row: TableRow): boolean {
+    const children = row.children;
+    let emptyRow = true,
+        current = children.head;
+    while (current != null) {
+        const text = (current.domNode as Element).textContent ?? ''; 
+        if (text.length != 0) {
+            emptyRow = false;
+            break;
+        }
+
+        current = current.next;
+    }
+    return emptyRow;
 }
 
 export const bindings = {
@@ -379,23 +401,10 @@ export const bindings = {
                 const [table, row, cell] = module.getTable(range);
 
                 if (row.next == null) {
-                    const children = row.children;
-                    let emptyRow = true,
-                        current = children.head;
-                    while (current != null) {
-                        const text = (current.domNode as Element).textContent ?? ''; 
-                        if (text.length != 0) {
-                            emptyRow = false;
-                            break;
-                        }
-
-                        current = current.next;
-                    }
-                    
-                    if (emptyRow) {
+                    if (table.rows().length > 1 && _isEmptyTableRow(row)) {
                         //#21011: Leave table after press Enter in empty row
-                        const lastCell = children.tail,
-                            indexAfterTable = table.offset() + table.length();
+                        module.deleteRow();
+                        const indexAfterTable = table.offset() + table.length();
                         this.quill.insertText(indexAfterTable, '\n', Quill.sources.USER);
                         this.quill.setSelection(
                             indexAfterTable, 0, Quill.sources.SILENT);
