@@ -47,6 +47,8 @@ abstract class BlotConstructor extends RegistryDefination {
 @JS()
 abstract class Formattable extends Blot {
   external void format(String name, dynamic value);
+
+  external Object formats();
 }
 
 @JS()
