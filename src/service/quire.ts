@@ -57,6 +57,13 @@ interface QuireQuillService {
      * @param value phone
      */
     getPhoneUrl(value: string): string;
+
+    /**
+     * Convert pasted HTML into Delta.
+     * @param html HTML
+     * @returns The result delta in JSON string. null if not supported.
+     */
+    convertHTML(html: string): string | null;
 }
 
 var concrete: QuireQuillService;
@@ -113,6 +120,10 @@ class QuireQuillServiceImpl implements QuireQuillService {
     renderMention(value: string): Node {
         return concrete?.renderMention(value)
             ?? new Text(value);
+    }
+
+    convertHTML(html: string): string | null {
+        return concrete?.convertHTML(html);
     }
 }
 

@@ -1,6 +1,5 @@
 import hljs from 'highlight.js';
 import Quill, { type QuillOptions } from 'quill';
-import BlockBlot from 'quill/blots/block';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
 import { bindings, KeyboardExt } from './keyboard-bindings';

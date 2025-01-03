@@ -3,6 +3,7 @@ import { Delta, type Range } from 'quill/core';
 import logger from 'quill/core/logger';
 import Clipboard from 'quill/modules/clipboard';
 import type { ScrollBlot } from 'parchment';
+import { service } from './service/quire';
 
 const debug = logger('quill:clipboard');
 
@@ -46,6 +47,19 @@ export class ClipboardExt extends Clipboard {
         this.quill.scrollSelectionIntoView();
     }
 
+    // /**
+    //  * Convert pasted HTML into Delta.
+    //  * @param html HTML.
+    //  * @returns The result delta object
+    //  */
+    // convertHTML(html: string): Delta {
+    //     const result = service.convertHTML(html);
+    //     if (result != null) {
+    //         return new Delta(JSON.parse(result));
+    //     }
+    //     return super.convertHTML(html);
+    // }
+
     /**
      * Convert pasted text into Delta.
      * @param text Text.
@@ -73,6 +87,7 @@ export class ClipboardExt extends Clipboard {
 
 export const matchers = [
     ['li.task-list-item', matchChecklist],
+    ['table', matchTable],
 ];
 
 function matchChecklist(node: Node, delta: Delta, scroll: ScrollBlot): Delta {
@@ -105,4 +120,15 @@ function applyFormat(
         const formats = value ? { [format]: value } : {};
         return newDelta.insert(op.insert, { ...formats, ...op.attributes });
     }, new Delta());
+}
+
+function matchTable(node: Node, delta: Delta, scroll: ScrollBlot): Delta {
+    if (node instanceof Element) {
+        const result = service.convertHTML(node.outerHTML);
+        if (result != null) {
+            // Discard children result from delta since Quill is post-traversal
+            return new Delta(JSON.parse(result));
+        }
+    }
+    return delta;
 }
