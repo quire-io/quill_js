@@ -1,10 +1,8 @@
 import hljs from 'highlight.js';
 import Quill, { type QuillOptions } from 'quill';
-import BlockBlot from 'quill/blots/block';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
 import { bindings, KeyboardExt } from './keyboard-bindings';
-import { matchers, ClipboardExt } from './clipboard-matchers';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
@@ -34,7 +32,6 @@ Quill.register({
 
     'themes/quire': QuireTheme,
 
-    'modules/clipboard': ClipboardExt,
     'modules/keyboard': KeyboardExt,
 }, true);
 
@@ -90,7 +87,7 @@ export function createQuill(
             table: true,
             syntax: { hljs },
             keyboard: { bindings },
-            clipboard: { matchers },
+            clipboard: false,
         },
         formats: formats ?? QUIRE_FORMATS,
     });
