@@ -405,9 +405,10 @@ export const bindings = {
                         //#21011: Leave table after press Enter in empty row
                         module.deleteRow();
                         const indexAfterTable = table.offset() + table.length();
-                        this.quill.insertText(indexAfterTable, '\n', Quill.sources.USER);
+                        const delta = new Delta().retain(indexAfterTable).insert('\n');
+                        this.quill.updateContents(delta, Quill.sources.USER);
                         this.quill.setSelection(
-                            indexAfterTable, 0, Quill.sources.SILENT);
+                            indexAfterTable, 0, Quill.sources.USER);
                         return;
                     }
 
