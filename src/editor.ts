@@ -16,6 +16,7 @@ Quill.register({
     'attributors/style/size': c.SizeClass,
 
     'formats/autolink': c.AutolinkBlot,
+    'formats/code': c.CodeBlot,
     'formats/embed': c.EmbedLinkBlot,
     'formats/formula': c.FormulaBlot,
     'formats/divider': c.DividerBlot,

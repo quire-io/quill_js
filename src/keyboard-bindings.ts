@@ -441,6 +441,21 @@ export const bindings = {
             return false;
         },
     },
+    'code space': {
+        key: ' ',
+        format: ['code'],
+        collapsed: true,
+        handler(range: Range, context: Context) {
+            const index = range.index;
+            if (!context.suffix
+                    && this.quill.getText(index - 1, 1) == ' ') {
+                this.quill.formatText(index - 1, 1, 
+                    'code', false, Quill.sources.USER);
+                return false;
+            }
+            return true;
+        },
+    },
     // Potix: override UX
     'code exit': {
         key: 'Enter',
