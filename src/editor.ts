@@ -3,7 +3,7 @@ import Quill, { type QuillOptions } from 'quill';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
 import { bindings, KeyboardExt } from './keyboard-bindings';
-import { matchers, ClipboardExt } from './clipboard-matchers';
+import { ClipboardExt } from './clipboard-matchers';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
@@ -90,7 +90,6 @@ export function createQuill(
             table: true,
             syntax: { hljs },
             keyboard: { bindings },
-            clipboard: { matchers },
         },
         formats: formats ?? QUIRE_FORMATS,
     });

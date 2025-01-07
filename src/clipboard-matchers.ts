@@ -2,7 +2,6 @@ import Quill from 'quill/core';
 import { Delta, type Range } from 'quill/core';
 import logger from 'quill/core/logger';
 import Clipboard from 'quill/modules/clipboard';
-import type { ScrollBlot } from 'parchment';
 import { service } from './service/quire';
 
 const debug = logger('quill:clipboard');
@@ -47,18 +46,18 @@ export class ClipboardExt extends Clipboard {
         this.quill.scrollSelectionIntoView();
     }
 
-    // /**
-    //  * Convert pasted HTML into Delta.
-    //  * @param html HTML.
-    //  * @returns The result delta object
-    //  */
-    // convertHTML(html: string): Delta {
-    //     const result = service.convertHTML(html);
-    //     if (result != null) {
-    //         return new Delta(JSON.parse(result));
-    //     }
-    //     return super.convertHTML(html);
-    // }
+    /**
+     * Convert pasted HTML into Delta.
+     * @param html HTML.
+     * @returns The result delta object
+     */
+    convertHTML(html: string): Delta {
+        const result = service.convertHTML(html);
+        if (result != null) {
+            return new Delta(JSON.parse(result));
+        }
+        return super.convertHTML(html);
+    }
 
     /**
      * Convert pasted text into Delta.
@@ -83,52 +82,4 @@ export class ClipboardExt extends Clipboard {
             true,
         ];
     }
-}
-
-export const matchers = [
-    ['li.task-list-item', matchChecklist],
-    ['table', matchTable],
-];
-
-function matchChecklist(node: Node, delta: Delta, scroll: ScrollBlot): Delta {
-    const element = node as Element;
-    let list = 'unchecked';
-
-    const checkedAttr = element.firstElementChild as HTMLInputElement;
-    if (checkedAttr && checkedAttr.checked) {
-        list = 'checked';
-    }
-
-    return applyFormat(delta, 'list', list, scroll);
-}
-
-function applyFormat(
-    delta: Delta,
-    format: string,
-    value: unknown,
-    scroll: ScrollBlot,
-): Delta {
-    if (!scroll.query(format)) {
-        return delta;
-    }
-
-    return delta.reduce((newDelta, op) => {
-        if (!op.insert) return newDelta;
-        if (op.attributes && op.attributes[format]) {
-            return newDelta.push(op);
-        }
-        const formats = value ? { [format]: value } : {};
-        return newDelta.insert(op.insert, { ...formats, ...op.attributes });
-    }, new Delta());
-}
-
-function matchTable(node: Node, delta: Delta, scroll: ScrollBlot): Delta {
-    if (node instanceof Element) {
-        const result = service.convertHTML(node.outerHTML);
-        if (result != null) {
-            // Discard children result from delta since Quill is post-traversal
-            return new Delta(JSON.parse(result));
-        }
-    }
-    return delta;
 }
