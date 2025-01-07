@@ -1,7 +1,7 @@
 import { BlockBlot, type Blot, Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
-import { TableRow } from 'quill/formats/table';
+import { type TableRow } from 'quill/formats/table';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
 import { service } from './service/quire';
 import { SoftBreak } from './custom-blots';
@@ -72,6 +72,18 @@ function _isEmptyTableRow(row: TableRow): boolean {
         current = current.next;
     }
     return emptyRow;
+}
+
+function _fixRowCellsAlignment(module, offset: number) {
+    const [table, row] = module.getTable();
+    if (table && row) {
+        const alignments = table.rows()[0].children.map(cell => cell.formats()['align']);
+        const newRow = (offset > 0 ? row.next : row.prev) as TableRow | null;
+        if (newRow) {
+            let i = 0;
+            newRow.children.forEach(cell => cell.format('align', alignments[i++]));
+        }
+    }
 }
 
 export const bindings = {
@@ -413,6 +425,7 @@ export const bindings = {
                     }
 
                     module.insertRowBelow();
+                    _fixRowCellsAlignment(module, 1);
                 }
 
                 const nextRow = row.next;

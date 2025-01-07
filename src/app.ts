@@ -189,7 +189,8 @@ quill.setContents([
     },
     {
         "attributes": {
-            "table": "1"
+            "table": "1",
+            "align": "center"
         },
         "insert": "\n"
     },
@@ -198,7 +199,8 @@ quill.setContents([
     },
     {
         "attributes": {
-            "table": "1"
+            "table": "1",
+            "align": "right"
         },
         "insert": "\n"
     },
@@ -216,7 +218,8 @@ quill.setContents([
     },
     {
         "attributes": {
-            "table": "2"
+            "table": "2",
+            "align": "center"
         },
         "insert": "\n"
     },
@@ -225,7 +228,8 @@ quill.setContents([
     },
     {
         "attributes": {
-            "table": "2"
+            "table": "2",
+            "align": "right"
         },
         "insert": "\n"
     },
@@ -243,7 +247,8 @@ quill.setContents([
     },
     {
         "attributes": {
-            "table": "3"
+            "table": "3",
+            "align": "center"
         },
         "insert": "\n"
     },
@@ -252,7 +257,8 @@ quill.setContents([
     },
     {
         "attributes": {
-            "table": "3"
+            "table": "3",
+            "align": "right"
         },
         "insert": "\n"
     },
