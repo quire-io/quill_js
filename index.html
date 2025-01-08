@@ -469,11 +469,51 @@
             background-color: var(--code-bg-color);
             border-color: var(--border-color);
         }
+
+        .container {
+            width: calc(100% - 0px);
+            height: calc(100vh - 16px);
+            padding:0px;
+            box-sizing: border-box;
+        }
+        #left {
+            width:60%;
+            overflow:auto;
+        }
+        #right {
+            width:40%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+        #left, #right {
+            float:left;
+            height:100%;
+            margin:0;
+            padding:10px;
+        }
+
+        #debug {
+            resize: none;
+            width: 100%;
+            flex: 1;
+            
+        }
     </style>
+    <script src='https://www.methodfish.com/Download/MFPanels/files/1.12/js/mfpanel.js'></script>
+    <link rel='stylesheet preload prefetch'  href='https://www.methodfish.com/Download/MFPanels/files/1.12/css/mfpanel.css'>
 </head>
 <body>
-    <div id="editor"></div>
-    <div id="debug"></div>
+    <div class='container'>
+        <div id='left'  class='left resizable-e'>
+            <div id="editor"></div>
+        </div>
+        <div id='right'>
+            <button id="updateBtn">Update</button>
+            <textarea id="debug"></textarea>
+        </div>
+    </div>
     <script type="module" src="src/app.ts"></script>
 </body>
 </html>

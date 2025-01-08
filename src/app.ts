@@ -4,12 +4,19 @@ const quill = createQuill("#editor", {
     theme: 'quire',
 });
 
+const input = document.getElementById('debug') as HTMLTextAreaElement;
+
 quill.on('text-change', () => {
-    document.getElementById('debug')!.textContent =
-        JSON.stringify(quill.getContents());
+    input.value = JSON.stringify(
+        quill.getContents(), undefined, 1);
 });
 
 quill.on('editor-change', (eventType, delta, state, origin) => {
+});
+
+document.getElementById('updateBtn')!.addEventListener(
+    'click', () => {
+        quill.setContents(JSON.parse(input.value));
 });
 
 quill.setContents([
