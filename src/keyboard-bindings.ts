@@ -402,12 +402,18 @@ export const bindings = {
 
                 let autoAdded = false;
                 if (row.next == null) {
+                    //#21011: Leave table after press Enter in empty row
                     if (row.domNode.dataset['add'] == 'auto') {
-                        //#21011: Leave table after press Enter in empty row
-                        module.deleteRow();
-                        const indexAfterTable = table.offset() + table.length();
-                        const delta = new Delta().retain(indexAfterTable).insert('\n');
+                        
+                        //#21011: cannot use deleteRow, need delete by delta update
+                        // module.deleteRow();
+                        const delta = new Delta()
+                            .retain(table.offset() + row.offset())
+                            .retain(1, {'table': null})
+                            .delete(row.children.length - 1);
                         this.quill.updateContents(delta, Quill.sources.USER);
+
+                        const indexAfterTable = table.offset() + table.length();
                         this.quill.setSelection(
                             indexAfterTable, 0, Quill.sources.USER);
                         return;
