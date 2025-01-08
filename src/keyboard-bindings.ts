@@ -62,22 +62,6 @@ export class KeyboardExt extends Keyboard {
     }
 }
 
-function _isEmptyTableRow(row: TableRow): boolean {
-    const children = row.children;
-    let emptyRow = true,
-        current = children.head;
-    while (current != null) {
-        const text = (current.domNode as Element).textContent ?? ''; 
-        if (text.length != 0) {
-            emptyRow = false;
-            break;
-        }
-
-        current = current.next;
-    }
-    return emptyRow;
-}
-
 function _fixRowCellsAlignment(module, offset: number) {
     const [table, row] = module.getTable();
     if (table && row) {
@@ -416,8 +400,9 @@ export const bindings = {
             if (module) {
                 const [table, row, cell] = module.getTable(range);
 
+                let autoAdded = false;
                 if (row.next == null) {
-                    if (table.rows().length > 1 && _isEmptyTableRow(row)) {
+                    if (row.domNode.dataset['add'] == 'auto') {
                         //#21011: Leave table after press Enter in empty row
                         module.deleteRow();
                         const indexAfterTable = table.offset() + table.length();
@@ -429,6 +414,8 @@ export const bindings = {
                     }
 
                     module.insertRowBelow();
+                    autoAdded = true;
+
                     _fixRowCellsAlignment(module, 1);
                 }
 
@@ -442,6 +429,20 @@ export const bindings = {
                             0,
                             Quill.sources.USER,
                         );
+                    }
+
+                    if (autoAdded) {
+                        let node = nextRow.domNode;
+                        node.dataset['add'] = 'auto';
+                        let onchange = (eventType, delta, state, origin) => {
+                            //#21108: [Doc] Reset auto delete table row  after editor changed
+                            delete node.dataset.add;
+                            this.quill.off('editor-change', onchange);
+                        };
+                        setTimeout(() => {
+                            this.quill.on('editor-change', onchange);
+                        })
+                        
                     }
                 }
             }
