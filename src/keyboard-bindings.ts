@@ -48,12 +48,16 @@ export class KeyboardExt extends Keyboard {
                 && context.suffix.length == 0
                 && context.format['code-block'] != null) {
 
-            this.quill.format('code-block', false, Quill.sources.USER);
-            const delta = new Delta()
-            .retain(index)
-            .delete(1);//#21011: remove blank line in code block
-            this.quill.updateContents(delta, Quill.sources.USER);
-            this.quill.setSelection(index, Quill.sources.SILENT);
+            const prevBlot = context.line.prev?.prev;
+            if (prevBlot?.statics.blotName == 'code-block'
+                    && prevBlot?.domNode.textContent == '') {
+                this.quill.format('code-block', false, Quill.sources.USER);
+                const delta = new Delta()
+                .retain(index - 1)
+                .delete(2);//#21011: remove blank line in code block
+                this.quill.updateContents(delta, Quill.sources.USER);
+                this.quill.setSelection(index-1, Quill.sources.SILENT);
+            }
         }
     }
 }
