@@ -540,4 +540,21 @@ export const bindings = {
             return false;
         },
     },
+    // Potix: override UX
+    outdent: {
+        key: 'Tab',
+        shiftKey: true,
+        format: ['blockquote', 'indent', 'list'],
+        // highlight tab or tab at beginning of list, indent or blockquote
+        handler(range: Range, context: Context) {
+            if (context.collapsed && context.offset !== 0) return true;
+            this.quill.format('indent', '-1', Quill.sources.USER);
+
+            // #21106
+            if (!context.format.indent && context.format.list)
+                this.quill.format('list', false, Quill.sources.USER);
+
+            return false;
+        },
+    },
 };
