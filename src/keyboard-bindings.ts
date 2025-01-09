@@ -42,23 +42,6 @@ export class KeyboardExt extends Keyboard {
             //#20778
             this.quill.format(name, context.format[name], Quill.sources.USER);
         });
-
-        //#21011: Press enter in empty code-block/'code-block', 
-        if (range.length == 0 && context.prefix.length == 0 
-                && context.suffix.length == 0
-                && context.format['code-block'] != null) {
-
-            const prevBlot = context.line.prev?.prev;
-            if (prevBlot?.statics.blotName == 'code-block'
-                    && prevBlot?.domNode.textContent == '') {
-                this.quill.format('code-block', false, Quill.sources.USER);
-                const delta = new Delta()
-                .retain(index - 1)
-                .delete(2);//#21011: remove blank line in code block
-                this.quill.updateContents(delta, Quill.sources.USER);
-                this.quill.setSelection(index-1, Quill.sources.SILENT);
-            }
-        }
     }
 }
 
@@ -477,17 +460,6 @@ export const bindings = {
                     'code', false, Quill.sources.USER);
                 return false;
             }
-            return true;
-        },
-    },
-    // Potix: override UX
-    'code exit': {
-        key: 'Enter',
-        collapsed: true,
-        format: ['code-block'],
-        prefix: /^$/,
-        suffix: /^\s*$/,
-        handler() {
             return true;
         },
     },
