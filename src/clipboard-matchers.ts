@@ -46,6 +46,28 @@ export class ClipboardExt extends Clipboard {
         this.quill.scrollSelectionIntoView();
     }
 
+    convert({ html, text }: { html?: string; text?: string; }, formats: Record<string, unknown> = {}): Delta {
+        let result = super.convert({ html, text }, formats);
+        if (formats.table) {
+            // Remove newline in delta insert operations since table cells don't support newline
+            result = result.reduce((newDelta, op) => {
+                const insert = op.insert;
+                if (typeof insert === 'string') {
+                    if (insert === '\n') {
+                        // Ignore line breaks and block formats
+                    } else {
+                        newDelta.insert(insert.replace(/\n/g, ' '), op.attributes);
+                    }
+                } else {
+                    newDelta.push(op);
+                }
+
+                return newDelta;
+            }, new Delta());
+        }
+        return result;
+    }
+
     /**
      * Convert pasted HTML into Delta.
      * @param html HTML.
@@ -67,7 +89,7 @@ export class ClipboardExt extends Clipboard {
      * @returns The result delta object 
      *          and a flag indicating whether the selection should be replaced
      */
-    convertText(text?: string, formats?: Record<string, unknown>, range?: Range): [Delta, boolean] {
+    convertText(text?: string, formats: Record<string, unknown> = {}, range?: Range): [Delta, boolean] {
         const selLen = range?.length ?? 0;
         // Select text and paste URL to apply link
         if (selLen > 0 && text?.match(/^https?:\/\/\S+/)) {
@@ -75,6 +97,11 @@ export class ClipboardExt extends Clipboard {
                 new Delta().retain(selLen, {link: text}),
                 false,
             ];
+        }
+
+        if (formats.table) {
+            // Remove newline in delta insert operations since table cells don't support newline
+            text = text?.replace(/\n/g, ' ');
         }
 
         return [
