@@ -74,7 +74,10 @@ export class ClipboardExt extends Clipboard {
      * @returns The result delta object
      */
     convertHTML(html: string): Delta {
-        const result = service.convertHTML(html);
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        this.normalizeHTML(doc);
+        const container = doc.body;
+        const result = service.convertHTML(container.innerHTML);
         if (result != null) {
             return new Delta(JSON.parse(result));
         }
