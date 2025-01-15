@@ -28,6 +28,7 @@ Quill.register({
     'formats/phone': c.PhoneBlot,
     'formats/refer': c.ReferBlot,
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
+    'formats/blockquote': c.BlockquoteBlot,
     'formats/line': c.SoftBreak,
     'formats/color': c.ColorClass,
     'formats/size': c.SizeClass,

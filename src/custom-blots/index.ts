@@ -12,6 +12,7 @@ import LoadingImage from './loading-image';
 import MentionBlot from './mention';
 import PhoneBlot from './phone';
 import ReferBlot from './refer';
+import BlockquoteBlot from './blockquote';
 import NestedBlockquoteBlot from './nested-blockquote';
 import SoftBreak from './linebreak';
 
@@ -30,6 +31,7 @@ export {
     MentionBlot,
     PhoneBlot,
     ReferBlot,
+    BlockquoteBlot,
     NestedBlockquoteBlot,
     SoftBreak,
 };
