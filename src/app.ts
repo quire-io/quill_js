@@ -2,6 +2,7 @@ import { createQuill } from './main';
 
 const quill = createQuill("#editor", {
     theme: 'quire',
+    placeholder: 'Compose an epic...',
 });
 
 const input = document.getElementById('debug') as HTMLTextAreaElement;

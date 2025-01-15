@@ -83,7 +83,7 @@ export function createQuill(
     options?: QuillOptions,
     formats?: string[]
 ): Quill {
-    return new Quill(container, {
+    return applyQuillWorkarounds(new Quill(container, {
         ...options,
         modules: {
             toolbar: false,
@@ -93,5 +93,16 @@ export function createQuill(
             keyboard: { bindings },
         },
         formats: formats ?? QUIRE_FORMATS,
+    }));
+}
+
+function applyQuillWorkarounds(quill: Quill): Quill {
+    // https://github.com/slab/quill/issues/4507
+    quill.on(Quill.events.COMPOSITION_START, () => {
+        quill.root.dataset.placeholder = '';
     });
+    quill.on(Quill.events.COMPOSITION_END, () => {
+        quill.root.dataset.placeholder = quill.options.placeholder;
+    });
+    return quill;
 }
