@@ -24,6 +24,8 @@ abstract class Blot {
   external Blot? get parent;
   external Blot? get prev;
   external Blot? get next;
+  external List<Blot> get children;
+  external Scroll get scroll;
   external Node get domNode;
   external int length();
   external int offset([Blot? root]);
