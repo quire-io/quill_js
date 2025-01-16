@@ -24,13 +24,29 @@ abstract class Blot {
   external Blot? get parent;
   external Blot? get prev;
   external Blot? get next;
-  external List<Blot> get children;
+  external LinkedList<Blot> get children;
   external Scroll get scroll;
   external Node get domNode;
   external int length();
   external int offset([Blot? root]);
   external void remove();
   external Blot replaceWith(String name, dynamic value);
+}
+
+@anonymous
+@JS()
+abstract class LinkedList<T> {
+  external T? get head;
+
+  external T? get tail;
+
+  external T? at(int index);
+
+  external int get length;
+
+  external void forEach(void Function(T) callback);
+
+  external List<R> map<R>(R Function(T) callback);
 }
 
 @JS()
