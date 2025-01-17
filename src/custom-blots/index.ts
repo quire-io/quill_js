@@ -8,6 +8,7 @@ import FormulaBlot from './formula';
 import SizeClass from './size';
 import StyleBlot from './style';
 import LinkBlot from './link';
+import ListBlot from './list';
 import LoadingImage from './loading-image';
 import MentionBlot from './mention';
 import PhoneBlot from './phone';
@@ -27,6 +28,7 @@ export {
     SizeClass,
     StyleBlot,
     LinkBlot,
+    ListBlot,
     LoadingImage,
     MentionBlot,
     PhoneBlot,

@@ -1,6 +1,6 @@
 import { createQuill } from './main';
 
-const quill = createQuill("#editor", {
+const quill = window['quill'] = createQuill("#editor", {
     theme: 'quire',
     placeholder: 'Compose an epic...',
 });
@@ -175,7 +175,20 @@ quill.setContents([
     {"attributes":{
         "list": "bullet",
     },"insert":"\n"},
-
+    {"insert":"\n"},
+    {"insert":"checklist 01"},
+    {"insert":"\n", "attributes": {"list": "checked"}},
+    {"insert":"checklist 01-a"},
+    {"insert":"\n", "attributes": {"list": "checked", "indent": 1}},
+    {"insert":"checklist 01-b"},
+    {"insert":"\n", "attributes": {"list": "checked", "indent": 1}},
+    {"insert":"checklist 02"},
+    {"insert":"\n", "attributes": {"list": "unchecked"}},
+    {"insert":"checklist 02-a"},
+    {"insert":"\n", "attributes": {"list": "checked", "indent": 1}},
+    {"insert":"checklist 02-b"},
+    {"insert":"\n", "attributes": {"list": "unchecked", "indent": 1}},
+    {"insert":"\n"},
 
     {"insert": "// Hello world\n", "attributes": {"code-block": "javascript"} },
     {"insert": "function abc(var1, var2) {\n", "attributes": {"code-block": "javascript"} },
