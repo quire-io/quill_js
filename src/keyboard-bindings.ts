@@ -391,7 +391,7 @@ export const bindings = {
                         //#21011: cannot use deleteRow, need delete by delta update
                         // module.deleteRow();
                         const delta = new Delta()
-                            .retain(table.offset() + row.offset())
+                            .retain(this.quill.getIndex(row))
                             .retain(1, {'table': null})
                             .delete(row.children.length - 1);
                         this.quill.updateContents(delta, Quill.sources.USER);
@@ -414,7 +414,7 @@ export const bindings = {
                     const nextCell = nextRow.children.at(cellOffset);
                     if (nextCell != null) {
                         this.quill.setSelection(
-                            table.offset() + nextRow.offset() + nextCell.offset() + nextCell.length() - 1,
+                            this.quill.getIndex(nextCell) + nextCell.length() - 1,
                             0,
                             Quill.sources.USER,
                         );
@@ -423,13 +423,11 @@ export const bindings = {
                     if (autoAdded) {
                         let node = nextRow.domNode;
                         node.dataset['add'] = 'auto';
-                        let onchange = (eventType, delta, state, origin) => {
-                            //#21108: [Doc] Reset auto delete table row  after editor changed
-                            delete node.dataset.add;
-                            this.quill.off('editor-change', onchange);
-                        };
                         setTimeout(() => {
-                            this.quill.on('editor-change', onchange);
+                            this.quill.once(Quill.events.EDITOR_CHANGE, () => {
+                                //#21108: [Doc] Reset auto delete table row after editor changed
+                                delete node.dataset.add;
+                            });
                         })
                         
                     }
