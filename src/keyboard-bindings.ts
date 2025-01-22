@@ -2,6 +2,7 @@ import { BlockBlot, type Blot, Scope } from 'parchment';
 import Delta from 'quill-delta';
 import Quill, { type Range } from 'quill/core/quill';
 import { type TableRow } from 'quill/formats/table';
+import BindingObject from 'quill/modules/keyboard';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
 import { service } from './service/quire';
 import { SoftBreak } from './custom-blots';
@@ -374,11 +375,17 @@ export const bindings = {
     },
     
     // Potix: override the UX
+    'table down': makeTableArrowHandler(false),
+    'table up': makeTableArrowHandler(true),
     'table enter': {
         key: 'Enter',
         shiftKey: null,
         format: ['table'],
-        handler(range: Range) {
+        handler(range: Range, context) {
+            if (context.line.domNode.dataset['disable'] == 'Enter') {
+                return false;//#20990
+            }
+
             const module = this.quill.getModule('table');
             if (module) {
                 const [table, row, cell] = module.getTable(range);
@@ -528,3 +535,57 @@ export const bindings = {
         },
     },
 };
+
+function makeTableArrowHandler(up: boolean): BindingObject {
+    //copy from
+    //https://github.com/slab/quill/blob/main/packages/quill/src/modules/keyboard.ts#L639
+    return {
+      // @ts-expect-error
+      key: up ? 'ArrowUp' : 'ArrowDown',
+      collapsed: true,
+      format: ['table'],
+      handler(range, context) {
+        const cell = context.line;
+
+        if (cell.domNode.dataset['disable'] == 'Enter') {
+            return false;//#20990
+        }
+
+        // TODO move to table module
+        const key = up ? 'prev' : 'next';
+        const targetRow = cell.parent[key];
+        if (targetRow != null) {
+          if (targetRow.statics.blotName === 'table-row') {
+            let targetCell = targetRow.children.head;
+            let cur = cell;
+            while (cur.prev != null) {
+              cur = cur.prev;
+              targetCell = targetCell.next;
+            }
+            const index =
+              targetCell.offset(this.quill.scroll) +
+              Math.min(context.offset, targetCell.length() - 1);
+            this.quill.setSelection(index, 0, Quill.sources.USER);
+          }
+        } else {
+          const targetLine = cell.table()[key];
+          if (targetLine != null) {
+            if (up) {
+              this.quill.setSelection(
+                targetLine.offset(this.quill.scroll) + targetLine.length() - 1,
+                0,
+                Quill.sources.USER,
+              );
+            } else {
+              this.quill.setSelection(
+                targetLine.offset(this.quill.scroll),
+                0,
+                Quill.sources.USER,
+              );
+            }
+          }
+        }
+        return false;
+      },
+    };
+  }
