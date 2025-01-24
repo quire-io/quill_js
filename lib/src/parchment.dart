@@ -24,6 +24,9 @@ abstract class Blot {
   external Blot? get parent;
   external Blot? get prev;
   external Blot? get next;
+  /// Notice: Should check the existence with `js_util.hasProperty(blot, 'children')` first
+  /// Example: if (js_util.hasProperty(blot, 'children')) { ... }
+  /// since not all `Blot` is `Parent`.
   external LinkedList<Blot> get children;
   external Scroll get scroll;
   external Node get domNode;
