@@ -92,6 +92,13 @@ export const bindings = {
                 default:
                     value = 'ordered';
             }
+            const currentListFormat = context.format.list;
+            const isChecklistFormat = value === 'checked' || value === 'unchecked';
+            const canTransformToChecklist = currentListFormat === 'bullet' || currentListFormat === 'ordered';
+            const isTransformingToChecklist = isChecklistFormat && canTransformToChecklist;
+            // Only allow transforming bullet/ordered lists into checklists
+            if (currentListFormat && !isTransformingToChecklist) return true;
+
             this.quill.insertText(range.index, ' ', Quill.sources.USER);
             this.quill.history.cutoff();
             const delta = new Delta()
