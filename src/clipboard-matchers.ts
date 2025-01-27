@@ -1,6 +1,7 @@
 import Quill from 'quill/core';
 import { Blot, ParentBlot, TextBlot } from 'parchment';
 import { escapeText } from 'quill/blots/text';
+import ListItem from 'quill/formats/list';
 import { Delta, type Range } from 'quill/core';
 import logger from 'quill/core/logger';
 import Clipboard from 'quill/modules/clipboard';
@@ -8,7 +9,7 @@ import { service } from './service/quire';
 
 const debug = logger('quill:clipboard');
 
-interface ListItem {
+interface _ListItem {
     child: Blot;
     offset: number;
     length: number;
@@ -38,12 +39,19 @@ export class ClipboardExt extends Clipboard {
         [index, length] = this._overload(index, length);
         const [line, lineOffset] = this.quill.scroll.line(index);
         if (line) {
-        const lineLength = line.length();
-        const isWithinLine = line.length() >= lineOffset + length;
-        if (isWithinLine && !(lineOffset === 0 && length === lineLength)) {
-            return this._convertHTML(line, lineOffset, length, true);
-        }
-        return this._convertHTML(this.quill.scroll, index, length, true);
+            const lineLength = line.length();
+            const isWithinLine = line.length() >= lineOffset + length;
+            if (isWithinLine && !(lineOffset === 0 && length === lineLength)) {
+                if (line instanceof ListItem && 'html' in line 
+                        && typeof line.html === 'function') {//#21045
+                    const format = line.statics.formats(line.domNode, this.quill.scroll);
+                    const [tag, attribute] = this._getListType(format);
+                    return `<${tag}><li${attribute}>${line.html(lineOffset, length)}</li></${tag}>`;
+                }
+
+                return this._convertHTML(line, lineOffset, length, true);
+            }
+            return this._convertHTML(this.quill.scroll, index, length, true);
         }
         return '';
       }
@@ -240,7 +248,7 @@ export class ClipboardExt extends Clipboard {
     }
 
     _convertListHTML(
-        items: ListItem[],
+        items: _ListItem[],
         lastIndent: number,
         types: string[],
       ): string {
