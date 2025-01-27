@@ -1,4 +1,6 @@
 import Quill from 'quill/core';
+import { Blot, ParentBlot, TextBlot } from 'parchment';
+import { escapeText } from 'quill/blots/text';
 import { Delta, type Range } from 'quill/core';
 import logger from 'quill/core/logger';
 import Clipboard from 'quill/modules/clipboard';
@@ -6,10 +8,45 @@ import { service } from './service/quire';
 
 const debug = logger('quill:clipboard');
 
+interface ListItem {
+    child: Blot;
+    offset: number;
+    length: number;
+    indent: number;
+    type: string;
+}
+
 export class ClipboardExt extends Clipboard {
     constructor(quill: Quill, options: any) {
         super(quill, options);
     }
+
+    onCopy(range: Range, isCut: boolean);
+    onCopy(range: Range) {
+        ///Move implements form
+        /// https://github.com/slab/quill/blob/ebe16ca24724ac4f52505628ac2c4934f0a98b85/packages/quill/src/modules/clipboard.ts#L229
+        const text = this.quill.getText(range);
+        const html = this._getHTML(range);
+
+        return { html, text };
+    }
+
+    _getHTML(index: Range | number = 0, length?: number) {
+        if (typeof index === 'number') {
+          length = length ?? this.quill.getLength() - index;
+        }
+        [index, length] = this._overload(index, length);
+        const [line, lineOffset] = this.quill.scroll.line(index);
+        if (line) {
+        const lineLength = line.length();
+        const isWithinLine = line.length() >= lineOffset + length;
+        if (isWithinLine && !(lineOffset === 0 && length === lineLength)) {
+            return this._convertHTML(line, lineOffset, length, true);
+        }
+        return this._convertHTML(this.quill.scroll, index, length, true);
+        }
+        return '';
+      }
 
     onPaste(range: Range, { text, html }: { text?: string; html?: string; }) {
         const formats = this.quill.getFormat(range.index);
@@ -111,5 +148,143 @@ export class ClipboardExt extends Clipboard {
             new Delta().insert(text || '', formats),
             true,
         ];
+    }
+
+    _overload(index: Range | number,
+        length?: number, name?: string, value?: unknown, source?): [
+            number, number, Record<string, unknown>, unknown] {
+        let formats: Record<string, unknown> = {};
+        // @ts-expect-error
+        if (typeof index.index === 'number' && typeof index.length === 'number') {
+          // Allow for throwaway end (used by insertText/insertEmbed)
+          if (typeof length !== 'number') {
+            source = value;
+            value = name;
+            name = length;
+            // @ts-expect-error
+            length = index.length; // eslint-disable-line prefer-destructuring
+            // @ts-expect-error
+            index = index.index; // eslint-disable-line prefer-destructuring
+          } else {
+            // @ts-expect-error
+            length = index.length; // eslint-disable-line prefer-destructuring
+            // @ts-expect-error
+            index = index.index; // eslint-disable-line prefer-destructuring
+          }
+        } else if (typeof length !== 'number') {
+          source = value;
+          value = name;
+          name = length;
+          length = 0;
+        }
+        // Handle format being object, two format name/value strings or excluded
+        if (typeof name === 'object') {
+          formats = name;
+          source = value;
+        } else if (typeof name === 'string') {
+          if (value != null) {
+            formats[name] = value;
+          } else {
+            source = name;
+          }
+        }
+        // Handle optional source
+        source = source || 'api';
+        // @ts-expect-error
+        return [index, length, formats, source];
+    }
+
+    _convertHTML(blot: Blot, index: number, length: number, isRoot = false) {
+        if ('html' in blot && typeof blot.html === 'function') {
+          return blot.html(index, length);
+        }
+        if (blot instanceof TextBlot) {
+            const escapedText = escapeText(blot.value().slice(index, index + length));
+            return escapedText.replaceAll(' ', '&nbsp;');
+          }
+          if (blot instanceof ParentBlot) {
+            // TODO fix API
+            if (blot.statics.blotName === 'list-container') {
+              const items: any[] = [];
+              blot.children.forEachAt(index, length, (child, offset, childLength) => {
+                const formats =
+                  'formats' in child && typeof child.formats === 'function'
+                    ? child.formats()
+                    : {};
+                items.push({
+                  child,
+                  offset,
+                  length: childLength,
+                  indent: formats.indent || 0,
+                  type: formats.list,
+                });
+              });
+              return this._convertListHTML(items, -1, []);
+            }
+            const parts: string[] = [];
+            blot.children.forEachAt(index, length, (child, offset, childLength) => {
+              parts.push(this._convertHTML(child, offset, childLength));
+            });
+            if (isRoot || blot.statics.blotName === 'list') {
+              return parts.join('');
+            }
+            const { outerHTML, innerHTML } = blot.domNode as Element;
+            const [start, end] = outerHTML.split(`>${innerHTML}<`);
+            // TODO cleanup
+            if (start === '<table') {
+              return `<table style="border: 1px solid #000;">${parts.join('')}<${end}`;
+            }
+            return `${start}>${parts.join('')}<${end}`;
+        }
+        return blot.domNode instanceof Element ? blot.domNode.outerHTML : '';
+    }
+
+    _convertListHTML(
+        items: ListItem[],
+        lastIndent: number,
+        types: string[],
+      ): string {
+        if (items.length === 0) {
+          const [endTag] = this._getListType(types.pop());
+          if (lastIndent <= 0) {
+            return `</li></${endTag}>`;
+          }
+          return `</li></${endTag}>${this._convertListHTML([], lastIndent - 1, types)}`;
+        }
+        const [{ child, offset, length, indent, type }, ...rest] = items;
+        const [tag, attribute] = this._getListType(type);
+        if (indent > lastIndent) {
+          types.push(type);
+          if (indent === lastIndent + 1) {
+            return `<${tag}><li${attribute}>${this._convertHTML(
+              child,
+              offset,
+              length,
+            )}${this._convertListHTML(rest, indent, types)}`;
+          }
+          return `<${tag}><li>${this._convertListHTML(items, lastIndent + 1, types)}`;
+        }
+        const previousType = types[types.length - 1];
+        if (indent === lastIndent && type === previousType) {
+          return `</li><li${attribute}>${this._convertHTML(
+            child,
+            offset,
+            length,
+          )}${this._convertListHTML(rest, indent, types)}`;
+        }
+        const [endTag] = this._getListType(types.pop());
+        return `</li></${endTag}>${this._convertListHTML(items, lastIndent - 1, types)}`;
+    }
+
+    _getListType(type: string | undefined) {
+        const tag = type === 'ordered' ? 'ol' : 'ul';
+        switch (type) {
+          case 'checked':
+            return [tag, ' data-list="checked"'];
+          case 'unchecked':
+            return [tag, ' data-list="unchecked"'];
+          default:
+            return [tag, ''];
+        }
     }
 }
