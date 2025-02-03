@@ -29,6 +29,8 @@ export class ClipboardExt extends Clipboard {
         const text = this.quill.getText(range);
         const html = this._getHTML(range);
 
+        // console.log(html);
+
         return { html, text };
     }
 
@@ -203,16 +205,21 @@ export class ClipboardExt extends Clipboard {
     }
 
     _convertHTML(blot: Blot, index: number, length: number, isRoot = false) {
+      const blotName = blot.statics.blotName;
+      // console.log(`b ${blotName}`);
         if ('html' in blot && typeof blot.html === 'function') {
+          // console.log(`in ${blot.statics.blotName}`);
           return blot.html(index, length);
         }
         if (blot instanceof TextBlot) {
             const escapedText = escapeText(blot.value().slice(index, index + length));
+            // console.log(`int ${blot.statics.blotName}`);
             return escapedText.replaceAll(' ', '&nbsp;');
           }
           if (blot instanceof ParentBlot) {
+            // console.log(`inp ${blot.statics.blotName}`);
             // TODO fix API
-            if (blot.statics.blotName === 'list-container') {
+            if (blotName === 'list-container') {
               const items: any[] = [];
               blot.children.forEachAt(index, length, (child, offset, childLength) => {
                 const formats =
@@ -233,7 +240,11 @@ export class ClipboardExt extends Clipboard {
             blot.children.forEachAt(index, length, (child, offset, childLength) => {
               parts.push(this._convertHTML(child, offset, childLength));
             });
-            if (isRoot || blot.statics.blotName === 'list') {
+            if (isRoot || blotName === 'list') {
+              if (blotName === 'header') {
+                const tagName = blot.domNode.tagName.toLowerCase();
+                return `<${tagName}>${parts.join('')}</${tagName}>`;
+              }
               return parts.join('');
             }
             const { outerHTML, innerHTML } = blot.domNode as Element;
