@@ -122,6 +122,7 @@ export const bindings = {
             blockquote: false,
             table: false,
             header: false,
+            list: false,
         },
         prefix: /^\s*?(\d+\.|-|\*) \[[xX ]?\]$/,
         handler(range: Range, context: Context) {
