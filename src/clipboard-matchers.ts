@@ -44,13 +44,6 @@ export class ClipboardExt extends Clipboard {
             const lineLength = line.length();
             const isWithinLine = line.length() >= lineOffset + length;
             if (isWithinLine && !(lineOffset === 0 && length === lineLength)) {
-                if (line instanceof ListItem && 'html' in line 
-                        && typeof line.html === 'function') {//#21045
-                    const format = line.statics.formats(line.domNode, this.quill.scroll);
-                    const [tag, attribute] = this._getListType(format);
-                    return `<${tag}><li${attribute}>${line.html(lineOffset, length)}</li></${tag}>`;
-                }
-
                 return this._convertHTML(line, lineOffset, length, true);
             }
             return this._convertHTML(this.quill.scroll, index, length, true);
