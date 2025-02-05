@@ -32,7 +32,6 @@ Quill.register({
     'formats/line': c.SoftBreak,
     'formats/color': c.ColorClass,
     'formats/size': c.SizeClass,
-    'formats/list': c.ListBlot,
 
     'themes/quire': QuireTheme,
 
