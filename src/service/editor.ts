@@ -18,7 +18,8 @@ export function convertHTML(
     if (blot instanceof TextBlot) {
         const escapedText = escapeText(blot.value().slice(index, index + length));
         // console.log(`in text ${blotName}`);
-        return escapedText.replaceAll(' ', '&nbsp;');
+        // return escapedText.replaceAll(' ', '&nbsp;');
+        return escapedText;//##20887: Don't need to replace with '&nbsp;'
     }
     if (blot instanceof ParentBlot) {
         // console.log(`in p ${blotName}`);
@@ -132,21 +133,21 @@ function _convertListHTML(
     if (indent > lastIndent) {
       types.push(type);
       if (indent === lastIndent + 1) {
-        return `<${tag}><li${attribute}>${checkbox}<span>${convertHTML(
+        return `<${tag}><li${attribute}>${checkbox}${convertHTML(
           child,
           offset,
           length,
-        )}</span>${_convertListHTML(rest, indent, types)}`;
+        )}${_convertListHTML(rest, indent, types)}`;
       }
       return `<${tag}><li>${_convertListHTML(items, lastIndent + 1, types)}`;
     }
     const previousType = types[types.length - 1];
     if (indent === lastIndent && type === previousType) {
-      return `</li><li${attribute}>${checkbox}<span>${convertHTML(
+      return `</li><li${attribute}>${checkbox}${convertHTML(
         child,
         offset,
         length,
-      )}</span>${_convertListHTML(rest, indent, types)}`;
+      )}${_convertListHTML(rest, indent, types)}`;
     }
     const [endTag] = _getListType(types.pop());
     return `</li></${endTag}>${_convertListHTML(items, lastIndent - 1, types)}`;
