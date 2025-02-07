@@ -1,5 +1,6 @@
 import hljs from 'highlight.js';
 import Quill, { type QuillOptions } from 'quill';
+import Inline from 'quill/blots/inline';
 import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
 import { bindings, KeyboardExt } from './keyboard-bindings';
@@ -11,6 +12,18 @@ import '../quill-quire.css';
 
 // BlockBlot.tagName = 'div';
 // Quill.register(BlockBlot);
+
+Inline.order = [
+    'cursor',
+    'inline', // Must be lower
+    'underline',
+    'strike',
+    'italic',
+    'bold',
+    'script',
+    'link',
+    'code', // Must be higher
+];
 
 Quill.register({
     'attributors/style/color': c.ColorClass,
