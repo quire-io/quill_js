@@ -5,7 +5,7 @@ import * as c from './custom-blots';
 import QuireTheme from './custom-blots/quite-theme';
 import { bindings, KeyboardExt } from './keyboard-bindings';
 import { ClipboardExt } from './clipboard-matchers';
-import { SyntaxExt } from './syntax';
+import SyntaxExt from './syntax';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
