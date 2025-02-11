@@ -9,7 +9,7 @@ class EmailBlot extends EmbedBlot {
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
         
-        node.setAttribute('contenteditable', 'false');
+        // node.setAttribute('contenteditable', 'false');
         node.setAttribute('target', '_blank');
 
         EmailBlot._updateNode(node, value);
