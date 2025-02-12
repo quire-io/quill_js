@@ -140,6 +140,11 @@ export class ClipboardExt extends Clipboard {
             text = text?.replace(/\n/g, ' ');
         }
 
+        const result = service.convertText(text ?? '', formats);
+        if (result != null) {
+            return [new Delta(JSON.parse(result)), true];
+        }
+
         return [
             new Delta().insert(text || '', formats),
             true,
