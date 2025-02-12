@@ -10,7 +10,7 @@ import 'dart:html';
 import 'package:js/js.dart';
 
 @JS()
-abstract class Scroll {
+abstract class Scroll extends Blot {
   external RegistryDefination? query(String query, [int? scope = ParchmentScope.any]);
   external Blot? find(Node node, [bool bubble = false]);
   /// Returns `[Blot?, int]`
