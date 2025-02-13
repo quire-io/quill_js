@@ -69,7 +69,7 @@ export class ClipboardExt extends Clipboard {
         if (replaceSelection)
             delta.delete(range.length)
 
-        delta = delta.concat(pastedDelta);
+        delta = this.removeTrailingNewline(delta.concat(pastedDelta));
         this.quill.updateContents(delta, Quill.sources.USER);
         // range.length contributes to delta.length()
         this.quill.setSelection(
@@ -149,5 +149,26 @@ export class ClipboardExt extends Clipboard {
             new Delta().insert(text || '', formats),
             true,
         ];
+    }
+
+    private removeTrailingNewline(delta: Delta): Delta {
+        const len = delta.ops.length;
+        if (len === 0)
+            return delta;
+
+        const lastOp = delta.ops[len - 1];
+        if (lastOp
+                && typeof lastOp.insert === 'string'
+                && lastOp.insert.endsWith('\n')
+                && lastOp.attributes == null) {
+            // If the last character is a newline, remove it
+            const newLength = lastOp.insert.length - 1;
+            if (newLength === 0) {
+                delta.ops.pop();
+            } else {
+                lastOp.insert = lastOp.insert.slice(0, -1);
+            }
+        }
+        return delta;
     }
 }
