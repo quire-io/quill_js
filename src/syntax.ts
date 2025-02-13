@@ -274,10 +274,7 @@ class Syntax extends Module<SyntaxOptions> {
             }
             timer = setTimeout(() => {
                 const value = this.quill.container.dataset['highlight'];
-                if (value != 'disabled')//#21338: Turn off quill highlight for stop refocus
-                    this.highlight();
-                else
-                    delete this.quill.container.dataset.highlight;
+                this.highlight();
 
                 timer = null;
             }, this.options.interval);
@@ -287,6 +284,7 @@ class Syntax extends Module<SyntaxOptions> {
     highlight(blot: SyntaxCodeBlockContainer | null = null, force = false) {
         if (this.quill.selection.composing) return;
         this.quill.update(Quill.sources.USER);
+        const focused = this.quill.hasFocus();
         const range = this.quill.getSelection();
         const blots =
             blot == null
@@ -299,6 +297,8 @@ class Syntax extends Module<SyntaxOptions> {
         if (range != null) {
             this.quill.setSelection(range, Quill.sources.SILENT);
         }
+        if (!focused && this.quill.hasFocus())
+            this.quill.blur()//#21338, #21424: Don't focus back after highlight
     }
 
     highlightBlot(text: string, language = 'auto') {
