@@ -248,6 +248,26 @@ export const bindings = {
             return false;
         },
     },
+    'tab': {
+        key: 'Tab',
+        handler(range: Range, context: Context) {
+            //#21448: override defaul Quill tab handler
+            //https://github.com/slab/quill/blob/ebe16ca24724ac4f52505628ac2c4934f0a98b85/packages/quill/src/modules/keyboard.ts#L411
+            if (context.line.domNode.dataset['disable'] == 'Enter') {
+                return false;
+            }
+            if (context.format.table) return true;
+            this.quill.history.cutoff();
+            const delta = new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .insert('\t');
+            this.quill.updateContents(delta, Quill.sources.USER);
+            this.quill.history.cutoff();
+            this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+            return false;
+        }
+    },
     'linebreak': {
         key: 'Enter',
         handler(range: Range, context: Context) {
