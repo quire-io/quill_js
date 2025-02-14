@@ -165,6 +165,7 @@ export const bindings = {
             table: false,
         },
         prefix: /^>$/,
+        offset: 1,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
             if (quill.scroll.query('blockquote') == null)
@@ -188,6 +189,7 @@ export const bindings = {
             table: false,
         },
         prefix: /^-{3,}$/,
+        offset: 3,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
             if (quill.scroll.query('divider') == null)
@@ -214,6 +216,7 @@ export const bindings = {
         empty: false,
         prefix: /^`{3}$/,
         suffix: /^$/,
+        offset: 3,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
             if (quill.scroll.query('code-block') == null)
