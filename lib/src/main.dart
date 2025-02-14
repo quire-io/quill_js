@@ -70,7 +70,7 @@ abstract class Quill {
 
   external QuillJsDelta removeFormat(int index, int length, [String source = 'api']);
 
-  external Bounds getBounds(int index, [int length = 0]);
+  external Bounds? getBounds(int index, [int length = 0]);
 
   external Selection? getSelection([bool focus = false]);
 
