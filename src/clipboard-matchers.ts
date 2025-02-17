@@ -1,8 +1,7 @@
 import Quill from 'quill/core';
-import { Blot, ParentBlot, TextBlot } from 'parchment';
-import { escapeText } from 'quill/blots/text';
 import { Delta, type Range } from 'quill/core';
 import logger from 'quill/core/logger';
+import CodeBlock from 'quill/formats/code';
 import Clipboard from 'quill/modules/clipboard';
 import { service } from './service/quire';
 import { overload, convertHTML } from "./service/editor";
@@ -80,7 +79,7 @@ export class ClipboardExt extends Clipboard {
     }
 
     convert({ html, text }: { html?: string; text?: string; }, formats: Record<string, unknown> = {}): Delta {
-        let result = super.convert({ html, text }, formats);
+        let result = this._convert({ html, text }, formats);
         if (formats.table) {
             // Remove newline in delta insert operations since table cells don't support newline
             result = result.reduce((newDelta, op) => {
@@ -101,16 +100,34 @@ export class ClipboardExt extends Clipboard {
         return result;
     }
 
+    _convert({ html, text }: { html?: string; text?: string; }, formats: Record<string, unknown> = {}): Delta {
+        if (formats[CodeBlock.blotName]) {
+            return new Delta().insert(text || '', {
+                [CodeBlock.blotName]: formats[CodeBlock.blotName],
+            });
+        }
+        if (!html) {
+            return new Delta().insert(text || '', formats);
+        }
+        const delta = this.convertHTML(html, formats);
+        // Remove trailing newline
+        if (this.deltaEndsWith(delta, '\n') &&
+                (delta.ops[delta.ops.length - 1].attributes == null || formats.table)) {
+            return delta.compose(new Delta().retain(delta.length() - 1).delete(1));
+        }
+        return delta;
+    }
+
     /**
      * Convert pasted HTML into Delta.
      * @param html HTML.
      * @returns The result delta object
      */
-    convertHTML(html: string): Delta {
+    convertHTML(html: string, formats: Record<string, unknown> = {}): Delta {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         this.normalizeHTML(doc);
         const container = doc.body;
-        const result = service.convertHTML(container.innerHTML);
+        const result = service.convertHTML(container.innerHTML, formats);
         if (result != null) {
             return new Delta(JSON.parse(result));
         }
@@ -170,5 +187,19 @@ export class ClipboardExt extends Clipboard {
             }
         }
         return delta;
+    }
+
+    deltaEndsWith(delta: Delta, text: string) {
+        let endText = '';
+        for (
+          let i = delta.ops.length - 1;
+          i >= 0 && endText.length < text.length;
+          --i // eslint-disable-line no-plusplus
+        ) {
+          const op = delta.ops[i];
+          if (typeof op.insert !== 'string') break;
+          endText = op.insert + endText;
+        }
+        return endText.slice(-1 * text.length) === text;
     }
 }
