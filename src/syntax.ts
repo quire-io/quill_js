@@ -284,7 +284,8 @@ class Syntax extends Module<SyntaxOptions> {
     highlight(blot: SyntaxCodeBlockContainer | null = null, force = false) {
         if (this.quill.selection.composing) return;
         this.quill.update(Quill.sources.USER);
-        const focused = this.quill.hasFocus();
+        const focused = this.quill.hasFocus() 
+            || this.quill.container.classList.contains('focus');
         const range = this.quill.getSelection();
         const blots =
             blot == null
