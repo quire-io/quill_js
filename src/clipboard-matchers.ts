@@ -47,7 +47,7 @@ export class ClipboardExt extends Clipboard {
         const formats = this.quill.getFormat(range.index);
 
         let pastedDelta: Delta;
-        let replaceSelection = true;
+        let replaceSelection = true, singleLine = true;
         if (!html) {
             // https://github.com/slab/quill/issues/4421
             [pastedDelta, replaceSelection] = this.convertText(text, formats, range);
@@ -57,16 +57,42 @@ export class ClipboardExt extends Clipboard {
         debug.log('onPaste', pastedDelta, { text, html });
 
         for (var op of pastedDelta.ops) {
+            const insert = op.insert;
             var attrs = op.attributes;
+
+            if ((typeof insert === "string") 
+                    && (insert.includes("\n") || insert.includes("\r\n")))
+                singleLine = false;
+            else if ((typeof insert === "object") 
+                    && (insert['image'] != null || insert['embed'] != null 
+                        || insert['divider'] != null)) {
+                singleLine = false;
+            }
+
             if (attrs == null) continue;
             if (attrs['align'] != null && attrs['table'] == null) {
                 attrs['align'] = null;//#20930: [Quill] Only support align in table
             }
+
+            if (attrs['header'] != null || attrs['list'] != null 
+                    || attrs['table'] != null || attrs['code-block'] != null
+                    || attrs['blockquote'] != null || attrs['nested-blockquote'] != null)
+                singleLine = false;
         }
 
-        var delta = new Delta().retain(range.index);
-        if (replaceSelection)
-            delta.delete(range.length)
+        var delta = new Delta();
+        if (singleLine) {
+            delta.retain(range.index);
+            if (replaceSelection)
+                delta.delete(range.length)
+        } else {//#21473: Refer to notion, insert to next line when paste multiple lines
+            const [line] = this.quill.getLine(range.index);
+            if (line != null) {
+                delta.retain(line.offset() + line.length());
+                replaceSelection = false;
+                pastedDelta.insert('\n');
+            }
+        }
 
         delta = this.removeTrailingNewline(delta.concat(pastedDelta));
         this.quill.updateContents(delta, Quill.sources.USER);
