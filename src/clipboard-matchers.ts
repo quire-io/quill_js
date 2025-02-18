@@ -81,7 +81,7 @@ export class ClipboardExt extends Clipboard {
         }
 
         var delta = new Delta();
-        if (formats['code-block'] != null || singleLine) {
+        if (formats['code-block'] != null || formats.table || singleLine) {
             delta.retain(range.index);
             if (replaceSelection)
                 delta.delete(range.length)
