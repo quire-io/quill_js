@@ -284,8 +284,6 @@ class Syntax extends Module<SyntaxOptions> {
     highlight(blot: SyntaxCodeBlockContainer | null = null, force = false) {
         if (this.quill.selection.composing) return;
         this.quill.update(Quill.sources.USER);
-        const focused = this.quill.hasFocus() 
-            || this.quill.container.classList.contains('focus');
         const range = this.quill.getSelection();
         const blots =
             blot == null
@@ -296,10 +294,15 @@ class Syntax extends Module<SyntaxOptions> {
         });
         this.quill.update(Quill.sources.SILENT);
         if (range != null) {
-            this.quill.setSelection(range, Quill.sources.SILENT);
+            /**
+             * #21338, #21424, #21502
+             * setSelection used to retain the cursor position after current line highlighten,
+             * not to setSelection if the cursor doesn't changed after update to avoid unexpected editor focus.
+             */
+            const rangeAfterUpdate = this.quill.getSelection();
+            if (range.index != rangeAfterUpdate?.index || range.length != rangeAfterUpdate?.length)
+                this.quill.setSelection(range, Quill.sources.SILENT);
         }
-        if (!focused && this.quill.hasFocus())
-            this.quill.blur()//#21338, #21424: Don't focus back after highlight
     }
 
     highlightBlot(text: string, language = 'auto') {
