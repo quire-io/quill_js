@@ -28,7 +28,7 @@ class StyleBlot extends Inline {
             case 'color':
               //#21530: Don't override color for system colors
               allow = !node.className.split(' ')
-                .some(name => name.startsWith('textcr-'));
+                .every(name => !name.startsWith('textcr-'));
               break;
             case 'font-size':
               allow = value != '14px';
