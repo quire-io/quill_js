@@ -3,6 +3,7 @@ import parse from 'style-to-object';
 
 class StyleBlot extends Inline {
     static blotName = 'style';
+    static className = 'ql-style';
     static tagName = 'SPAN';
 
     static create(value: string) {
@@ -41,6 +42,7 @@ class StyleBlot extends Inline {
       // console.log(results);
 
       node.setAttribute('style', results);
+      node.setAttribute('data-value', results);
   }
 
     static formats(node: HTMLElement) {
