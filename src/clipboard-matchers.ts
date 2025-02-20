@@ -44,10 +44,14 @@ export class ClipboardExt extends Clipboard {
       }
 
     onPaste(range: Range, { text, html }: { text?: string; html?: string; }) {
-        const formats = this.quill.getFormat(range.index);
+        const index = range.index;
+        const formats = this.quill.getFormat(index);
+        const [line] = this.quill.getLine(index);
 
         let pastedDelta: Delta;
-        let replaceSelection = true, singleLine = true;
+        let replaceSelection = true, singleLine = true,
+            appendToCursor = line?.length() == 1 //#21560: Paste to empty line
+                || formats['code-block'] != null || formats.table;
         if (!html) {
             // https://github.com/slab/quill/issues/4421
             [pastedDelta, replaceSelection] = this.convertText(text, formats, range);
@@ -60,13 +64,15 @@ export class ClipboardExt extends Clipboard {
             const insert = op.insert;
             var attrs = op.attributes;
 
-            if ((typeof insert === "string") 
-                    && (insert.includes("\n") || insert.includes("\r\n")))
-                singleLine = false;
-            else if ((typeof insert === "object") 
-                    && (insert['image'] != null || insert['embed'] != null 
-                        || insert['divider'] != null)) {
-                singleLine = false;
+            if (!appendToCursor) {
+                if ((typeof insert === "string") 
+                        && (insert.includes("\n") || insert.includes("\r\n")))
+                    singleLine = false;
+                else if ((typeof insert === "object") 
+                        && (insert['image'] != null || insert['embed'] != null 
+                            || insert['divider'] != null)) {
+                    singleLine = false;
+                }
             }
 
             if (attrs == null) continue;
@@ -81,7 +87,7 @@ export class ClipboardExt extends Clipboard {
         }
 
         var delta = new Delta();
-        if (formats['code-block'] != null || formats.table || singleLine) {
+        if (appendToCursor || singleLine) {
             delta.retain(range.index);
             if (replaceSelection)
                 delta.delete(range.length)
