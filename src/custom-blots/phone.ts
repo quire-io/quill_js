@@ -1,4 +1,5 @@
-import { EmbedBlot } from 'parchment';
+// import { EmbedBlot } from 'parchment';//#21509: Replace with EmbedBlot
+import EmbedBlot from 'quill/blots/embed';
 import { service } from '../service/quire';
 
 class PhoneBlot extends EmbedBlot {
@@ -9,7 +10,7 @@ class PhoneBlot extends EmbedBlot {
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
         
-        node.setAttribute('contenteditable', 'false');
+        node.setAttribute('contenteditable', 'true');//#21509: for cursor visible
         node.setAttribute('target', '_blank');
 
         PhoneBlot._updateNode(node, value);
