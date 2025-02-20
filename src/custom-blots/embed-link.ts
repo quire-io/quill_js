@@ -3,7 +3,7 @@ import { service } from '../service/quire';
 
 class EmbedLinkBlot extends EmbedBlot {
     static blotName = 'embed';
-    static className = 'ql-autolink';
+    static className = 'ql-embed';
     static tagName = 'SPAN';
 
     static create(value: string) {
