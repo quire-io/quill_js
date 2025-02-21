@@ -61,8 +61,13 @@ export function convertHTML(
         }
         return `${start}>${parts.join('')}<${end}`;
     }
-    return blot.domNode instanceof Element ? blot.domNode.outerHTML : '';
+    
+    return blot.domNode instanceof Element ? 
+      blot.domNode.outerHTML.replaceAll(GUARD_TEXT, '') : '';
 }
+
+//#21569: Fixed copy invalid char issue
+const GUARD_TEXT = '\uFEFF';
 
 interface _ListItem {
     child: Blot;
