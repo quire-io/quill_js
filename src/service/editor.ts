@@ -66,7 +66,7 @@ export function convertHTML(
       blot.domNode.outerHTML.replaceAll(GUARD_TEXT, '') : '';
 }
 
-//#21569: Fixed copy invalid char issue
+//#21569: Fixed copy invalid characters issue
 const GUARD_TEXT = '\uFEFF';
 
 interface _ListItem {
