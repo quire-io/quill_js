@@ -63,7 +63,7 @@ interface QuireQuillService {
      * @param html HTML
      * @returns The result delta in JSON string. null if not supported.
      */
-    convertHTML(html: string, format: Record<string, unknown>): string | null;
+    convertHTML(html: string, format: Record<string, unknown>, raw: string): string | null;
 
     /**
      * Convert pasted text into Delta.
@@ -129,8 +129,8 @@ class QuireQuillServiceImpl implements QuireQuillService {
             ?? new Text(value);
     }
 
-    convertHTML(html: string, format: Record<string, unknown>): string | null {
-        return concrete?.convertHTML(html, format);
+    convertHTML(html: string, format: Record<string, unknown>, raw: string): string | null {
+        return concrete?.convertHTML(html, format, raw);
     }
 
     convertText(text: string, format: Record<string, unknown>): string | null {
