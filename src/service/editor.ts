@@ -41,8 +41,14 @@ export function convertHTML(
             return _convertListHTML(items, -1, []);
           }
         const parts: string[] = [];
+        let beginBlot: Blot | null = null, 
+          endBlot: Blot | null = null;
+
         blot.children.forEachAt(index, length, (child, offset, childLength) => {
-            parts.push(convertHTML(child, offset, childLength));
+          if (beginBlot == null)  
+            beginBlot = child;
+          endBlot = child;
+          parts.push(convertHTML(child, offset, childLength));
         });
         
         if (blotName === 'header') {
@@ -51,14 +57,51 @@ export function convertHTML(
         }
 
         if (isRoot || blotName === 'list') {
-            return parts.join('');
+          if (isRoot) {
+            const blotName = beginBlot!.statics.blotName;
+            let start = '', end = '';
+            if (beginBlot!.prev?.statics.blotName == 'line' 
+                    && (blotName == 'line' || blotName == 'block')) {
+                start = '<p>';//copy from 2nd line case
+            }
+
+            const nextBlotName = endBlot!.next?.statics.blotName;
+            if (endBlot!.statics.blotName == 'line' 
+                && (nextBlotName == 'line' || nextBlotName == 'block')) {
+              end = '</p>';//copy from 2nd line case
+            }
+
+            return `${start}${parts.join('')}${end}`;
+          }
+
+          return parts.join('');
         }
         const { outerHTML, innerHTML } = blot.domNode as Element;
-        const [start, end] = outerHTML.split(`>${innerHTML}<`);
+        let [start, end] = outerHTML.split(`>${innerHTML}<`);
         // TODO cleanup
         if (start === '<table') {
             return `<table style="border: 1px solid #000;">${parts.join('')}<${end}`;
         }
+
+        if (blotName === 'line') {
+          start = '';
+          end = '<br>';
+          if (blot.prev?.statics.blotName != 'line') {
+            start = '<p>'
+          }
+          const next = blot.next;
+          if (next?.statics.blotName != 'line' 
+              && next?.statics.blotName != 'block') {
+            end = '</p>';
+          }
+          return `${start}${parts.join('')}${end}`;
+        }
+
+        if (blotName === 'block' 
+            && blot.prev?.statics.blotName == 'line') {
+              return `${parts.join('')}<${end}`;
+        }
+
         return `${start}>${parts.join('')}<${end}`;
     }
     
