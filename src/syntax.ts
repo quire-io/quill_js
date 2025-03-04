@@ -367,6 +367,7 @@ Syntax.DEFAULTS = {
         { key: 'xml', label: 'HTML/XML' },
         { key: 'java', label: 'Java' },
         { key: 'javascript', label: 'JavaScript' },
+        { key: 'lua', label: 'Lua' },
         { key: 'markdown', label: 'Markdown' },
         { key: 'php', label: 'PHP' },
         { key: 'python', label: 'Python' },
