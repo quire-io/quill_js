@@ -41,8 +41,8 @@ export function convertHTML(
             return _convertListHTML(items, -1, []);
           }
         const parts: string[] = [];
-        let beginBlot: Blot | null = null, 
-          endBlot: Blot | null = null;
+        let beginBlot: Blot | any = null, 
+          endBlot: Blot | any = null;
 
         blot.children.forEachAt(index, length, (child, offset, childLength) => {
           if (beginBlot == null)  
@@ -58,17 +58,21 @@ export function convertHTML(
 
         if (isRoot || blotName === 'list') {
           if (isRoot) {
-            const blotName = beginBlot!.statics.blotName;
             let start = '', end = '';
-            if (beginBlot!.prev?.statics.blotName == 'line' 
-                    && (blotName == 'line' || blotName == 'block')) {
-                start = '<p>';//copy from 2nd line case
+            if (beginBlot != null) {
+              const blotName = beginBlot.statics.blotName;
+              if (beginBlot.prev?.statics.blotName == 'line' 
+                      && (blotName == 'line' || blotName == 'block')) {
+                  start = '<p>';//copy from 2nd line case
+              }
             }
 
-            const nextBlotName = endBlot!.next?.statics.blotName;
-            if (endBlot!.statics.blotName == 'line' 
-                && (nextBlotName == 'line' || nextBlotName == 'block')) {
-              end = '</p>';//copy from 2nd line case
+            if (endBlot != null) {
+              const nextBlotName = endBlot.next?.statics.blotName;
+              if (endBlot.statics.blotName == 'line' 
+                  && (nextBlotName == 'line' || nextBlotName == 'block')) {
+                end = '</p>';//copy from 2nd line case
+              }
             }
 
             return `${start}${parts.join('')}${end}`;
