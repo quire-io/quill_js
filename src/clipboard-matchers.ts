@@ -47,6 +47,7 @@ export class ClipboardExt extends Clipboard {
         const index = range.index;
         const formats = this.quill.getFormat(index);
         const [line] = this.quill.getLine(index);
+        const inQuote = formats['blockquote'] != null || formats['nested-blockquote'] != null;
 
         let pastedDelta: Delta;
         let replaceSelection = true, singleLine = true,
@@ -82,7 +83,7 @@ export class ClipboardExt extends Clipboard {
 
             if (attrs['header'] != null || attrs['list'] != null 
                     || attrs['table'] != null || attrs['code-block'] != null
-                    || attrs['blockquote'] != null || attrs['nested-blockquote'] != null)
+                    || (!inQuote && (attrs['blockquote'] != null || attrs['nested-blockquote'] != null)))
                 singleLine = false;
         }
 
@@ -94,7 +95,7 @@ export class ClipboardExt extends Clipboard {
         } else {//#21473: Refer to notion, insert to next line when paste multiple lines
             const [line] = this.quill.getLine(range.index);
             if (line != null) {
-                delta.retain(line.offset() + line.length());
+                delta.retain(line.offset() + line.length() + (inQuote ? 2: 0));
                 replaceSelection = false;
                 pastedDelta.insert('\n');
             }
