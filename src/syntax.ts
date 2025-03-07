@@ -363,6 +363,7 @@ Syntax.DEFAULTS = {
         { key: 'cpp', label: 'C++' },
         { key: 'cs', label: 'C#' },
         { key: 'css', label: 'CSS' },
+        { key: 'dart', label: 'Dart' },
         { key: 'diff', label: 'Diff' },
         { key: 'xml', label: 'HTML/XML' },
         { key: 'java', label: 'Java' },
