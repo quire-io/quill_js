@@ -10,8 +10,11 @@ const debug = logger('quill:clipboard');
 
 
 export class ClipboardExt extends Clipboard {
-    constructor(quill: Quill, options: any) {
+    private trimTrailingNewline: boolean = false;
+
+    constructor(quill: Quill, options: Record<string, any>) {
         super(quill, options);
+        this.trimTrailingNewline = options['trimTrailingNewline'] ?? false;
     }
 
     onCopy(range: Range, isCut: boolean);
@@ -101,7 +104,9 @@ export class ClipboardExt extends Clipboard {
             }
         }
 
-        delta = this.removeTrailingNewline(delta.concat(pastedDelta));
+        delta = delta.concat(pastedDelta);
+        if (this.trimTrailingNewline)
+            delta = this.removeTrailingNewline(delta);
         this.quill.updateContents(delta, Quill.sources.USER);
         // range.length contributes to delta.length()
         this.quill.setSelection(

@@ -158,27 +158,8 @@ abstract class QuillConfiguration {
   external factory QuillConfiguration({
     String theme,
     String placeholder,
-    QuillConfigurationModules modules});
+    Object? modules});
 }
-
-@anonymous
-@JS()
-abstract class QuillConfigurationModules {
-  external List<dynamic> get toolbar;
-  external set toolbar(List<dynamic> v);
-
-  external factory QuillConfigurationModules({
-    List<dynamic> toolbar,});
-}
-
-@anonymous
-@JS()
-abstract class QuillHeaderOption {
-  external List<dynamic> get header;
-  external set header(List<dynamic> v);
-
-  external factory QuillHeaderOption({
-    List<dynamic> header,});}
 
 @anonymous
 @JS()

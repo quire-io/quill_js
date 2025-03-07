@@ -98,14 +98,17 @@ export function createQuill(
     options?: QuillOptions,
     formats?: string[]
 ): Quill {
+    let modules = options?.modules ?? {};
     return applyQuillWorkarounds(new Quill(container, {
         ...options,
         modules: {
-            toolbar: false,
-            uploader: false,
-            table: true,
-            syntax: { hljs },
-            keyboard: { bindings },
+            ...modules,
+            toolbar: 'toolbar' in modules ? modules.toolbar : false,
+            uploader: 'uploader' in modules ? modules.uploader : false,
+            table: 'table' in modules ? modules.table : true,
+            syntax: 'syntax' in modules ? modules.syntax : { hljs },
+            keyboard: 'keyboard' in modules ? modules.keyboard : { bindings },
+            clipboard: 'clipboard' in modules ? modules.clipboard : {},
         },
         formats: formats ?? QUIRE_FORMATS,
     }));
