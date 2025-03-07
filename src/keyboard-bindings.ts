@@ -214,18 +214,20 @@ export const bindings = {
             table: false,
         },
         empty: false,
-        prefix: /^`{3}$/,
+        prefix: /^`{3}\w*?$/,
         suffix: /^$/,
-        offset: 3,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
             if (quill.scroll.query('code-block') == null)
                 return true;
 
-            quill.history.cutoff();
             const { length } = context.prefix;
+            if (context.offset > length) return true; // not in line start
+
+            quill.history.cutoff();
             const pos = range.index - length;
-            quill.formatLine(pos, 1, 'code-block', true, Quill.sources.USER);
+            const lang = context.prefix.substring(3).toLowerCase();
+            quill.formatLine(pos, 1, 'code-block', lang.length > 0 ? lang : true, Quill.sources.USER);
             quill.deleteText(pos, length, Quill.sources.USER);
             quill.setSelection(pos, Quill.sources.USER);
             quill.history.cutoff();
