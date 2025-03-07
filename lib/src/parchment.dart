@@ -3,23 +3,13 @@
 // Author: rudyhuang
 
 @JS()
-library quill_js;
+library;
 
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
+import 'package:web/web.dart';
 
-@JS()
-abstract class Scroll extends Blot {
-  external RegistryDefination? query(String query, [int? scope = ParchmentScope.any]);
-  external Blot? find(Node node, [bool bubble = false]);
-  /// Returns `[Blot?, int]`
-  external List<dynamic> descendant(bool Function(Blot?) matcher, int index);
-  external List<Blot> descendants(bool Function(Blot?) matcher, int index, int length);
-}
-
-@JS()
-abstract class Blot {
+extension type Blot._(JSObject _) implements JSObject {
   external BlotConstructor get statics;
   external Blot? get parent;
   external Blot? get prev;
@@ -33,12 +23,18 @@ abstract class Blot {
   external int length();
   external int offset([Blot? root]);
   external void remove();
-  external Blot replaceWith(String name, dynamic value);
+  external Blot replaceWith(String name, JSAny value);
 }
 
-@anonymous
-@JS()
-abstract class LinkedList<T> {
+extension type Scroll._(JSObject _) implements Blot {
+  external RegistryDefination? query(String query, [int? scope]);
+  external Blot? find(Node node, [bool bubble]);
+  /// Returns `[Blot?, int]`
+  external JSArray descendant(JSFunction matcher, int index);
+  external JSArray<Blot> descendants(JSFunction matcher, int index, int length);
+}
+
+extension type LinkedList<T extends JSAny>._(JSObject _) implements JSObject {
   external T? get head;
 
   external T? get tail;
@@ -47,34 +43,30 @@ abstract class LinkedList<T> {
 
   external int get length;
 
-  external void forEach(void Function(T) callback);
+  external void forEach(JSFunction callback);
 
-  external List<R> map<R>(R Function(T) callback);
+  external JSArray<R> map<R extends JSAny?>(JSFunction callback);
 }
 
-@JS()
-abstract class RegistryDefination {
+extension type RegistryDefination._(JSObject _) implements JSObject {
   /// see [ParchmentScope]
   external int get scope;
 }
 
-@JS()
-abstract class BlotConstructor extends RegistryDefination {
+extension type BlotConstructor._(JSObject _) implements RegistryDefination {
   external String get blotName;
   external String get tagName;
   external String? get className;
 }
 
-@JS()
-abstract class Formattable extends Blot {
-  external void format(String name, dynamic value);
+extension type Formattable._(JSObject _) implements Blot {
+  external void format(String name, JSAny value);
 
-  external Object formats();
+  external JSObject formats();
 }
 
-@JS()
-abstract class Leaf extends Blot {
-  external dynamic value();
+extension type Leaf._(JSObject _) implements Blot {
+  external JSAny value();
 }
 
 abstract class ParchmentScope {

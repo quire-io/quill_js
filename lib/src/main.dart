@@ -1,22 +1,22 @@
 //Copyright (C) 2024 Potix Corporation. All Rights Reserved.
 //History: Wed Jun 19 09:52 AM CST 2024
 // Author: jimmyshiau
-@JS()
-library quill_js;
+@JS('QuillJsLib')
+library;
 
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
+import 'package:web/web.dart';
 
 import 'parchment.dart';
 import 'module.dart';
 
-@JS('QuillJsLib.createQuill')
-external Quill createQuill(dynamic container, QuillConfiguration options,
-  List<String>? formats);
+@JS()
+external Quill createQuill(JSAny container, QuillConfiguration options,
+  JSArray<JSString>? formats);
 
-@JS('QuillJsLib.registerService')
-external void registerService(Object service);
+@JS()
+external void registerService(JSObject service);
 
 typedef QuillTextChangeEventHandler = void Function(
   QuillJsDelta delta,
@@ -30,51 +30,49 @@ typedef QuillSelectionChangeEventHandler = void Function(
   String source,
 );
 
-@anonymous
-@JS()
-abstract class Quill {
+extension type Quill._(JSObject _) implements JSObject {
   static const eventTextChange = 'text-change';
   static const eventSelectionChange = 'selection-change';
 
-  external QuillJsDelta deleteText(int index, int length, [String source = 'api']);
+  external QuillJsDelta deleteText(int index, int length, [String source]);
 
-  external QuillJsDelta getContents([int index = 0, int length]);
+  external QuillJsDelta getContents([int index, int length]);
 
   external int getLength();
 
   external String getText(int index, [int length]);
 
-  external String getSemanticHTML([int index = 0, int length]);
+  external String getSemanticHTML([int index, int length]);
 
-  external QuillJsDelta insertEmbed(int index, String type, dynamic value, [String source = 'api']);
+  external QuillJsDelta insertEmbed(int index, String type, JSAny value, [String source]);
 
-  /// Pass a [jsify] Map, or `Object()` as empty format
-  external QuillJsDelta insertText(int index, String text, [Object formats, String source = 'api']);
+  /// Pass a [jsify] Map, or `JSObject()` as empty format
+  external QuillJsDelta insertText(int index, String text, [JSObject formats, String source]);
 
-  external QuillJsDelta setContents(List<dynamic> data);
+  external QuillJsDelta setContents(JSArray<JSObject> data);
 
-  external QuillJsDelta setText(String text, [String source = 'api']);
+  external QuillJsDelta setText(String text, [String source]);
 
-  external QuillJsDelta updateContents(List<dynamic> data, [String source = 'api']);
+  external QuillJsDelta updateContents(JSArray<JSObject> data, [String source]);
 
-  external QuillJsDelta format(String name, dynamic value, [String source = 'api']);
+  external QuillJsDelta format(String name, JSAny value, [String source]);
 
-  /// Pass a [jsify] Map, or `Object()` as empty format
-  external QuillJsDelta formatLine(int index, int length, [Object formats, String source = 'api']);
+  /// Pass a [jsify] Map, or `JSObject()` as empty format
+  external QuillJsDelta formatLine(int index, int length, [JSObject formats, String source]);
 
-  /// Pass a [jsify] Map, or `Object()` as empty format
-  external QuillJsDelta formatText(int index, int length, [Object formats, String source = 'api']);
+  /// Pass a [jsify] Map, or `JSObject()` as empty format
+  external QuillJsDelta formatText(int index, int length, [JSObject formats, String source]);
 
   /// Use [getProperty] to get the property
-  external Object getFormat([int index, int length = 0]);
+  external JSObject getFormat([int index, int length]);
 
-  external QuillJsDelta removeFormat(int index, int length, [String source = 'api']);
+  external QuillJsDelta removeFormat(int index, int length, [String source]);
 
-  external Bounds? getBounds(int index, [int length = 0]);
+  external Bounds? getBounds(int index, [int length]);
 
-  external Selection? getSelection([bool focus = false]);
+  external Selection? getSelection([bool focus]);
 
-  external void setSelection(int index, [int length = 0, String source = 'api']);
+  external void setSelection(int index, [int length, String source]);
 
   external void scrollSelectionIntoView();
 
@@ -82,7 +80,7 @@ abstract class Quill {
 
   external void disable();
 
-  external void enable([bool enabled = true]);
+  external void enable([bool enabled]);
 
   external bool isEnabled();
 
@@ -90,42 +88,40 @@ abstract class Quill {
 
   external bool hasFocus();
 
-  external void update([String source = 'api']);
+  external void update([String source]);
 
-  external void on(String name, Function handler);
+  external void on(String name, JSFunction handler);
 
-  external void once(String name, Function handler);
+  external void once(String name, JSFunction handler);
 
-  external void off(String name, Function handler);
+  external void off(String name, JSFunction handler);
 
   external int getIndex(Blot blot);
 
   /// Returns [LeafBlot?, int]
-  external List<dynamic> getLeaf(int index);
+  external JSArray<JSAny> getLeaf(int index);
 
   /// Returns [Block?, int]
-  external List<dynamic> getLine(int index);
+  external JSArray<JSAny> getLine(int index);
 
-  external List<Object> getLines([int index, int length]);
+  external JSArray<Blot> getLines([int index, int length]);
 
-  external Element get container;
+  external HTMLElement get container;
 
   external KeyboardModule get keyboard;
 
-  external Element get root;
+  external HTMLElement get root;
 
   external Scroll get scroll;
 
   external QuillHistory get history;
 
-  external Element addContainer(Node domNode, [Node? refNode]);
+  external HTMLElement addContainer(Node domNode, [Node? refNode]);
 
-  external dynamic getModule(String name);
+  external JSObject getModule(String name);
 }
 
-@anonymous
-@JS()
-abstract class Bounds {
+extension type Bounds._(JSObject _) implements JSObject {
   external num get left;
   external num get top;
   external num get height;
@@ -139,9 +135,7 @@ abstract class Bounds {
   });
 }
 
-@anonymous
-@JS()
-abstract class Selection {
+extension type Selection._(JSObject _) implements JSObject {
   external int get index;
   external int get length;
 
@@ -151,43 +145,35 @@ abstract class Selection {
   });
 }
 
-@anonymous
-@JS()
-abstract class QuillConfiguration {
+extension type QuillConfiguration._(JSObject _) implements JSObject  {
 
   external factory QuillConfiguration({
     String theme,
     String placeholder,
-    Object? modules});
+    JSObject? modules});
 }
 
-@anonymous
-@JS()
-abstract class QuillJsDelta {
-  external List<QuillJsDeltaOp> get ops;
+extension type QuillJsDelta._(JSObject _) implements JSObject {
+  external JSArray<QuillJsDeltaOp> get ops;
 
-  external factory QuillJsDelta({List<QuillJsDeltaOp> ops});
+  external factory QuillJsDelta({JSArray<QuillJsDeltaOp> ops});
 }
 
-@anonymous
-@JS()
-abstract class QuillJsDeltaOp {
-  external Object? get insert;
-  external Object? get delete;
-  external Object? get retain;
-  external Object? get attributes;
+extension type QuillJsDeltaOp._(JSObject _) implements JSObject {
+  external JSObject? get insert;
+  external JSObject? get delete;
+  external JSObject? get retain;
+  external JSObject? get attributes;
 
   external factory QuillJsDeltaOp({
-    Object? insert,
-    Object? delete,
-    Object? retain,
-    Object? attributes,
+    JSObject? insert,
+    JSObject? delete,
+    JSObject? retain,
+    JSObject? attributes,
   });
 }
 
-@anonymous
-@JS()
-abstract class QuillHistory {
+extension type QuillHistory._(JSObject _) implements JSObject {
   external void clear();
   external void cutoff();
   external void redo();

@@ -3,11 +3,11 @@
 // Author: rudyhuang
 
 @JS()
-library quill_js;
+library;
 
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
+import 'package:web/web.dart' hide Selection;
 
 import 'main.dart';
 import 'parchment.dart';
@@ -20,24 +20,20 @@ import 'parchment.dart';
 typedef BindingHandler = bool? Function(
   Selection,
   BindingContext,
-  Object,
+  JSObject,
 );
 
-@anonymous
-@JS()
-abstract class KeyboardModule {
+extension type KeyboardModule._(JSObject _) implements JSObject {
   external Quill get quill;
 
   external void addBinding(
     BindingObject binding,
-    BindingHandler handler,
+    JSFunction handler,
   );
 }
 
-@anonymous
-@JS()
-abstract class BindingObject {
-  external List<dynamic> get key;
+extension type BindingObject._(JSObject _) implements JSObject {
+  external JSArray get key;
   external bool? get shortKey;
   external bool? get shiftKey;
   external bool? get altKey;
@@ -48,37 +44,35 @@ abstract class BindingObject {
   external bool get collapsed;
   external bool get empty;
   external int get offset;
-  external RegExp get prefix;
-  external RegExp get suffix;
-  external Object get format;
+  external JSObject get prefix;
+  external JSObject get suffix;
+  external JSObject get format;
 
   /// [shortKey] is a platform specific modifier equivalent to 
   /// [metaKey] on a Mac and [ctrlKey] on Linux and Windows.
   external factory BindingObject({
-    List<dynamic> key,
-    bool? shortKey = false,
-    bool? shiftKey = false,
-    bool? altKey = false,
-    bool? metaKey = false,
-    bool? ctrlKey = false,
+    JSArray key,
+    bool? shortKey,
+    bool? shiftKey,
+    bool? altKey,
+    bool? metaKey,
+    bool? ctrlKey,
     bool collapsed,
     bool empty,
     int offset,
-    RegExp prefix,
-    RegExp suffix,
-    Object format,
+    JSObject prefix,
+    JSObject suffix,
+    JSObject format,
   });
 }
 
-@anonymous
-@JS()
-abstract class BindingContext {
+extension type BindingContext._(JSObject _) implements JSObject {
   external bool get collapsed;
   external bool get empty;
   external int get offset;
   external KeyboardEvent get event;
   external String get prefix;
   external String get suffix;
-  external Object get format;
+  external JSObject get format;
   external Blot get line;
 }

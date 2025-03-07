@@ -2,7 +2,7 @@
 //History: Tue Sep 3 12:47 PM CST 2024
 // Author: rudyhuang
 
-library quill_js;
+library;
 
 export 'src/parchment.dart';
 export 'src/main.dart';
