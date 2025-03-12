@@ -98,7 +98,11 @@ export class ClipboardExt extends Clipboard {
         } else {//#21473: Refer to notion, insert to next line when paste multiple lines
             const [line] = this.quill.getLine(range.index);
             if (line != null) {
-                delta.retain(line.offset() + line.length() + (inQuote ? 2: 0));
+                const parent = line.parent;
+                var ofs = line.offset();
+                if (parent != null && parent.statics.blotName == 'blockquote-container')
+                    ofs += parent.offset();
+                delta.retain(ofs + line.length());
                 replaceSelection = false;
                 pastedDelta.insert('\n');
             }
