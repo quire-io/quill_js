@@ -261,7 +261,8 @@ export const bindings = {
             if (context.line.domNode.dataset['disable'] == 'Enter') {
                 return false;
             }
-            if (context.format.table) return true;
+            //#21177: Allow tab to leave focus when empty
+            if (context.format.table || this.quill.getLength() < 2) return true;
             this.quill.history.cutoff();
             const delta = new Delta()
             .retain(range.index)
