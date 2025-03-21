@@ -253,6 +253,14 @@ export const bindings = {
             return false;
         },
     },
+    'shift tab': {
+      key: 'Tab',
+      shiftKey: true,
+      handler(range) {
+        //#21177: Don't leave focus when press shift + tab and is not empty
+        return this.quill.getLength() < 2;
+      },
+    },
     'tab': {
         key: 'Tab',
         handler(range: Range, context: Context) {
