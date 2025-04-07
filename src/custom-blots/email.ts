@@ -11,7 +11,7 @@ class EmailBlot extends EmbedBlot {
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
         
-        node.setAttribute('contenteditable', 'true');//#21509: for cursor visible
+        node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
         node.setAttribute('target', '_blank');
 
         EmailBlot._updateNode(node, value);

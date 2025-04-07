@@ -17,6 +17,11 @@ interface QuireQuillService {
     isQuireUrl(url: string): boolean;
 
     /**
+     * Returns whether Quill is editable
+     */
+    isEnabled(): boolean;
+
+    /**
      * Returns whether allow replce current line with paragraph when press Enter
      * @param format attributes of format
      */
@@ -89,6 +94,10 @@ class QuireQuillServiceImpl implements QuireQuillService {
     isQuireUrl(url: string): boolean {
         return concrete?.isQuireUrl(url)
             ?? url.startsWith('https://quire.io/w/');
+    }
+
+    isEnabled(): boolean {
+        return concrete?.isEnabled() ?? true;
     }
 
     canReplaceParagraph(format: Record<string, unknown>): boolean {
