@@ -13,6 +13,7 @@ class PhoneBlot extends EmbedBlot {
         
         node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
         node.setAttribute('target', '_blank');
+        EmbedBlot.autoDetach(node);//#22037
 
         PhoneBlot._updateNode(node, value);
         

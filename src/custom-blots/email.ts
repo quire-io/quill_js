@@ -13,6 +13,7 @@ class EmailBlot extends EmbedBlot {
         
         node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
         node.setAttribute('target', '_blank');
+        EmbedBlot.autoDetach(node);//#22037
 
         EmailBlot._updateNode(node, value);
         

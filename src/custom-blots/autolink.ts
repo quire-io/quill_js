@@ -12,6 +12,7 @@ class AutolinkBlot extends EmbedBlot {
         const node = super.create() as HTMLAnchorElement;
         node.setAttribute('data-value', value);
         node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
+        EmbedBlot.autoDetach(node);//#22037
         
         let children = service.renderAutolink(value);
         node.replaceChildren(children);

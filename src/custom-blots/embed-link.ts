@@ -10,6 +10,7 @@ class EmbedLinkBlot extends EmbedBlot {
         const node = super.create() as HTMLAnchorElement;
         node.setAttribute('data-value', value);
         node.setAttribute('contenteditable', 'false');
+        EmbedBlot.autoDetach(node);//#22037
         
         let children = service.renderAutolink(value);
         node.replaceChildren(children);

@@ -12,6 +12,7 @@ class FormulaBlot extends EmbedBlot {
         const node = super.create() as HTMLElement;
         node.setAttribute('data-value', value);
         node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
+        EmbedBlot.autoDetach(node);//#22037
 
         let children = service.evaluateFormula(value);
         node.replaceChildren(children);
