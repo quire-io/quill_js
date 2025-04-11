@@ -1,4 +1,5 @@
 import { EmbedBlot } from 'parchment';
+import { autoDetach } from './embed';
 import { service } from '../service/quire';
 
 class EmbedLinkBlot extends EmbedBlot {
@@ -10,7 +11,7 @@ class EmbedLinkBlot extends EmbedBlot {
         const node = super.create() as HTMLAnchorElement;
         node.setAttribute('data-value', value);
         node.setAttribute('contenteditable', 'false');
-        EmbedBlot.autoDetach(node);//#22037
+        autoDetach(node);//#22037
         
         let children = service.renderAutolink(value);
         node.replaceChildren(children);

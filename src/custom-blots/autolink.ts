@@ -1,6 +1,7 @@
 // import { EmbedBlot } from 'parchment';//#21509: Replace with EmbedBlot
 //import EmbedBlot from 'quill/blots/embed';
 import EmbedBlot from './embed';
+import { autoDetach } from './embed';
 import { service } from '../service/quire';
 
 class AutolinkBlot extends EmbedBlot {
@@ -12,7 +13,7 @@ class AutolinkBlot extends EmbedBlot {
         const node = super.create() as HTMLAnchorElement;
         node.setAttribute('data-value', value);
         node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
-        EmbedBlot.autoDetach(node);//#22037
+        autoDetach(node);//#22037
         
         let children = service.renderAutolink(value);
         node.replaceChildren(children);
