@@ -100,7 +100,7 @@ export class ClipboardExt extends Clipboard {
             if (line != null) {
                 const parent = line.parent;
                 var ofs = line.offset();
-                if (parent != null && parent.statics.blotName == 'blockquote-container')
+                if (parent != null && ['blockquote-container', 'list-container'].includes(parent.statics.blotName))
                     ofs += parent.offset();
                 delta.retain(ofs + line.length());
                 replaceSelection = false;
