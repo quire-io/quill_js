@@ -6,6 +6,7 @@ import BindingObject from 'quill/modules/keyboard';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
 import { service } from './service/quire';
 import { SoftBreak } from './custom-blots';
+import { SyntaxAlias } from './syntax';
 
 export class KeyboardExt extends Keyboard {
     constructor(quill: Quill, options: any) {
@@ -214,7 +215,7 @@ export const bindings = {
             table: false,
         },
         empty: false,
-        prefix: /^`{3}\w*?$/,
+        prefix: /^`{3}[\w\W]*?$/,
         suffix: /^$/,
         handler(range: Range, context: Context) {
             const quill: Quill = this.quill;
@@ -227,7 +228,8 @@ export const bindings = {
             quill.history.cutoff();
             const pos = range.index - length;
             const lang = context.prefix.substring(3).toLowerCase();
-            quill.formatLine(pos, 1, 'code-block', lang.length > 0 ? lang : true, Quill.sources.USER);
+            quill.formatLine(pos, 1, 'code-block', lang.length > 0 ? 
+                SyntaxAlias[lang] ?? lang : true, Quill.sources.USER);
             quill.deleteText(pos, length, Quill.sources.USER);
             quill.setSelection(pos, Quill.sources.USER);
             quill.history.cutoff();
