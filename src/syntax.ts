@@ -378,6 +378,7 @@ Syntax.DEFAULTS = {
         { key: 'css', label: 'CSS' },
         { key: 'diff', label: 'Diff' },
         { key: 'xml', label: 'HTML/XML' },
+        { key: 'html', label: 'HTML/XML' },
         { key: 'java', label: 'Java' },
         { key: 'javascript', label: 'JavaScript' },
         { key: 'lua', label: 'Lua' },
