@@ -1,6 +1,7 @@
 // import { EmbedBlot } from 'parchment';//#21509: Replace with EmbedBlot
 //import EmbedBlot from 'quill/blots/embed';
 import EmbedBlot from './embed';
+import { autoDetach } from './embed';
 import { service } from '../service/quire';
 
 class EmailBlot extends EmbedBlot {
@@ -11,8 +12,9 @@ class EmailBlot extends EmbedBlot {
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
         
-        node.setAttribute('contenteditable', 'true');//#21509: for cursor visible
+        node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
         node.setAttribute('target', '_blank');
+        autoDetach(node);//#22037
 
         EmailBlot._updateNode(node, value);
         

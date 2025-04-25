@@ -10,4 +10,16 @@ class Embed extends EmbedBlot {
   } 
 }
 
+export function autoDetach(element: Element) {
+  const observer = new MutationObserver((mutations) => {
+    if (!element.innerHTML.trim().length)
+      element.remove();
+  });
+
+  observer.observe(element, {
+    childList: true,
+    subtree: true, // Optional: detect nested changes
+  });
+}
+
 export default Embed;

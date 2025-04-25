@@ -1,6 +1,7 @@
 // import { EmbedBlot } from 'parchment';//#21509: Replace with EmbedBlot
 //import EmbedBlot from 'quill/blots/embed';
 import EmbedBlot from './embed';
+import { autoDetach } from './embed';
 import { service } from '../service/quire';
 
 class AutolinkBlot extends EmbedBlot {
@@ -10,11 +11,9 @@ class AutolinkBlot extends EmbedBlot {
 
     static create(value: string) {
         const node = super.create() as HTMLAnchorElement;
-        node.setAttribute('data-value', value);
-        node.setAttribute('contenteditable', 'true');//#21509: for cursor visible
+        AutolinkBlot._updateNode(node, value);
+        autoDetach(node);//#22037
         
-        let children = service.renderAutolink(value);
-        node.replaceChildren(children);
         return node;
     }
 
@@ -22,12 +21,20 @@ class AutolinkBlot extends EmbedBlot {
         return domNode.getAttribute('data-value');
     }
 
+    static _updateNode(node: Element, value: string) {
+      node.setAttribute('data-value', value);
+      node.setAttribute('contenteditable', `${service.isEnabled()}`);//#21509: for cursor visible
+
+      let children = service.renderAutolink(value);
+      node.replaceChildren(children);
+    }
+
     format(name, value) {
-        if (name === this.statics.blotName && value) {
-          (this.domNode as Element).setAttribute('data-value', value);
-        } else {
-          super.format(name, value);
-        }
+      if (name === this.statics.blotName && value) {
+        AutolinkBlot._updateNode(this.domNode as Element, value);
+      } else {
+        super.format(name, value);
+      }
     }
 }
 

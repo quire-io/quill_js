@@ -389,4 +389,10 @@ Syntax.DEFAULTS = {
     ],
 };
 
-export { SyntaxCodeBlock as CodeBlock, CodeToken, Syntax as default };
+const SyntaxAlias = {
+    'html': 'xml',
+    'c++': 'cpp',
+    'c#': 'cs'
+};
+
+export { SyntaxCodeBlock as CodeBlock, CodeToken, Syntax as default, SyntaxAlias };
