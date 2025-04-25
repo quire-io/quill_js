@@ -169,6 +169,19 @@ class SyntaxCodeBlockContainer extends CodeBlockContainer {
         )}\n</pre>`;
     }
 
+    public checkMerge(): boolean {
+        let canMerge = super.checkMerge();
+        if (canMerge) {
+            return this._lang(this.next as CodeBlockContainer) === this._lang(this);
+        }
+        return canMerge;
+    }
+
+    _lang(blot: CodeBlockContainer) {
+        if (blot.children.head != null) 
+            return SyntaxCodeBlock.formats(blot.children.head.domNode);
+    }
+
     optimize(context: Record<string, any>) {
         super.optimize(context);
         if (
