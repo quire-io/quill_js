@@ -16,11 +16,7 @@ export class KeyboardExt extends Keyboard {
     handleEnter(range: Range, context: Context) {
         const index = range.index;
         if (this.quill.root.dataset['disable'] == 'linebreak') {
-            const delta = new Delta()
-                .retain(index)
-                .delete(range.length);
-            this.quill.updateContents(delta, Quill.sources.USER);
-            this.quill.setSelection(index, Quill.sources.SILENT);
+            this.quill.setSelection(index + range.length, Quill.sources.SILENT);
             this.quill.focus();
             return;
         }
