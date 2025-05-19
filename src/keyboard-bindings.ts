@@ -14,6 +14,13 @@ export class KeyboardExt extends Keyboard {
     }
 
     handleEnter(range: Range, context: Context) {
+        const index = range.index;
+        if (this.quill.root.dataset['disable'] == 'linebreak') {
+            this.quill.setSelection(index + range.length, Quill.sources.SILENT);
+            this.quill.focus();
+            return;
+        }
+        
         const lineFormats = Object.keys(context.format).reduce(
             (formats: Record<string, unknown>, format) => {
                 if (
@@ -26,7 +33,7 @@ export class KeyboardExt extends Keyboard {
             },
             {},
         );
-        const index = range.index;
+        
         const delta = new Delta()
             .retain(index)
             .delete(range.length)
