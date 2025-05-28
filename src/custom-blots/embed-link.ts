@@ -1,38 +1,18 @@
-import { EmbedBlot } from 'parchment';
-import { autoDetach } from './embed';
-import { service } from '../service/quire';
+import EmbedBlot from './embed';
 
 class EmbedLinkBlot extends EmbedBlot {
     static blotName = 'embed';
     static className = 'ql-embed';
     static tagName = 'SPAN';
 
-    static create(value: string) {
-        const node = super.create() as HTMLAnchorElement;
-        EmbedLinkBlot._updateNode(node, value);
-        autoDetach(node);//#22037
-        
-        return node;
-    }
+    updateNode(node: Element, value: string | null): void {
+      super.updateNode(node, value);
 
-    static value(domNode: Element) {
-        return domNode.getAttribute('data-value');
-    }
+      if (!value) return;
 
-    static _updateNode(node: Element, value: string) {
-      node.setAttribute('data-value', value);
       node.setAttribute('contenteditable', 'false');
-
-      let children = service.renderAutolink(value);
+      let children = this.service.renderAutolink(value);
       node.replaceChildren(children);
-    }
-
-    format(name, value) {
-        if (name === this.statics.blotName && value) {
-          EmbedLinkBlot._updateNode(this.domNode as Element, value);
-        } else {
-          super.format(name, value);
-        }
     }
 }
 

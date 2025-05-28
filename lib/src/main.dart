@@ -33,6 +33,12 @@ typedef QuillSelectionChangeEventHandler = void Function(
 extension type Quill._(JSObject _) implements JSObject {
   static const eventTextChange = 'text-change';
   static const eventSelectionChange = 'selection-change';
+  static const eventEditorChange = 'editor-change';
+
+  static final eventSourceUser = 'user'.jsify()!;
+  static final eventSourceSilent = 'silent'.jsify()!;
+
+  external set service(JSObject source);
 
   external QuillJsDelta deleteText(int index, int length, [String source]);
 
@@ -47,7 +53,7 @@ extension type Quill._(JSObject _) implements JSObject {
   external QuillJsDelta insertEmbed(int index, String type, JSAny value, [String source]);
 
   /// Pass a [jsify] Map, or `JSObject()` as empty format
-  external QuillJsDelta insertText(int index, String text, [JSObject formats, String source]);
+  external QuillJsDelta insertText(int index, String text, [JSAny formats, String source]);
 
   external QuillJsDelta setContents(JSArray<JSObject> data);
 

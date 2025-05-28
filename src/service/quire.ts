@@ -1,4 +1,7 @@
 
+import Quill from 'quill';
+import { QuillWithOptions } from '../editor';
+
 /**
  * A service that request info from Quire.
  */
@@ -77,76 +80,73 @@ interface QuireQuillService {
      */
     convertText(text: string, format: Record<string, unknown>): string | null;
 }
+function getQuireService(node: Node): QuireQuillService {
+    let cnt = (node as Element).closest('.ql-container');
+    if (cnt) {
+        let service = (Quill.find(cnt) as QuillWithOptions)?.service;
+        if (service)
+            return service;
+    }
 
-var concrete: QuireQuillService;
-
-function registerService(instance: any) {
-    concrete = instance;
+    return defaultService;
 }
 
 class QuireQuillServiceImpl implements QuireQuillService {
     
     toQuireUrl(url: string): string {
-        return concrete?.toQuireUrl(url)
-            ?? url;
+        return url;
     }
 
     isQuireUrl(url: string): boolean {
-        return concrete?.isQuireUrl(url)
-            ?? url.startsWith('https://quire.io/w/');
+        return url.startsWith('https://quire.io/w/');
     }
 
     isEnabled(): boolean {
-        return concrete?.isEnabled() ?? true;
+        return true;
     }
 
     canReplaceParagraph(format: Record<string, unknown>): boolean {
-        return concrete?.canReplaceParagraph(format)
-            ?? (format['header'] == null && format['list'] == null 
-                && format['code-block'] == null 
-                && format['blockquote'] == null
-                && format['nested-blockquote'] == null);
+        return format['header'] == null && format['list'] == null 
+            && format['code-block'] == null 
+            && format['blockquote'] == null
+            && format['nested-blockquote'] == null;
     }
 
     getEmailUrl(value: string): string {
-        return concrete?.getEmailUrl(value)
-            ?? `mailto:${value}`;
+        return `mailto:${value}`;
     }
 
     getPhoneUrl(value: string): string {
-        return concrete?.getPhoneUrl(value)
-            ?? `tel:${value}`;
+        return `tel:${value}`;
     }
 
     evaluateFormula(formula: string): Node {
-        return concrete?.evaluateFormula(formula)
-            ?? new Text(formula);
+        return new Text(formula);
     }
 
     renderRefer(value: string): Node {
-        return concrete?.renderRefer(value)
-            ?? new Text(value);
+        return new Text(value);
     }
 
     renderAutolink(value: string): Node {
-        return concrete?.renderAutolink(value)
-            ?? new Text(value);
+        return new Text(value);
     }
 
     renderMention(value: string): Node {
-        return concrete?.renderMention(value)
-            ?? new Text(value);
+        return new Text(value);
     }
 
     convertHTML(html: string, format: Record<string, unknown>, raw: string): string | null {
-        return concrete?.convertHTML(html, format, raw);
+        return null;
     }
 
     convertText(text: string, format: Record<string, unknown>): string | null {
-        return concrete?.convertText(text, format);
+        return null;
     }
 }
 
-const service: QuireQuillService = new QuireQuillServiceImpl();
+const defaultService: QuireQuillService = new QuireQuillServiceImpl();
 
-export { service, registerService };
+
+// export { service, registerService };
+export { getQuireService, defaultService, QuireQuillService };

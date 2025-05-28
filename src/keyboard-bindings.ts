@@ -4,7 +4,7 @@ import Quill, { type Range } from 'quill/core/quill';
 import { type TableRow } from 'quill/formats/table';
 import BindingObject from 'quill/modules/keyboard';
 import Keyboard, { type Context } from 'quill/modules/keyboard';
-import { service } from './service/quire';
+import { getQuireService } from './service/quire';
 import { SoftBreak } from './custom-blots';
 import { SyntaxAlias } from './syntax';
 
@@ -363,6 +363,7 @@ export const bindings = {
              */
             const pos = range.index;
             const blotName = SoftBreak.blotName;
+            const service = getQuireService(this.quill.root);
             if (context.format[blotName]) {//Case 3, 4
 
             } else if (service.canReplaceParagraph(context.format)) {

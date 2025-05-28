@@ -3,7 +3,7 @@ import { Delta, type Range } from 'quill/core';
 import logger from 'quill/core/logger';
 import CodeBlock from 'quill/formats/code';
 import Clipboard from 'quill/modules/clipboard';
-import { service } from './service/quire';
+import { getQuireService } from './service/quire';
 import { overload, convertHTML } from "./service/editor";
 
 const debug = logger('quill:clipboard');
@@ -169,6 +169,7 @@ export class ClipboardExt extends Clipboard {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         this.normalizeHTML(doc);
         const container = doc.body;
+        const service = getQuireService(this.quill.root);
         const result = service.convertHTML(container.innerHTML, formats, html);
         if (result != null) {
             return new Delta(JSON.parse(result));
@@ -199,6 +200,7 @@ export class ClipboardExt extends Clipboard {
             text = text?.replace(/\n/g, ' ');
         }
 
+        const service = getQuireService(this.quill.root);
         const result = service.convertText(text ?? '', formats);
         if (result != null) {
             return [new Delta(JSON.parse(result)), true];

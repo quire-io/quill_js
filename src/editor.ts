@@ -6,12 +6,17 @@ import QuireTheme from './custom-blots/quite-theme';
 import { bindings, KeyboardExt } from './keyboard-bindings';
 import { ClipboardExt } from './clipboard-matchers';
 import SyntaxExt from './syntax';
+import { QuireQuillService}  from './service/quire';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
 
 // BlockBlot.tagName = 'div';
 // Quill.register(BlockBlot);
+
+export interface QuillWithOptions extends Quill {
+  service?: QuireQuillService;
+}
 
 Inline.order = [
     'cursor',
