@@ -50,12 +50,13 @@ export class ClipboardExt extends Clipboard {
         const index = range.index;
         const formats = this.quill.getFormat(index);
         const [line] = this.quill.getLine(index);
+        const disableLinebreak = this.quill.root.dataset['disable'] == 'linebreak';
         const inQuote = formats['blockquote'] != null || formats['nested-blockquote'] != null;
 
         let pastedDelta: Delta;
         let replaceSelection = true, singleLine = true,
             appendToCursor = line?.length() == 1 //#21560: Paste to empty line
-                || formats['code-block'] != null || formats.table;
+                || formats['code-block'] != null || formats.table || disableLinebreak;
         if (!html) {
             // https://github.com/slab/quill/issues/4421
             [pastedDelta, replaceSelection] = this.convertText(text, formats, range);
