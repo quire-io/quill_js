@@ -5,6 +5,7 @@ import CodeBlot from './code';
 import DividerBlot from './divider';
 import EmailBlot from './email';
 import FormulaBlot from './formula';
+import ImageBlot from './image';
 import SizeClass from './size';
 import StyleBlot from './style';
 import LinkBlot from './link';
@@ -24,6 +25,7 @@ export {
     DividerBlot,
     EmailBlot,
     FormulaBlot,
+    ImageBlot,
     SizeClass,
     StyleBlot,
     LinkBlot,

@@ -22,6 +22,7 @@ Inline.order = [
     'bold',
     'script',
     'link',
+    'image',
     'code', // Must be higher
 ];
 
@@ -33,6 +34,7 @@ Quill.register({
     'formats/code': c.CodeBlot,
     'formats/embed': c.EmbedLinkBlot,
     'formats/formula': c.FormulaBlot,
+    'formats/image': c.ImageBlot,
     'formats/divider': c.DividerBlot,
     'formats/email': c.EmailBlot,
     'formats/style': c.StyleBlot,
