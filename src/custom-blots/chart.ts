@@ -20,6 +20,7 @@ export default class Chart extends EmbedBlot {
     
     static create(value) {
         const node = super.create() as Element;
+        node.setAttribute('contenteditable', 'false');
 
         Chart._saveValue(node, value);
         return node;
