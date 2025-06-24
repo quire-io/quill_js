@@ -1,7 +1,6 @@
 // import { EmbedBlot } from 'parchment';//#21509: Replace with EmbedBlot
 import { ScrollBlot } from 'parchment';
 import EmbedBlot from 'quill/blots/embed';
-import Quill from 'quill';
 import { QuireQuillService, getQuireService } from '../service/quire';
 
 

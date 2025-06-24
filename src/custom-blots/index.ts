@@ -1,6 +1,7 @@
 import AutolinkBlot from './autolink';
 import EmbedLinkBlot from './embed-link';
 import ColorClass from './color';
+import ChartBlot from './chart';
 import CodeBlot from './code';
 import DividerBlot from './divider';
 import EmailBlot from './email';
@@ -20,6 +21,7 @@ import SoftBreak from './linebreak';
 export {
     AutolinkBlot,
     EmbedLinkBlot,
+    ChartBlot,
     ColorClass,
     CodeBlot,
     DividerBlot,

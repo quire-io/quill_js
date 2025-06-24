@@ -1,7 +1,6 @@
 // import { EmbedBlot } from 'parchment';//#21509: Replace with EmbedBlot
 //import EmbedBlot from 'quill/blots/embed';
 import EmbedBlot from './embed';
-import { getQuireService } from '../service/quire';
 
 class ReferBlot extends EmbedBlot {
     static blotName = 'refer';

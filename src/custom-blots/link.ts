@@ -1,6 +1,5 @@
 import { ScrollBlot } from 'parchment';
 import LinkBlot from 'quill/formats/link';
-import Quill from 'quill';
 import { QuireQuillService, getQuireService } from '../service/quire';
 
 export default class Link extends LinkBlot {
@@ -65,13 +64,13 @@ export default class Link extends LinkBlot {
 
     format(name, value) {
         if (name === this.statics.blotName && value) {
-        const url = typeof value === 'string' ? value: value.url,
-            title = value.title,
-            node = this.domNode;
-          Link._saveValue(node, url, title);
-          this.updateNode(node, url);
+            const url = typeof value === 'string' ? value: value.url,
+                title = value.title,
+                node = this.domNode;
+            Link._saveValue(node, url, title);
+            this.updateNode(node, url);
         } else {
-          super.format(name, value);
+            super.format(name, value);
         }
     }
 }

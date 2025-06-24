@@ -54,6 +54,13 @@ interface QuireQuillService {
      */
     renderMention(value: string): Node;
 
+
+    /**
+     * Render chart HTML into DOM nodes.
+     * @param value the chart data map
+     */
+    renderChart(value: Map<string, unknown>): Node;
+
     /**
      * Get the email link href.
      * @param value email
@@ -134,6 +141,10 @@ class QuireQuillServiceImpl implements QuireQuillService {
 
     renderMention(value: string): Node {
         return new Text(value);
+    }
+
+    renderChart(value: Map<string, unknown>): Node {
+        return new Text(JSON.stringify(value));
     }
 
     convertHTML(html: string, format: Record<string, unknown>, raw: string): string | null {

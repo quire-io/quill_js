@@ -36,6 +36,7 @@ Quill.register({
     'attributors/style/size': c.SizeClass,
 
     'formats/autolink': c.AutolinkBlot,
+    'formats/chart': c.ChartBlot,
     'formats/code': c.CodeBlot,
     'formats/embed': c.EmbedLinkBlot,
     'formats/formula': c.FormulaBlot,
@@ -87,6 +88,7 @@ const QUIRE_FORMATS = [
     'color',
     'size',
     c.AutolinkBlot.blotName,
+    c.ChartBlot.blotName,
     c.EmbedLinkBlot.blotName,
     c.FormulaBlot.blotName,
     c.DividerBlot.blotName,
