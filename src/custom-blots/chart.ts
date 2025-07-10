@@ -1,6 +1,6 @@
 import { ScrollBlot } from 'parchment';
 import EmbedBlot from 'quill/blots/embed';
-import { QuireQuillService, getQuireService } from '../service/quire';
+import { QuireQuillService, getQuireService, autoDetach } from '../service/quire';
 
 export default class Chart extends EmbedBlot {
 
@@ -20,8 +20,7 @@ export default class Chart extends EmbedBlot {
     
     static create(value) {
         const node = super.create() as Element;
-        node.setAttribute('contenteditable', 'false');
-
+        autoDetach(node);//#22037
         Chart._saveValue(node, value);
         return node;
     }
