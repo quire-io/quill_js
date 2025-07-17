@@ -15,9 +15,6 @@ import 'module.dart';
 external Quill createQuill(JSAny container, QuillConfiguration options,
   JSArray<JSString>? formats);
 
-@JS()
-external void registerService(JSObject service);
-
 typedef QuillTextChangeEventHandler = void Function(
   QuillJsDelta delta,
   QuillJsDelta oldContents,

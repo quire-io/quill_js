@@ -14,7 +14,7 @@ class Embed extends EmbedBlot {
     this.service = getQuireService(scroll.domNode);
 
     const element = node as Element;
-    this.updateNode(element, Embed.value(element));
+    this.updateNode(element.children[0] as Element, Embed.value(element));
   }
 
   static create(value: string) {
@@ -32,7 +32,7 @@ class Embed extends EmbedBlot {
 
   format(name: string, value: any) {
     if (name === this.statics.blotName && value) {
-      this.updateNode(this.domNode as Element, value);
+      this.updateNode((this.domNode as Element).children[0] as Element, value);
     } else {
       super.format(name, value);
     }

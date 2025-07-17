@@ -98,39 +98,10 @@ function getQuireService(node: Node): QuireQuillService {
     return defaultService;
 }
 
-function findQuill(node: Node): Quill | null {
-    let cnt = (node as Element).closest('.ql-container');
-    if (cnt) return Quill.find(cnt) as Quill | null;
-    return null;
-}
-
 function autoDetach(element: Element) {
   const observer = new MutationObserver((mutations) => {
     if (!element.innerHTML.trim().length)
       element.remove();
-    else {
-      for (const mutation of mutations) {
-        if (mutation.type === 'childList') {
-            // Handle child list changes
-            for (const addedNode of mutation.addedNodes) {
-                if (addedNode.parentElement == element 
-                    && addedNode instanceof Text) {
-                    
-                  element.parentElement?.appendChild(addedNode);
-
-                  setTimeout(() => {
-                    const quill = findQuill(element);
-                    const blot = quill?.scroll.find(addedNode)
-                    if (blot) {
-                        quill?.setSelection((blot.offset(quill?.scroll) || 0) 
-                            + blot.length(), 'silent');  
-                    }
-                  }, 0);
-                }
-            }
-        }
-    }
-    }
   });
 
   observer.observe(element, {
