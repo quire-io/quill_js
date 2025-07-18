@@ -18,8 +18,7 @@ class EmailBlot extends EmbedBlot {
 
       if (!value) return;
 
-      node.setAttribute('contenteditable', `${this.service.isEnabled()}`);//#21509: for cursor visible
-      node.setAttribute('href', this.service.getEmailUrl(value));
+      node.parentElement?.setAttribute('href', this.service.getEmailUrl(value));
       node.textContent = value;
     }
 } 

@@ -12,8 +12,6 @@ class FormulaBlot extends EmbedBlot {
 
       if (!value) return;
 
-      node.setAttribute('contenteditable', `${this.service.isEnabled()}`);//#21509: for cursor visible
-
       let children = this.service.evaluateFormula(value);
       node.replaceChildren(children);
     }

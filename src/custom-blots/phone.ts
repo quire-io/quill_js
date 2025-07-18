@@ -9,9 +9,7 @@ class PhoneBlot extends EmbedBlot {
 
     static create(value: string) {
         const node = super.create(value)
-        
         node.setAttribute('target', '_blank');
-        
         return node;
     }
 
@@ -20,8 +18,7 @@ class PhoneBlot extends EmbedBlot {
 
       if (!value) return;
 
-      node.setAttribute('contenteditable', `${this.service.isEnabled()}`);//#21509: for cursor visible
-      node.setAttribute('href', this.service.getPhoneUrl(value));
+      node.parentElement?.setAttribute('href', this.service.getPhoneUrl(value));
       node.textContent = value;
     }
 } 
