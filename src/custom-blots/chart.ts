@@ -56,4 +56,12 @@ export default class Chart extends EmbedBlot {
             super.format(name, value);
         }
     }
+
+    html(index: number, length: number) {
+        const node = (this.domNode as Element).firstElementChild,
+            value = node?.getAttribute('data-value'),
+            link = node?.getAttribute('data-link') || '#',
+            title = node?.getAttribute('data-title') || 'Untitled';
+        return `<a class="ql-chart" data-value='${value}' href="${link}">${title}</a>`;
+    }
 }
