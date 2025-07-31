@@ -1,5 +1,6 @@
-import { ScrollBlot, EmbedBlot } from 'parchment';
-// import EmbedBlot from 'quill/blots/embed';
+// import { ScrollBlot, EmbedBlot } from 'parchment';
+import { ScrollBlot } from 'parchment';
+import EmbedBlot from 'quill/blots/embed';
 //cannot extends EmbedBlot due to need override _saveValue
 //import EmbedBlot from './embed';
 import { QuireQuillService, getQuireService, autoDetach } from '../service/quire';
@@ -17,7 +18,7 @@ export default class Chart extends EmbedBlot {
 
         this.service = getQuireService(scroll.domNode);
         const element = node as Element;
-        this.updateNode(element, Chart.value(element));
+        this.updateNode(element.children[0], Chart.value(element));
     }
     
     static create(value) {
@@ -51,14 +52,14 @@ export default class Chart extends EmbedBlot {
         if (name === this.statics.blotName && value) {
             const node = this.domNode as Element;
             Chart._saveValue(node, value);
-            this.updateNode(node, value);
+            this.updateNode(node.children[0], value);
         } else {
             super.format(name, value);
         }
     }
 
     html(index: number, length: number) {
-        const node = (this.domNode as Element).firstElementChild,
+        const node = (this.domNode as Element).querySelector('.quill-chart'),
             value = node?.getAttribute('data-value'),
             link = node?.getAttribute('data-link') || '#',
             title = node?.getAttribute('data-title') || 'Untitled';
