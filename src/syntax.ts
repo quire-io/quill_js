@@ -210,6 +210,8 @@ interface SyntaxOptions {
 }
 
 const highlight = (lib: any, language: string, text: string) => {
+    if (!lib) return text;
+
     if (typeof lib.versionString === 'string') {
         const majorVersion = lib.versionString.split('.')[0];
         if (parseInt(majorVersion, 10) >= 11) {
@@ -236,11 +238,13 @@ class Syntax extends Module<SyntaxOptions> {
 
     constructor(quill: Quill, options: Partial<SyntaxOptions>) {
         super(quill, options);
+        /**
         if (this.options.hljs == null) {
             throw new Error(
                 'Syntax module requires highlight.js. Please include the library on the page before Quill.',
             );
         }
+        */
         // @ts-expect-error Fix me later
         this.languages = this.options.languages.reduce(
             (memo: Record<string, unknown>, { key }) => {
