@@ -94,6 +94,8 @@ export const bindings = {
                     value = 'checked';
                     break;
                 case '-':
+                    value = 'dash';
+                    break;
                 case '*':
                     value = 'bullet';
                     break;
