@@ -212,6 +212,8 @@ function _getListType(type: string | undefined) {
         return [tag, ' data-list="checked"', '<input type="checkbox" checked>'];
       case 'unchecked':
         return [tag, ' data-list="unchecked"', '<input type="checkbox">'];
+      case 'dash':
+        return [tag, ' class="dash-list"', ''];//#22191
       default:
         return [tag, '', ''];
     }
