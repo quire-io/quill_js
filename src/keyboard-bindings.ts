@@ -104,7 +104,8 @@ export const bindings = {
             }
             const currentListFormat = context.format.list;
             const isChecklistFormat = value === 'checked' || value === 'unchecked';
-            const canTransformToChecklist = currentListFormat === 'bullet' || currentListFormat === 'ordered';
+            const canTransformToChecklist = currentListFormat === 'bullet' 
+                || currentListFormat === 'dash' || currentListFormat === 'ordered';
             const isTransformingToChecklist = isChecklistFormat && canTransformToChecklist;
             // Only allow transforming bullet/ordered lists into checklists
             if (currentListFormat && !isTransformingToChecklist) return true;
