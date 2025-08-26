@@ -294,6 +294,19 @@ export const bindings = {
             return false;
         }
     },
+    'header enter': {
+        key: 'Enter',
+        format: {
+            header: true,
+        },
+        handler(range: Range, context: Context) {
+            //#23127: Disabled enter when pick option in autocomplete
+            if (context.line.domNode.dataset['disable'] == 'Enter') {
+                return false;
+            }
+            return true;
+        }
+    },
     'linebreak': {
         key: 'Enter',
         handler(range: Range, context: Context) {
