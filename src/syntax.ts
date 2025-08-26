@@ -270,6 +270,9 @@ class Syntax extends Module<SyntaxOptions> {
                 select.appendChild(option);
             });
             select.addEventListener('change', () => {
+                //#23130
+                select.dispatchEvent(new CustomEvent(
+                    'before-change', { bubbles: true, cancelable: true }));
                 blot.format(SyntaxCodeBlock.blotName, select.value);
                 this.quill.root.focus(); // Prevent scrolling
                 this.highlight(blot, true);
