@@ -304,6 +304,7 @@ export const bindings = {
             if (context.line.domNode.dataset['disable'] == 'Enter') {
                 return false;
             }
+            this.quill.formatLine(range.index, 1, 'header', false, Quill.sources.USER);
             return true;
         }
     },
