@@ -35,6 +35,8 @@ Quill.register({
     'attributors/style/color': c.ColorClass,
     'attributors/style/size': c.SizeClass,
 
+    'blots/text': c.TextBlot,
+
     'formats/autolink': c.AutolinkBlot,
     'formats/chart': c.ChartBlot,
     'formats/code': c.CodeBlot,

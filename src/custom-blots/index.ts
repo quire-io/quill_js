@@ -10,6 +10,7 @@ import ImageBlot from './image';
 import SizeClass from './size';
 import StyleBlot from './style';
 import LinkBlot from './link';
+import TextBlot from './text';
 import LoadingImage from './loading-image';
 import MentionBlot from './mention';
 import PhoneBlot from './phone';
@@ -31,6 +32,7 @@ export {
     SizeClass,
     StyleBlot,
     LinkBlot,
+    TextBlot,
     LoadingImage,
     MentionBlot,
     PhoneBlot,
