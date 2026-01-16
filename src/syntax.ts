@@ -10,6 +10,7 @@ import CursorBlot from 'quill/blots/cursor';
 import TextBlot, { escapeText } from 'quill/blots/text';
 import CodeBlock, { CodeBlockContainer } from 'quill/formats/code';
 import { traverse } from 'quill/modules/clipboard';
+import { getQuireService } from './service/quire';
 
 const fixPlaintext = (value: string) => {
     // Potix: plain is not a valid language
@@ -278,7 +279,13 @@ class Syntax extends Module<SyntaxOptions> {
                 this.highlight(blot, true);
             });
             if (blot.uiNode == null) {
-                blot.attachUI(select);
+                const uiContainer = this.quill.root.ownerDocument.createElement('div');
+                uiContainer.style.background = 'transparent';
+                uiContainer.style.display = 'flex';
+                uiContainer.style.gap = '8px';
+                uiContainer.appendChild(select);
+                uiContainer.appendChild(this.copyBtn(blot));
+                blot.attachUI(uiContainer);
                 if (blot.children.head) {
                     select.value = SyntaxCodeBlock.formats(blot.children.head.domNode);
                 }
@@ -299,6 +306,36 @@ class Syntax extends Module<SyntaxOptions> {
                 timer = null;
             }, this.options.interval);
         });
+    }
+
+    copyBtn(blot: SyntaxCodeBlockContainer) {
+        const quireService = getQuireService(this.quill.root);
+        const copyLabel = quireService.customLabel('copy') || 'Copy';
+        const copiedLabel = quireService.customLabel('copied') || 'Copied';
+        const copyButton = document.createElement('button');
+        copyButton.className = 'ql-copy-button';
+        copyButton.dataset['copy'] = copyLabel;
+        copyButton.dataset['copied'] = copiedLabel;
+
+        const reset = () => {
+            copyButton.textContent = copyLabel;
+            copyButton.classList.remove('copied');
+        };
+
+        const setCopied = () => {
+            copyButton.classList.add('copied');
+            copyButton.textContent = copiedLabel;
+            setTimeout(reset, 3000);
+        }
+
+        reset();
+        copyButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const codeText = blot.code(0, blot.length());
+            navigator.clipboard.writeText(codeText).then(setCopied);
+        });
+
+        return copyButton;
     }
 
     highlight(blot: SyntaxCodeBlockContainer | null = null, force = false) {
