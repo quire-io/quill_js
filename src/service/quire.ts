@@ -86,6 +86,13 @@ interface QuireQuillService {
      * @returns The result delta in JSON string. null if not supported.
      */
     convertText(text: string, format: Record<string, unknown>): string | null;
+
+    /**
+     * Get i18n label for the given key.
+     * 
+     * @param key 
+     */
+    customLabel(key: string): string | null;
 }
 function getQuireService(node: Node): QuireQuillService {
     let cnt = (node as Element).closest('.ql-container');
@@ -164,6 +171,10 @@ class QuireQuillServiceImpl implements QuireQuillService {
     }
 
     convertText(text: string, format: Record<string, unknown>): string | null {
+        return null;
+    }
+
+    customLabel(key: string): string | null {
         return null;
     }
 }
