@@ -82,7 +82,7 @@ export class ClipboardExt extends Clipboard {
 
             if (attrs == null) {
                 if (pastedDelta.ops.length === 1)
-                    op.attributes = { ...formats };
+                    op.attributes = structuredClone(formats);
                 
                 continue;
             }
