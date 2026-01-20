@@ -80,7 +80,12 @@ export class ClipboardExt extends Clipboard {
                 }
             }
 
-            if (attrs == null) continue;
+            if (attrs == null) {
+                if (pastedDelta.ops.length === 1)
+                    op.attributes = { ...formats };
+                
+                continue;
+            }
             if (attrs['align'] != null && attrs['table'] == null) {
                 attrs['align'] = null;//#20930: [Quill] Only support align in table
             }
