@@ -446,11 +446,60 @@ export const bindings = {
     // Potix: override the UX
     'table down': makeTableArrowHandler(false),
     'table up': makeTableArrowHandler(true),
+    'table tab': {
+    //copy from
+    //https://github.com/slab/quill/blob/main/packages/quill/src/modules/keyboard.ts#L536
+      key: 'Tab',
+      shiftKey: null,
+      format: ['table'],
+      handler(range: Range, context: Context) {
+        const { event, line: cell } = context;
+        let nextCell = event.shiftKey ? cell.prev: cell.next;
+        if (!nextCell) {
+            let row = cell.parent as TableRow;
+            if (event.shiftKey) {
+                row = row.prev as TableRow | null;
+                if (row) nextCell = row.children.tail;
+            } else {
+                row = row.next as TableRow | null;
+                if (row) nextCell = row.children.head;
+            }
+        }
+        if (nextCell) {
+            const offset = nextCell.offset(this.quill.scroll);
+            const len = nextCell.length();
+            if (len == 1) {//move cursot if cell empty
+                this.quill.setSelection(offset, Quill.sources.USER);
+            } else //#23944: select next cell
+                this.quill.setSelection(offset, len, Quill.sources.USER);
+        } else {
+            const offset = cell.offset(this.quill.scroll);
+            if (event.shiftKey) {
+                this.quill.setSelection(offset - 1, Quill.sources.USER);
+            } else {
+                const row = cell.parent as TableRow;
+                const module = this.quill.getModule('table');
+                if (module) {//auto add row
+                    module.insertRowBelow();
+                    _fixRowCellsAlignment(module, 1);
+                    const nextRow = row.next as TableRow;
+                    if (nextRow) {
+                        const firstCell = nextRow.children.head;
+                        const firstCellOffset = firstCell.offset(this.quill.scroll);
+                        this.quill.setSelection(firstCellOffset, Quill.sources.USER);
+                    }
+                } else {
+                    this.quill.setSelection(offset + cell.length(), Quill.sources.USER);
+                }
+            }
+        }
+      },
+    },
     'table enter': {
         key: 'Enter',
         shiftKey: null,
         format: ['table'],
-        handler(range: Range, context) {
+        handler(range: Range, context: Context) {
             if (context.line.domNode.dataset['disable'] == 'Enter') {
                 return false;//#20990
             }
