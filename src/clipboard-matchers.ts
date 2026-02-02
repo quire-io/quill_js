@@ -102,7 +102,7 @@ export class ClipboardExt extends Clipboard {
             if (replaceSelection)
                 delta.delete(range.length)
         } else {//#21473: Refer to notion, insert to next line when paste multiple lines
-            const [line] = this.quill.getLine(range.index);
+            const [line] = this.quill.getLine(range.index + range.length);
             if (line != null) {
                 const parent = line.parent;
                 var ofs = line.offset();
