@@ -10,6 +10,7 @@ import { QuireQuillService}  from './service/quire';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import '../quill-quire.css';
+import { QuillCursorsExt } from './cursors';
 
 // BlockBlot.tagName = 'div';
 // Quill.register(BlockBlot);
@@ -62,6 +63,7 @@ Quill.register({
     'modules/clipboard': ClipboardExt,
     'modules/keyboard': KeyboardExt,
     'modules/syntax': SyntaxExt,
+    'modules/cursors': QuillCursorsExt,
 }, true);
 
 const CORE_FORMATS = ['block', 'break', 'cursor', 'inline', 'scroll', 'text'];
