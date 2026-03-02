@@ -22,7 +22,7 @@
     "style-to-object": "^1.0.8"
   },
   "devDependencies": {
-    "typescript": "^5.5.2",
-    "vite": "^6.2.0"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   }
 }
