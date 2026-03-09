@@ -270,7 +270,9 @@ export const bindings = {
       shiftKey: true,
       handler(range) {
         //#21177: Don't leave focus when press shift + tab and is not empty
-        return this.quill.getLength() < 2;
+        if (this.quill.getLength() < 2) return true;
+        this.quill.format('indent', '-1', Quill.sources.USER);
+        return false;
       },
     },
     'tab': {
@@ -283,14 +285,8 @@ export const bindings = {
             }
             //#21177: Allow tab to leave focus when empty
             if (context.format.table || this.quill.getLength() < 2) return true;
-            this.quill.history.cutoff();
-            const delta = new Delta()
-            .retain(range.index)
-            .delete(range.length)
-            .insert('\t');
-            this.quill.updateContents(delta, Quill.sources.USER);
-            this.quill.history.cutoff();
-            this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+
+            this.quill.format('indent', '+1', Quill.sources.USER);
             return false;
         }
     },
