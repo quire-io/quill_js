@@ -1,26 +1,27 @@
 import Selection from 'quill/core/selection';
 export class SelectionExt extends Selection {
   setNativeRange(startNode: Node | null, startOffset?: number, 
-        endNode?: Node | null, endOffset?: number | undefined, 
+        endNode: Node | null = null, // Default to null to satisfy the type
+        endOffset?: number, 
         force?: boolean): void {
     
-    let safeEndNode = endNode;
-    let safeEndOffset = endOffset;
+    // 1. Ensure we have fallback values for the offsets
+    const safeStartOffset = this.getValidOffset(startNode, startOffset);
+    const safeEndOffset = this.getValidOffset(endNode, endOffset);
 
-    if (endNode) {
-      // Determine the valid boundary of the node
-      const maxLength = endNode.nodeType === Node.TEXT_NODE 
-        ? (endNode as Text).length 
-        : endNode.childNodes.length;
+    // 2. Call super with explicit values
+    super.setNativeRange(startNode, safeStartOffset, 
+      endNode, safeEndOffset, force);
+  }
 
-      // Fix the "4294967295" error by clamping the offset
-      // If it's negative or larger than allowed, we cap it.
-      if (typeof endOffset === 'number') {
-        safeEndOffset = Math.max(0, Math.min(endOffset, maxLength));
-      }
-    }
-
-    // Call the original implementation with the sanitized values
-    super.setNativeRange(startNode, startOffset, safeEndNode, safeEndOffset, force);
+  getValidOffset(node: Node | null, offset?: number): number {
+    if (!node || offset === undefined) return 0;
+    
+    // Use character count for Text, child count for Elements
+    const max = node.nodeType === Node.TEXT_NODE 
+        ? (node as Text).length 
+        : node.childNodes.length;
+    
+    return Math.max(0, Math.min(offset, max));
   }
 }
