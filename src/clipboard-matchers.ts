@@ -21,12 +21,24 @@ export class ClipboardExt extends Clipboard {
     onCopy(range: Range) {
         ///Move implements form
         /// https://github.com/slab/quill/blob/ebe16ca24724ac4f52505628ac2c4934f0a98b85/packages/quill/src/modules/clipboard.ts#L229
-        const text = this.quill.getText(range);
+        const text = this._getText(range);
         const html = this._getHTML(range);
 
         // console.log(html);
 
         return { html, text };
+    }
+
+    _getText(index: number, length: number): string {
+        return this.quill.getContents(index, length)
+        .filter((op) => typeof op.insert === 'string')
+        .map((op) => {
+            const link = op.attributes?.link;
+            if (typeof link === 'string' && link !== op.insert)
+                return `[${op.insert}](${link})`;//#24760
+            return op.insert;
+        })
+        .join('');
     }
 
     _getHTML(index: Range | number = 0, length?: number) {
