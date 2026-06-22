@@ -58,7 +58,7 @@ extension type Quill._(JSObject _) implements JSObject {
 
   external QuillJsDelta updateContents(JSArray<JSObject> data, [String source]);
 
-  external QuillJsDelta format(String name, JSAny value, [String source]);
+  external QuillJsDelta format(String name, JSAny? value, [String source]);
 
   /// Pass a [jsify] Map, or `JSObject()` as empty format
   external QuillJsDelta formatLine(int index, int length, [JSObject formats, String source]);
