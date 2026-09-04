@@ -89,10 +89,20 @@ interface QuireQuillService {
 
     /**
      * Get i18n label for the given key.
-     * 
-     * @param key 
+     *
+     * @param key
      */
     customLabel(key: string): string | null;
+
+    /**
+     * Takes the file items of a paste that also carries HTML referencing
+     * images (e.g. from Word), so convertHTML can swap each local img src
+     * for an upload of the matching file, in order (#25653).
+     * @param files the clipboard file items
+     * @returns whether the files were taken; false (or absent) keeps the
+     *          default clipboard behavior.
+     */
+    stashPastedFiles?(files: File[]): boolean;
 }
 function getQuireService(node: Node): QuireQuillService {
     let cnt = (node as Element).closest('.ql-container');

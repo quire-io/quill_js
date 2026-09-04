@@ -17,6 +17,33 @@ export class ClipboardExt extends Clipboard {
         this.trimTrailingNewline = options['trimTrailingNewline'] ?? false;
     }
 
+    onCapturePaste(e: ClipboardEvent) {
+        if (e.defaultPrevented || !this.quill.isEnabled()) return;
+
+        // #25653: text + pictures on the clipboard (e.g. from Word: HTML whose
+        // <img> srcs point at local files, plus the pictures as file items).
+        // Hand the files to the service first, so convertHTML swaps each such
+        // src for an upload of the matching file, in place. Otherwise the HTML
+        // pastes with a broken image and the files upload after the text.
+        const html = e.clipboardData?.getData('text/html');
+        const files = Array.from(e.clipboardData?.files || []);
+        if (html && files.length > 0) {
+            const body = new DOMParser().parseFromString(html, 'text/html').body;
+            const singleImage = body.childElementCount === 1
+                && body.firstElementChild?.tagName === 'IMG'; // super handles it
+            if (!singleImage && body.querySelector('img')
+                    && getQuireService(this.quill.root).stashPastedFiles?.(files)) {
+                e.preventDefault();
+                const range = this.quill.getSelection(true);
+                if (range != null)
+                    this.onPaste(range, { html,
+                        text: e.clipboardData?.getData('text/plain') });
+                return;
+            }
+        }
+        super.onCapturePaste(e);
+    }
+
     onCopy(range: Range, isCut: boolean);
     onCopy(range: Range) {
         ///Move implements form
