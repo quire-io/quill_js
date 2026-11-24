@@ -18,6 +18,7 @@ import ReferBlot from './refer';
 import BlockquoteBlot from './blockquote';
 import NestedBlockquoteBlot from './nested-blockquote';
 import SoftBreak from './linebreak';
+import SkillBlot from './skill';
 
 export {
     AutolinkBlot,
@@ -40,4 +41,5 @@ export {
     BlockquoteBlot,
     NestedBlockquoteBlot,
     SoftBreak,
+    SkillBlot,
 };

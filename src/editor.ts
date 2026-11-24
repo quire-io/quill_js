@@ -56,6 +56,7 @@ Quill.register({
     'formats/nested-blockquote': c.NestedBlockquoteBlot,
     'formats/blockquote': c.BlockquoteBlot,
     'formats/line': c.SoftBreak,
+    'formats/skill': c.SkillBlot,
     'formats/color': c.ColorClass,
     'formats/size': c.SizeClass,
 
@@ -102,6 +103,7 @@ const QUIRE_FORMATS = [
     c.MentionBlot.blotName,
     c.PhoneBlot.blotName,
     c.ReferBlot.blotName,
+    c.SkillBlot.blotName, // The Quire AI chat's skill picked
     c.NestedBlockquoteBlot.blotName,
     c.SoftBreak.blotName,
     c.LoadingImage.blotName, // Uploading image placeholder
